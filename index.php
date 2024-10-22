@@ -21,20 +21,25 @@ ini_set('error_log', $_SERVER['DOCUMENT_ROOT'].'/error.log');
   <meta name="keywords" content="LunarPlay System, mini jeux, système solaire imaginaire, jeux en ligne, arcade spatiale, jeux galactiques, aventure stellaire, défis interstellaires, exploration de planètes" />
   <title>LunarPlay System - Explorez des Mini Jeux dans un Système Solaire Imaginaire</title>
   <link rel="shortcut icon" href="/assets/logo/logo_small.svg" type="image/svg+xml">
+  <!-- Stylesheet -->
   <link rel="stylesheet" href="/assets/css/index.css" /> 
 </head>
 
 <body>
-  <div class="background">
-
+  <!-- Background -->
+  <div class="background"></div>
+  <!-- START : Wrapper -->
+  <div class="wrapper">
+    <!-- START : Container -->
     <div class="container">
-
+      <!-- START : Header -->
       <header class="header">
         <img src="/assets/logo/logo_small.svg" alt="Logo de LunarPlay System" width="100">
         <h1 class="main-title">LunarPlay System</h1>
         <img src="/assets/logo/logo_small.svg" alt="Logo de LunarPlay System" width="100">
       </header>
-      
+      <!-- END : Header -->
+      <!-- START : Main -->
       <main class="main">
         <div class="description">
           <p>Explorez un système solaire imaginaire à travers une série de mini jeux captivants.</p>
@@ -47,30 +52,31 @@ ini_set('error_log', $_SERVER['DOCUMENT_ROOT'].'/error.log');
         <div>
           <a href="/pages/lunarplay.php" class="button" id="start-button">Démarrez l'aventure</a>
         </div>
-
         <div class="info">
           <h2 class="info-title">Instructions</h2>
           <div class="info-content">
-            <p class="mb">Contrôles de la caméra</p>
-            <p>Déplacement de la caméra :</p>
+            <p class="mb info-subtitle">Contrôles de la caméra</p>
+            <p class="info-subtitle">Déplacement de la caméra :</p>
             <p class="mb">Pour ajuster votre perspective, cliquez et faites glisser la souris vers le haut, le bas, la gauche ou la droite.</p>
-            <p>Zoomer/Dézoomer :</p>
+            <p class="info-subtitle">Zoomer/Dézoomer :</p>
             <p class="mb">Pour zoomer ou dézoomer, utilisez la molette de la souris.</p>
-            <p>Gestes tactiles :</p>
+            <p class="info-subtitle">Gestes tactiles :</p>
             <p>Si vous utilisez un appareil à écran tactile, pincez pour zoomer et écartez les doigts pour dézoomer.</p>
           </div>
         </div>
       </main>
-
+      <!-- END : Main -->
+    </div>
+    <!-- END : Container -->
+    <!-- START : Footer -->
       <footer class="footer">
         <p>&copy; 2024 LunarPlay System - Tous droits réservés</p>
       </footer>
-
-    </div>
-
+    <!-- END : Footer -->
   </div>
+  <!-- END : Wrapper -->
 
+  <!-- Scripts -->
   <script type="module" src="/assets/js/index.js"></script>
 </body>
-
 </html>

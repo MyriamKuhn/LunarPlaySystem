@@ -16,10 +16,9 @@
 }
 
 body {
-  position: relative;
   height: 100vh; 
   width: 100vw; 
-  overflow: hidden; 
+  overflow-x: hidden;
   background-color: black; 
   font-family: "Exo 2", sans-serif;
   color: var(--color-text); 
@@ -27,10 +26,13 @@ body {
 }
 
 .background {
-  position: absolute;
-  width: 100%; 
-  height: 100%; 
-  overflow: hidden; 
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; 
+  overflow: hidden;
 }
 
 .star {
@@ -61,11 +63,19 @@ body {
   }
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  z-index: 1; 
+  min-height: 100vh; 
+}
+
 .container {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 5rem;
+  padding: 5rem;
 }
 
 .main-title {
@@ -84,7 +94,6 @@ body {
   font-weight: 400;
   text-align: center;
   margin-top: 2rem;
-  margin-bottom: 2rem;
 }
 
 .description {
@@ -140,31 +149,19 @@ body {
   }
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-}
-
 .info {
-  z-index: 1000; 
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 5rem auto; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5rem;
   max-width: 50vw; 
   background-color: rgba(0, 0, 0, 0.6);
   color: var(--color-text);
   padding: 2rem;
   border-radius: 10px;
-  text-align: center;
   border: 1px solid rgb(239, 227, 100, 0.6);
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
   text-align: start;
+  font-size: 1rem;
 }
 
 .info-title {
@@ -172,6 +169,20 @@ body {
   font-size: 1.5rem;
   font-weight: 800;
   text-transform: uppercase;
+}
+
+.info-subtitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
 }
 
 /* Pour les appareils dont la largeur est inférieure ou égale à 768px (tablettes et mobiles) */
@@ -216,7 +227,7 @@ body {
   }
 
   .container {
-    margin: 2rem; 
+    padding: 2rem; 
   }
 
   .footer {
