@@ -1,0 +1,25 @@
+<?php
+
+return [
+  'index_title' => 'LunarPlay System - Explore Mini Games in an Imaginary Solar System',
+  'index_description' => 'Explore an imaginary solar system through a series of captivating mini-games. Galactic challenges, stellar adventures and interstellar fun await you in this cosmic arcade.',
+  'index_keywords' => "LunarPlay System, mini games, imaginary solar system, online games, space arcade, galactic games, stellar adventure, interstellar challenges, planet exploration",
+  'main_title' => 'LunarPlay System',
+  'main_description_1' => 'Explore an imaginary solar system through a series of captivating mini-games.',
+  'main_description_2' => 'Galactic challenges, stellar adventures and interstellar fun await you in this cosmic arcade.',
+  'main_description_3' => 'Click on the button below to begin your adventure.',
+  'main_description_4' => 'To access a game, click on the corresponding planet.',
+  'main_description_5' => 'The central planet of the LunarPlay: Solaris system contains the ranking.',
+  'main_description_6' => 'Good luck and may the star force be with you!',
+  'start_button' => 'Start your adventure',
+  'info_title' => 'Guidelines',
+  'info_subtitle_1' => 'Camera controls',
+  'info_subtitle_2' => 'Moving the camera:',
+  'info_subtitle_3' => 'Zoom in/Zoom out:',
+  'info_subtitle_4' => 'Touch gestures:',
+  'info_content_1' => 'To adjust your perspective, click and drag the mouse up, down, left or right.',
+  'info_content_2' => 'To zoom in or out, use the mouse wheel.',
+  'info_content_3' => "If you're using a touchscreen device, pinch to zoom in and spread your fingers to zoom out.",
+  'footer' => '&copy; 2024 LunarPlay System - All rights reserved',
+  'footer_legal' => 'Terms of use',
+];

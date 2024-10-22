@@ -1,26 +1,4 @@
-<?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-ini_set('error_log', $_SERVER['DOCUMENT_ROOT'] . '/error.log');
-
-// Sécurisation du cookie de session avec httpOnly
-session_set_cookie_params([
-	'lifetime' => 3600,
-	'path' => '/',
-	'domain' => $_SERVER['SERVER_NAME'],
-	//'secure' => true,
-	'httponly' => true,
-	'samesite' => 'Strict',
-]);
-// Démarrage de la session
-session_start();
-if (empty($_SESSION['csrf_token'])) {
-	$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-
-?>
 
 <!DOCTYPE html>
 <html lang="fr-FR">

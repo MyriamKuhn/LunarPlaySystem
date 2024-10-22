@@ -1,0 +1,25 @@
+<?php
+
+return [
+  'index_title' => 'LunarPlay System - Explorez des Mini Jeux dans un Système Solaire Imaginaire',
+  'index_description' => 'Explorez un système solaire imaginaire à travers une série de mini jeux captivants. Défis galactiques, aventures stellaires et amusement interstellaire vous attendent dans cette arcade cosmique.',
+  'index_keywords' => "LunarPlay System, mini jeux, système solaire imaginaire, jeux en ligne, arcade spatiale, jeux galactiques, aventure stellaire, défis interstellaires, exploration de planètes",
+  'main_title' => 'LunarPlay System',
+  'main_description_1' => 'Explorez un système solaire imaginaire à travers une série de mini jeux captivants.',
+  'main_description_2' => 'Défis galactiques, aventures stellaires et amusement interstellaire vous attendent dans cette arcade cosmique.',
+  'main_description_3' => 'Cliquez sur le bouton ci-dessous pour commencer votre aventure.',
+  'main_description_4' => 'Pour accéder à un jeu, vous devrez cliquer sur la planète correspondante.',
+  'main_description_5' => 'La planète centrale du système LunarPlay : Solaris contient le classement général.',
+  'main_description_6' => 'Bonne chance et que la force stellaire soit avec vous !',
+  'start_button' => 'Démarrez l\'aventure',
+  'info_title' => 'Instructions',
+  'info_subtitle_1' => 'Contrôles de la caméra',
+  'info_subtitle_2' => 'Déplacement de la caméra :',
+  'info_subtitle_3' => 'Zoomer/Dézoomer :',
+  'info_subtitle_4' => 'Gestes tactiles :',
+  'info_content_1' => 'Pour ajuster votre perspective, cliquez et faites glisser la souris vers le haut, le bas, la gauche ou la droite.',
+  'info_content_2' => 'Pour zoomer ou dézoomer, utilisez la molette de la souris.',
+  'info_content_3' => 'Si vous utilisez un appareil à écran tactile, pincez pour dézoomer et écartez les doigts pour zoomer.',
+  'footer' => '&copy; 2024 LunarPlay System - Tous droits réservés',
+  'footer_legal' => 'Mentions légales',
+];

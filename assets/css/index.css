@@ -183,6 +183,18 @@ body {
   justify-content: center;
   align-items: center;
   padding: 1rem;
+  text-align: center;
+}
+
+.link {
+  color: var(--color-yellow);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.3s ease-in-out;
+}
+
+.link:hover {
+  color: var(--color-orange);
 }
 
 /* Pour les appareils dont la largeur est inférieure ou égale à 768px (tablettes et mobiles) */
@@ -272,4 +284,52 @@ body {
   .footer {
     font-size: 0.7rem; 
   }
+}
+
+/* CSS pour le menu déroulant choix de la langue */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-right: auto;
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+
+.dropbtn {
+  background-color: transparent;
+  color: var(--color-text);
+  font-family: "Exo 2", sans-serif;
+  padding: 1rem;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: black;
+  min-width: 1rem;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: var(--color-text);
+  padding: 1rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.flag {
+  margin-right: 1rem;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: var(--color-red);
 }
