@@ -3,8 +3,9 @@
 /* IMPORTS DES MODULES */
 
 /***********************/
-import * as THREE from '../../modules/three.module.js';
-import { OrbitControls } from '../../modules/OrbitControls.js';
+import * as THREE from '/../../modules/three.module.js';
+import { OrbitControls } from '/../../modules/OrbitControls.js';
+import { translations } from '/assets/js/translations.js';
 
 
 /***********************/
@@ -28,14 +29,8 @@ let solaris,
 let mouse = new THREE.Vector2();
 let raycaster = new THREE.Raycaster();
 let isPaused = false;
-// Liste des histoires des planètes (exemple)
-const planetStories = {
-  solaris: "Solaris est le cœur du système, à la fois source d'énergie et de lumière pour toutes les autres planètes. Un monde exceptionnel autour duquel tout gravite. En tant que planète centrale, Solaris est le point de départ des explorations dans le reste du système. Ce nom suggère sa primauté et son importance, tout en évoquant une atmosphère imposante et solaire. Solaris est le pivot autour duquel les mini jeux et les intrigues se développent.",
-  ignisfera: 'Ignisfera est une planète brûlante entourée de flammes éternelles.',
-  aetheria: 'Aetheria est connue pour ses cieux brumeux et ses vents violents.',
-  // Ajouter une histoire pour chaque planète
-};
-
+const storedLanguage = sessionStorage.getItem('lang') || initialLanguage;
+const planetStories = translations[storedLanguage];
 
 /*************************/
 
@@ -115,7 +110,7 @@ const init = () => {
   const textureLoader = new THREE.TextureLoader();
 
   // Chargement de la texture de fond
-  texture = textureLoader.load('../assets/img/space-stars.jpg');
+  texture = textureLoader.load('/../assets/img/space-stars.jpg');
   texture.minFilter = THREE.LinearFilter;
   texture.magFilter = THREE.LinearFilter;
   scene.background = texture;
@@ -198,37 +193,37 @@ const createPlanete = (size, namePlanet, texture, position, ring = false, isSola
 
 // Initialisation des planètes
 const initScene = () => {
-  solaris = createPlanete(16, 'solaris', '../assets/img/solaris.jpg', 0, false, true);
-  ignisfera = createPlanete(2.6, 'ignisfera', '../assets/img/ignisfera.jpg', 28);
-  aetheria = createPlanete(5.3, 'aetheria', '../assets/img/aetheria.jpg', 44);
-  elythium = createPlanete(6, 'elythium', '../assets/img/elythium.jpg', 78);
+  solaris = createPlanete(16, 'solaris', '/../assets/img/solaris.jpg', 0, false, true);
+  ignisfera = createPlanete(2.6, 'ignisfera', '/../assets/img/ignisfera.jpg', 28);
+  aetheria = createPlanete(5.3, 'aetheria', '/../assets/img/aetheria.jpg', 44);
+  elythium = createPlanete(6, 'elythium', '/../assets/img/elythium.jpg', 78);
   // Création des nuages autour d'Elythium
   const textureLoader = new THREE.TextureLoader();
   cloud = new THREE.Mesh(
     new THREE.SphereGeometry(6.1, 32, 32),
     new THREE.MeshPhongMaterial({
-      map: textureLoader.load('../assets/img/clouds.png'),
+      map: textureLoader.load('/../assets/img/clouds.png'),
       transparent: true,
     })
   );
   elythium.mesh.add(cloud);
 
-  lunara = createPlanete(1.2, 'lunara', '../assets/img/lunara.jpg', 11);
+  lunara = createPlanete(1.2, 'lunara', '/../assets/img/lunara.jpg', 11);
   elythium.mesh.add(lunara.mesh);
-  rhodaria = createPlanete(3.2, 'rhodaria', '../assets/img/rhodaria.jpg', 118);
-  goliathor = createPlanete(11, 'goliathor', '../assets/img/goliathor.jpg', 150);
-  ringuara = createPlanete(9, 'ringuara', '../assets/img/ringuara.jpg', 198, {
+  rhodaria = createPlanete(3.2, 'rhodaria', '/../assets/img/rhodaria.jpg', 118);
+  goliathor = createPlanete(11, 'goliathor', '/../assets/img/goliathor.jpg', 150);
+  ringuara = createPlanete(9, 'ringuara', '/../assets/img/ringuara.jpg', 198, {
     innerRadius: 12.2,
     outerRadius: 21,
-    texture: '../assets/img/ringuara-ring.png',
+    texture: '/../assets/img/ringuara-ring.png',
   });
-  aqualis = createPlanete(8, 'aqualis', '../assets/img/aqualis.jpg', 262, {
+  aqualis = createPlanete(8, 'aqualis', '/../assets/img/aqualis.jpg', 262, {
     innerRadius: 9.5,
     outerRadius: 12,
-    texture: '../assets/img/aqualis-ring.png',
+    texture: '/../assets/img/aqualis-ring.png',
   });
-  nereidia = createPlanete(7, 'nereidia', '../assets/img/nereidia.jpg', 280);
-  cryos = createPlanete(3, 'cryos', '../assets/img/cryos.jpg', 290);
+  nereidia = createPlanete(7, 'nereidia', '/../assets/img/nereidia.jpg', 280);
+  cryos = createPlanete(3, 'cryos', '/../assets/img/cryos.jpg', 290);
 
   // Ajout de la lumière ponctuelle
   const pointLight = new THREE.PointLight(0xffffff, 1.4, 600);
@@ -306,7 +301,7 @@ const showPlanetInfo = (planetName) => {
     document.getElementById('planet-name').textContent = planetName;
     document.getElementById('planet-story').textContent = planetStories[planetName] || 'Histoire non disponible.';
 
-    playBtn.href = `/pages/${planetName}.php`;
+    playBtn.href = `/${storedLanguage}/${planetName}/`;
 
     // Afficher les informations
     infoBox.classList.remove('hidden');

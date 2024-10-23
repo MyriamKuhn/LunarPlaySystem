@@ -6,6 +6,12 @@ RewriteRule ^fr/?$ /index.php?lang=fr [L,QSA]
 RewriteRule ^de/?$ /index.php?lang=de [L,QSA]
 RewriteRule ^en/?$ /index.php?lang=en [L,QSA]
 
+# Redirection des URLs vers le fichier PHP correspondant
+RewriteRule ^(fr|en|de)/legal/?$ /pages/legal.php?lang=$1 [L,QSA]
+
+RewriteRule ^(fr|en|de)/lunarplay/?$ /pages/lunarplay.php?lang=$1 [L,QSA]
+
+RewriteRule ^(fr|en|de)/solaris/?$ /pages/solaris.php?lang=$1 [L,QSA]
 
 # Bloque l'accès aux fichiers .htaccess et .htpasswd
 <Files ".ht*">

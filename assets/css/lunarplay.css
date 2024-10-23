@@ -150,6 +150,17 @@ body {
   text-transform: uppercase;
 }
 
+.link {
+  color: var(--color-yellow);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.3s ease-in-out;
+}
+
+.link:hover {
+  color: var(--color-orange);
+}
+
 /* Pour les appareils dont la largeur est inférieure ou égale à 768px (tablettes et mobiles) */
 @media (max-width: 768px) {
   .footer {
