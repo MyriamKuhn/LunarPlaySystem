@@ -2,6 +2,11 @@
 require_once __DIR__ . '/lang/language.php';
 ?>
 
+<script>
+  const initialLanguage = '<?= $_SESSION['lang'] ?? 'en'; ?>';
+  sessionStorage.setItem('lang', initialLanguage); // Stocke la langue dans sessionStorage
+</script>
+
 <!DOCTYPE html>
 <html lang="<?= $lang ?>">
 <head>
@@ -33,22 +38,23 @@ require_once __DIR__ . '/lang/language.php';
   <div class="background"></div>
   <!-- START : Wrapper -->
   <div class="wrapper">
-  <div class="dropdown">
-        <button class="dropbtn" id="language-button">
-          <span class="" id="current-flag"></span>
-        </button>        
-        <div class="dropdown-content">
-          <a href="#" data-lang="fr">
-            <span class="flag flag-fr"></span> Français
-          </a>
-          <a href="#" data-lang="en">
-            <span class="flag flag-us"></span> English
-          </a>
-          <a href="#" data-lang="de">
-            <span class="flag flag-de"></span> Deutsch
-          </a>
-        </div>
+    <!-- Language dropdown -->
+    <div class="dropdown">
+      <button class="dropbtn" id="language-button">
+        <span class="" id="current-flag"></span>
+      </button>        
+      <div class="dropdown-content">
+        <a href="#" data-lang="fr">
+          <span class="flag flag-fr"></span> Français
+        </a>
+        <a href="#" data-lang="en">
+          <span class="flag flag-us"></span> English
+        </a>
+        <a href="#" data-lang="de">
+          <span class="flag flag-de"></span> Deutsch
+        </a>
       </div>
+    </div>
     <!-- START : Container -->
     <div class="container">
       <!-- START : Header -->

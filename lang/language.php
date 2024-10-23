@@ -31,6 +31,7 @@ if (isset($_GET['lang']) && in_array($_GET['lang'], $availableLanguages)) {
 } else {
 	// Utiliser la session, ou détecter la langue par défaut du navigateur (opérateur de fusion null ("null coalescing operator")
 	$lang = $_SESSION['lang'] ?? getBrowserLanguage($availableLanguages);
+	$_SESSION['lang'] = $lang;
 }
 
 // Charger les traductions correspondantes
