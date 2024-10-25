@@ -56,5 +56,5 @@ return [
   'legal_law_content' => "Les présentes mentions légales sont régies par la loi française. En cas de litige ou de différend, et à défaut de règlement à l'amiable, les tribunaux français seront seuls compétents.",
   'return_index' => 'Retour à l\'accueil',
   'loading' => 'Chargement...',
-  'play' => 'Jouer',
+  'travel' => 'Voyager',
 ];

@@ -48,8 +48,9 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
   <div id="planet-info" class="planet-info hidden">
     <h2 id="planet-name" class="title"></h2>
-    <p id="planet-story" class="description"></p>
-    <a href="" id="play-game-button" class="button"><?= Security::secureInput($translations['play']) ?></a>
+    <p id="planet-story-1" class="description-1"></p>
+    <p id="planet-story-2" class="description-2"></p>
+    <a href="" id="play-game-button" class="button"><?= Security::secureInput($translations['travel']) ?></a>
   </div>
 
   <div id="planet-name-hover" class="planet-hover"></div>
