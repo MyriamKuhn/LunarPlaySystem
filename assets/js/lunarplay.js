@@ -5,7 +5,7 @@
 /***********************/
 import * as THREE from '/../../modules/three.module.js';
 import { OrbitControls } from '/../../modules/OrbitControls.js';
-import { translations } from '/assets/js/translations.js';
+import { descriptions } from '/assets/js/translations.js';
 
 
 /***********************/
@@ -30,7 +30,7 @@ let mouse = new THREE.Vector2();
 let raycaster = new THREE.Raycaster();
 let isPaused = false;
 const storedLanguage = sessionStorage.getItem('lang') || initialLanguage;
-const planetStories = translations[storedLanguage];
+const planetStories = descriptions[storedLanguage];
 
 /*************************/
 

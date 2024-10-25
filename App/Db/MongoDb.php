@@ -1,8 +1,8 @@
 <?php
 
-namespace Db;
+namespace App\Db;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 use Exception as GlobalException;
@@ -18,7 +18,7 @@ class MongoDb
   // Constructor
   private function __construct()
   {
-    $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+    $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
     $dotenv->load();
     $this->uri = $_ENV['MONGODB_URI'];
   }

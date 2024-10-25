@@ -57,4 +57,9 @@ return [
   'return_index' => 'Retour à l\'accueil',
   'loading' => 'Chargement...',
   'travel' => 'Voyager',
+  'solaris_description' => 'Solaris est la planète centrale du système LunarPlay qui contient tous les classements des joueurs. Améliorez votre score et grimpez dans les classements intergalactiques.',
+  'solaris_keywords' => "Solaris, planète centrale, classement des joueurs, scores, jeu en ligne, arcade spatiale, LunarPlay System",
+  'solaris_title' => 'Solaris - Classements',
+  'solaris_nodatas' => 'Classement indisponible pour le moment',
+  'return_lunar' => 'Retour à LunarPlay',
 ];
