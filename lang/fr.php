@@ -62,4 +62,7 @@ return [
   'solaris_title' => 'Solaris - Classements',
   'solaris_nodatas' => 'Classement indisponible pour le moment',
   'return_lunar' => 'Retour à LunarPlay',
+  'ignisfera_description' => "Explorez Ignisfera, une planète brûlante aux paysages de lave et montagnes incandescentes. Dans ce monde hostile, défendez la planète contre des vagues d'ennemis dans Défense d’Ignisfera, inspiré de Space Invaders. Plongez dans un environnement dramatique où chaque tir compte face aux éruptions et rivières de magma pour une expérience de jeu intense et immersive.",
+  'ignisfera_keywords' => "Ignisfera, planète de feu, jeu Space Invaders, Défense d'Ignisfera, paysage de lave, monde brûlant, planète hostile, jeu de tir intense, environnement extraterrestre, montagnes de feu, vagues d'ennemis, défense de planète, expérience de jeu immersive, combat stratégique, monde inhospitalier, environnement dramatique, survie extrême",
+  'ignisfera_title' => 'Ignisfera - Défense d\'Ignisfera',
 ];
