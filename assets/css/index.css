@@ -23,6 +23,7 @@ body {
   font-family: "Exo 2", sans-serif;
   color: var(--color-text); 
   font-size: 1rem;
+  cursor: url('/assets/img/cur1054.cur'), default;
 }
 
 .background {
@@ -126,7 +127,7 @@ body {
   border: none;
   position: relative;
   text-transform: uppercase;
-  cursor: pointer;
+  cursor: url('/assets/img/cur1051.cur'), pointer;
   transition: background-color 0.3s ease-in-out;
   clip-path: polygon(75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%, 25% 0);
 }
@@ -190,6 +191,7 @@ body {
   color: var(--color-yellow);
   text-decoration: none;
   text-transform: uppercase;
+  cursor: url('/assets/img/cur1051.cur'), pointer;
   transition: color 0.3s ease-in-out;
 }
 
@@ -302,7 +304,7 @@ body {
   padding: 1rem;
   font-size: 1rem;
   border: none;
-  cursor: pointer;
+  cursor: url('/assets/img/cur1051.cur'), pointer;
 }
 
 .dropdown-content {
@@ -332,4 +334,5 @@ body {
 
 .dropdown-content a:hover {
   background-color: var(--color-red);
+  cursor: url('/assets/img/cur1051.cur'), pointer;
 }

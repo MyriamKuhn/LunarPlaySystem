@@ -57,5 +57,5 @@ return [
   'legal_law_content' => "Die vorliegenden rechtlichen Hinweise unterliegen dem französischen Recht. Im Falle eines Rechtsstreits oder einer Meinungsverschiedenheit und wenn keine gütliche Einigung erzielt werden kann, sind ausschließlich die französischen Gerichte zuständig.",
   'return_index' => 'Zurück zur Startseite',
   'loading' => 'Laden...',
-  'play' => 'Spielen',
+  'travel' => 'Reisen',
 ];

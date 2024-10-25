@@ -56,5 +56,5 @@ return [
   'legal_law_content' => "This legal notice is governed by French law. In the event of litigation or dispute, and failing amicable settlement, the French courts shall have sole jurisdiction.",
   'return_index' => 'Back to home',
   'loading' => 'Loading...',
-  'play' => 'Play',
+  'travel' => 'Travel',
 ];

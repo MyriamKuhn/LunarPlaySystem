@@ -299,7 +299,8 @@ const showPlanetInfo = (planetName) => {
   } else {
     // Mettre à jour les informations de la planète
     document.getElementById('planet-name').textContent = planetName;
-    document.getElementById('planet-story').textContent = planetStories[planetName] || 'Histoire non disponible.';
+    document.getElementById('planet-story-1').textContent = planetStories[planetName]['intro'] || 'Histoire non disponible.';
+    document.getElementById('planet-story-2').textContent = planetStories[planetName]['desc'] || 'Histoire non disponible.';
 
     playBtn.href = `/${storedLanguage}/${planetName}/`;
 
@@ -333,18 +334,24 @@ const getPlaneteSelected = () => {
 // Fonction pour afficher le nom de la planète survolée
 const showPlanetName = () => {
   let planetSelected;
+  let planetHovered = false;
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(scene.children);
 
   // Vérifier si la planète est survolée
   for (let i = 0; i < intersects.length; i++) {
     if (intersects[i].object.name?.length > 0) {
+      planetHovered = true;
+      document.body.style.cursor = 'url("/assets/img/cur1051.cur"), pointer';
       planetSelected = intersects[i].object.name;
       document.getElementById('planet-name-hover').textContent = planetSelected;
       return;
     }
   }
-  document.getElementById('planet-name-hover').textContent = '';
+  if (!planetHovered) {
+    document.getElementById('planet-name-hover').textContent = '';
+    document.body.style.cursor = 'url("/assets/img/cur1054.cur"), default';
+  }
 };
 
 // Fonction pour récupérer la position du clic de la souris

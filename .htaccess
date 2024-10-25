@@ -8,10 +8,18 @@ RewriteRule ^en/?$ /index.php?lang=en [L,QSA]
 
 # Redirection des URLs vers le fichier PHP correspondant
 RewriteRule ^(fr|en|de)/legal/?$ /pages/legal.php?lang=$1 [L,QSA]
-
 RewriteRule ^(fr|en|de)/lunarplay/?$ /pages/lunarplay.php?lang=$1 [L,QSA]
-
 RewriteRule ^(fr|en|de)/solaris/?$ /pages/solaris.php?lang=$1 [L,QSA]
+RewriteRule ^(fr|en|de)/aetheria/?$ /pages/aetheria.php?lang=$1 [L,QSA]
+RewriteRule ^(fr|en|de)/cryos/?$ /pages/cryos.php?lang=$1 [L,QSA]
+RewriteRule ^(fr|en|de)/aqualis/?$ /pages/aqualis.php?lang=$1 [L,QSA]
+RewriteRule ^(fr|en|de)/elythium/?$ /pages/elythium.php?lang=$1 [L,QSA]
+RewriteRule ^(fr|en|de)/goliathor/?$ /pages/goliathor.php?lang=$1 [L,QSA]
+RewriteRule ^(fr|en|de)/ignisfera/?$ /pages/ignisfera.php?lang=$1 [L,QSA]
+RewriteRule ^(fr|en|de)/lunara/?$ /pages/lunara.php?lang=$1 [L,QSA]
+RewriteRule ^(fr|en|de)/nereidia/?$ /pages/nereidia.php?lang=$1 [L,QSA]
+RewriteRule ^(fr|en|de)/rhodaria/?$ /pages/rhodaria.php?lang=$1 [L,QSA]
+RewriteRule ^(fr|en|de)/ringuara/?$ /pages/ringuara.php?lang=$1 [L,QSA]
 
 # Bloque l'accès aux fichiers .htaccess et .htpasswd
 <Files ".ht*">
