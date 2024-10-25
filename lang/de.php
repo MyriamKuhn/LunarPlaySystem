@@ -58,4 +58,9 @@ return [
   'return_index' => 'Zurück zur Startseite',
   'loading' => 'Laden...',
   'travel' => 'Reisen',
+  'solaris_description' => 'Solaris ist der zentrale Planet des LunarPlay-Systems, der alle Ranglisten der Spieler enthält. Verbessere deine Punktzahl und klettere in den intergalaktischen Ranglisten nach oben.',
+  'solaris_keywords' => "Solaris, Zentralplanet, Spielerwertung, Spielstände, Online-Spiel, Weltraum-Arcade, LunarPlay System",
+  'solaris_title' => 'Solaris - Ranglisten',
+  'solaris_nodatas' => 'Rangliste derzeit nicht verfügbar',
+  'return_lunar' => 'Zurück zu LunarPlay',
 ];

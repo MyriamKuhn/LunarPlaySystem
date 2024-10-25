@@ -109,7 +109,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
           <p><?= Security::secureInput($translations['legal_law_content']) ?></p>
         </section>
         <div class="btn-div">
-          <a href="/<?= $lang ?>" class="button" id="start-button"><?= $translations['return_index'] ?></a>
+          <a href="/<?= Security::secureInput($lang) ?>" class="button" id="start-button"><?= Security::secureInput($translations['return_index']) ?></a>
         </div>
       </main>
       <!-- END : Main -->
@@ -117,7 +117,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
     <!-- END : Container -->
     <!-- START : Footer -->
       <footer class="footer">
-        <p><?= $translations['footer'] ?> - <span class="active"><?= $translations['legal'] ?></span></p>
+        <p><?= Security::secureInput($translations['footer']) ?> - <span class="active"><?= Security::secureInput($translations['legal']) ?></span></p>
       </footer>
     <!-- END : Footer -->
   </div>

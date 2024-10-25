@@ -147,6 +147,7 @@ ul {
   border: none;
   position: relative;
   text-transform: uppercase;
+  text-align: center;
   cursor: url('/assets/img/cur1051.cur'), pointer;
   transition: background-color 0.3s ease-in-out;
   clip-path: polygon(75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%, 25% 0);

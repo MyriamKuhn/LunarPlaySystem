@@ -9,11 +9,6 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
 ?>
 
-<script>
-  const initialLanguage = '<?= Security::secureInput($_SESSION['lang'] ?? 'en') ?>';
-  sessionStorage.setItem('lang', initialLanguage); // Stocke la langue dans sessionStorage
-</script>
-
 <!DOCTYPE html>
 <html lang="<?= Security::secureInput($lang) ?>">
 <head>
@@ -56,7 +51,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
   <div id="planet-name-hover" class="planet-hover"></div>
 
   <footer class="footer">
-    <p><?= $translations['footer'] ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
+    <p><?= Security::secureInput($translations['footer']) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
   </footer>
 
   <script type="module" src="/assets/js/lunarplay.js"></script>

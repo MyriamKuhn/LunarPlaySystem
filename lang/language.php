@@ -8,6 +8,11 @@ Autoload::register();
 
 use Tools\Security;
 
+// Vérifier si un token CSRF est déjà présent dans la session
+if (empty($_SESSION['csrf_token'])) {
+	$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 // Vérifier si une langue a été choisie via GET
 if (isset($_GET['lang'])) {
   // S'assurer que la langue choisie est valide avant de l'assigner

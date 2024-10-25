@@ -57,4 +57,9 @@ return [
   'return_index' => 'Back to home',
   'loading' => 'Loading...',
   'travel' => 'Travel',
+  'solaris_description' => 'Solaris is the central planet of the LunarPlay system, containing all the player rankings. Improve your score and climb the intergalactic rankings.',
+  'solaris_keywords' => "Solaris, central planet, player ranking, scores, online game, space arcade, LunarPlay System",
+  'solaris_title' => 'Solaris - Rankings',
+  'solaris_nodatas' => 'Ranking unavailable at the moment',
+  'return_lunar' => 'Back to LunarPlay',
 ];
