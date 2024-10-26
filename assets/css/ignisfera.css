@@ -6,3 +6,7 @@
   translate: -50% -50%;
   background: url('/assets/img/ignisfera/background.png');
 }
+
+#beetlemorph, #player, #player_jets, #rhinomorph, #boss {
+  display: none;
+}

@@ -39,6 +39,11 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
 <body>
 	<canvas id="canvas1"></canvas>
+	<img src="/assets/img/ignisfera/beetlemorph.png" id="beetlemorph">
+	<img src="/assets/img/ignisfera/rhinomorph.png" id="rhinomorph">
+	<img src="/assets/img/ignisfera/boss.png" id="boss">
+	<img src="/assets/img/ignisfera/player.png" id="player">
+	<img src="/assets/img/ignisfera/player_jets.png" id="player_jets">
 				
 				
 
