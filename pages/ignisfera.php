@@ -1,8 +1,70 @@
-Pour une planète qui jouerait le rôle de Mercure dans ton système solaire imaginaire — c'est-à-dire la planète la plus proche du "soleil" (Solaris Prime) et probablement un monde chaud et hostile — voici une suggestion de nom :
+<?php
 
-Ignisfera
+require_once __DIR__ . '/../lang/language.php';
 
-    Rôle : La planète la plus proche de Solaris Prime, constamment exposée à une chaleur intense.
-    Caractéristiques : Un monde brûlant avec des paysages désertiques, des montagnes de feu, et des mers de lave. Ses jours pourraient être longs et ardents, et sa surface, pleine de défis extrêmes, serait idéale pour des jeux ou des épreuves d'endurance.
+use Tools\Security;
 
-Le nom Ignisfera est dérivé du latin "ignis" (feu) et "fera" (porteur), ce qui reflète parfaitement une planète brûlante et inhospitalière, tout en s'inspirant du rôle que joue Mercure dans notre système solaire.
+$requestScheme = Security::secureInput($_SERVER['REQUEST_SCHEME']);
+$serverName = Security::secureInput($_SERVER['SERVER_NAME']);
+
+?>
+
+<!DOCTYPE html>
+<html lang="<?= Security::secureInput($lang) ?>">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- CSRF Token -->
+	<meta name="csrf-token" content="<?= $_SESSION['csrf_token']; ?>">
+	<!-- Meta pour les langues -->
+	<link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/fr/ignisfera/' ?>" hreflang="fr" />
+	<link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/en/ignisfera/' ?>" hreflang="en" />
+	<link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/de/ignisfera/' ?>" hreflang="de" />
+	<link rel="canonical" href="<?= $requestScheme . '://' . $serverName . '/' . Security::secureInput($lang) . '/ignisfera/' ?>" />
+	<link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/en/ignisfera/' ?>" hreflang="x-default" />
+	<!-- Meta pour le SEO -->
+	<meta name="author" content="LunarPlay System">
+	<meta name="description" content="<?= Security::secureInput($translations['ignisfera_description']) ?>" />
+	<meta property="og:title" content="<?= Security::secureInput($translations['ignisfera_title']) ?>">
+	<meta property="og:description" content="<?= Security::secureInput($translations['ignisfera_description']) ?>">
+	<meta property="og:image" content="/assets/logo/logo_big.svg">
+	<meta name="keywords" content="<?= Security::secureInput($translations['ignisfera_keywords']) ?>" />
+	<title><?= Security::secureInput($translations['ignisfera_title']) ?></title>
+	<link rel="shortcut icon" href="/assets/logo/logo_small.svg" type="image/svg+xml">
+	<!-- Stylesheet -->
+	<link rel="stylesheet" href="/assets/css/ignisfera.css" />
+</head>
+
+<body>
+	<canvas id="canvas1"></canvas>
+	<img src="/assets/img/ignisfera/beetlemorph.png" id="beetlemorph">
+	<img src="/assets/img/ignisfera/rhinomorph.png" id="rhinomorph">
+	<img src="/assets/img/ignisfera/squidmorph.png" id="squidmorph">
+	<img src="/assets/img/ignisfera/eaglemorph.png" id="eaglemorph">
+	<img src="/assets/img/ignisfera/lobstermorph.png" id="lobstermorph">
+	<img src="/assets/img/ignisfera/enemyProjectile.png" id="enemyProjectile">
+	<img src="/assets/img/ignisfera/boss.png" id="boss">
+	<img src="/assets/img/ignisfera/boss8.png" id="boss8">
+	<img src="/assets/img/ignisfera/player.png" id="player">
+	<img src="/assets/img/ignisfera/player_jets.png" id="player_jets">
+				
+				
+
+				<div class="btn-div">
+					<a href="/<?= Security::secureInput($lang) ?>/lunarplay/" class="button" id="start-button"><?= Security::secureInput($translations['return_lunar']) ?></a>
+				</div>
+			
+		
+		<!-- START : Footer -->
+		<footer class="footer">
+			<p><?= Security::secureInput($translations['footer']) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
+		</footer>
+		<!-- END : Footer -->
+
+	<!-- Scripts -->
+	<script type="module" src="/assets/js/ignisfera.js"></script>
+</body>
+
+</html>

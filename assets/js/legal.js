@@ -1,4 +1,14 @@
+/***********/
+
+/* IMPORTS */
+
+/***********/
 import { Background } from '/assets/js/Background.js';
 
-// Initialiser l'arrière-plan animé
+
+/************************************/
+
+/* INITIALISATION DE L'ARRIERE PLAN */
+
+/************************************/
 const background = new Background();

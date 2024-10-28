@@ -1,0 +1,12 @@
+#canvas1 {
+  border: 5px solid #000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  background: url('/assets/img/ignisfera/background.png');
+}
+
+#beetlemorph, #player, #player_jets, #rhinomorph, #boss, #enemyProjectile, #eaglemorph, #squidmorph, #boss8, #lobstermorph {
+  display: none;
+}

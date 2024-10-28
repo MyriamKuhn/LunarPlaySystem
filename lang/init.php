@@ -1,5 +1,6 @@
 <?php
 
+// Affichage des erreurs
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -17,6 +18,7 @@ session_set_cookie_params([
 
 // Démarrage de la session
 session_start();
+// Génération du token CSRF
 if (empty($_SESSION['csrf_token'])) {
 	$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
@@ -49,6 +51,13 @@ if (file_exists($langFile)) {
   $translations = require_once __DIR__ . "/en.php";
 }
 
+/**
+ * Used to get the browser language
+ *
+ * @param array $availableLanguages
+ * @param string $default
+ * @return string
+ */
 function getBrowserLanguage($availableLanguages, $default = 'en') {
 	if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 		// Extrait la première langue préférée de l'utilisateur

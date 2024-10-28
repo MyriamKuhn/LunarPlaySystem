@@ -1,11 +1,26 @@
+/***********/
+
+/* IMPORTS */
+
+/***********/
 import { Background } from '/assets/js/Background.js';
 import { validateJSONStructure } from '/assets/js/utils.js';
 import { descriptions } from '/assets/js/translations.js';
 
-// Initialiser l'arrière-plan animé
+
+/************************************/
+
+/* INITIALISATION DE L'ARRIERE PLAN */
+
+/************************************/
 const background = new Background();
 
-// Au chargement du document
+
+/******************************/
+
+/* AU CHARGEMENT DU DOCUMENT */
+
+/*****************************/
 document.addEventListener("DOMContentLoaded", function() {
   const links = document.querySelectorAll('.planet');
   const lang = sessionStorage.getItem('lang') || initialLanguage;
