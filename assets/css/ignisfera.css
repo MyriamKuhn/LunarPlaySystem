@@ -7,6 +7,6 @@
   background: url('/assets/img/ignisfera/background.png');
 }
 
-#beetlemorph, #player, #player_jets, #rhinomorph, #boss, #enemyProjectile, #eaglemorph {
+#beetlemorph, #player, #player_jets, #rhinomorph, #boss, #enemyProjectile, #eaglemorph, #squidmorph, #boss8, #lobstermorph {
   display: none;
 }

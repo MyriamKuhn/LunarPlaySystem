@@ -495,7 +495,7 @@ class Rhinomorph extends Enemy {
    * @method hit Override de la méthode hit pour gérer les dégâts infligés à l'ennemi
    * 
    * @description
-   * Constructeur de la classe BeetleMorph
+   * Constructeur de la classe 
    */
   constructor(game, positionX, positionY) {
     super(game, positionX, positionY);  // On appelle le constructeur de la classe mère
@@ -522,6 +522,98 @@ class Rhinomorph extends Enemy {
 
 /*********************/
 
+/* ENNEMI SQUIDMORPH */
+
+/*********************/
+class Squidmorph extends Enemy {
+  /**
+   * @param {Game} game Définition du jeu
+   * @param {number} positionX Position horizontale de l'ennemi
+   * @param {number} positionY Position verticale de l'ennemi
+   * 
+   * @property {image} image Image de l'ennemi récupérée dans le HTML
+   * @property {number} frameX Position horizontale de l'image dans le sprite
+   * @property {number} maxFrame Nombre maximum de frames pour l'animation
+   * @property {number} frameY Position verticale de l'image dans le sprite définie aléatoirement pour chaque ennemi (4 ennemis différents)
+   * @property {number} lives Nombre de vies de l'ennemi
+   * @property {number} maxLives Nombre maximum de vies possibles de l'ennemi
+   * 
+   * @method hit Override de la méthode hit pour gérer les dégâts infligés à l'ennemi
+   * 
+   * @description
+   * Constructeur de la classe 
+   */
+  constructor(game, positionX, positionY) {
+    super(game, positionX, positionY);  // On appelle le constructeur de la classe mère
+    this.image = document.getElementById('squidmorph');  
+    this.frameX = 0;
+    this.maxFrame = 16;
+    this.frameY = Math.floor(Math.random() * 4); 
+    this.lives = 9;
+    this.maxLives = this.lives;
+  }
+
+  /**
+   * @param {number} damage Dégâts infligés à l'ennemi
+   * 
+   * @description Override de la méthode hit pour gérer les dégâts infligés à l'ennemi
+   * On diminue les vies de l'ennemi
+   * On incrémente la position horizontale de l'image
+   */
+  hit(damage) {
+    this.lives -= damage;
+    if (this.lives >= 1) this.frameX = this.maxLives - Math.floor(this.lives);  
+  }
+}
+
+/***********************/
+
+/* ENNEMI LOBSTERMORPH */
+
+/***********************/
+class Lobstermorph extends Enemy {
+  /**
+   * @param {Game} game Définition du jeu
+   * @param {number} positionX Position horizontale de l'ennemi
+   * @param {number} positionY Position verticale de l'ennemi
+   * 
+   * @property {image} image Image de l'ennemi récupérée dans le HTML
+   * @property {number} frameX Position horizontale de l'image dans le sprite
+   * @property {number} maxFrame Nombre maximum de frames pour l'animation
+   * @property {number} frameY Position verticale de l'image dans le sprite définie aléatoirement pour chaque ennemi (4 ennemis différents)
+   * @property {number} lives Nombre de vies de l'ennemi
+   * @property {number} maxLives Nombre maximum de vies possibles de l'ennemi
+   * 
+   * @method hit Override de la méthode hit pour gérer les dégâts infligés à l'ennemi
+   * 
+   * @description
+   * Constructeur de la classe 
+   */
+  constructor(game, positionX, positionY) {
+    super(game, positionX, positionY);  // On appelle le constructeur de la classe mère
+    this.image = document.getElementById('lobstermorph');  
+    this.frameX = 0;
+    this.maxFrame = 13;
+    this.frameY = Math.floor(Math.random() * 4); 
+    this.lives = 6;
+    this.maxLives = this.lives;
+  }
+
+  /**
+   * @param {number} damage Dégâts infligés à l'ennemi
+   * 
+   * @description Override de la méthode hit pour gérer les dégâts infligés à l'ennemi
+   * On diminue les vies de l'ennemi
+   * On incrémente la position horizontale de l'image
+   */
+  hit(damage) {
+    this.lives -= damage;
+    if (this.lives >= 1) this.frameX = this.maxLives - Math.floor(this.lives);  
+  }
+}
+
+/*********************/
+
 /* ENNEMI EAGLEMORPH */
 
 /*********************/
@@ -543,7 +635,7 @@ class Eaglemorph extends Enemy {
    * @method shoot Méthode pour tirer un projectile
    * 
    * @description
-   * Constructeur de la classe BeetleMorph
+   * Constructeur de la classe 
    */
   constructor(game, positionX, positionY) {
     super(game, positionX, positionY);  // On appelle le constructeur de la classe mère
@@ -756,9 +848,9 @@ class Boss {
     this.lives = bossLives;
     this.maxLives = this.lives;
     this.markedForDeletion = false;
-    this.image = document.getElementById('boss');
+    this.image = document.getElementById('boss8');
     this.frameX = 1;
-    this.frameY = Math.floor(Math.random() * 4);
+    this.frameY = Math.floor(Math.random() * 8);
     this.maxFrame = 11;
   }
 
@@ -906,11 +998,16 @@ class Wave {
       for (let x = 0; x < this.game.columns; x++) {
         let enemyX = x * this.game.enemySize;
         let enemyY = y * this.game.enemySize;
-        // On crée un ennemi aléatoire : 80% de chance d'avoir un Rhinomorph
-        if (Math.random() < 0.3) {
-          this.enemies.push(new Eaglemorph(this.game, enemyX, enemyY));
-        } else if (Math.random() < 0.6) {  
+        // On crée un ennemi aléatoire
+        let randomNumber = Math.random();
+        if (randomNumber < 0.25) {
+          this.enemies.push(new Squidmorph(this.game, enemyX, enemyY));
+        } else if (randomNumber < 0.4) {  
           this.enemies.push(new Rhinomorph(this.game, enemyX, enemyY));
+        } else if (randomNumber < 0.6) {  
+          this.enemies.push(new Eaglemorph(this.game, enemyX, enemyY));
+        } else if (randomNumber < 0.8) {  
+          this.enemies.push(new Lobstermorph(this.game, enemyX, enemyY));
         } else {
           this.enemies.push(new BeetleMorph(this.game, enemyX, enemyY));
         }
