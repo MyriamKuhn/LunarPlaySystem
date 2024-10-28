@@ -1,10 +1,10 @@
 #canvas1 {
-  border: 5px solid #000;
+  border: 3px solid #000;
   position: absolute;
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  background: url('/assets/img/ignisfera/background.png');
+  background: url('/assets/img/aetheria/background.png');
 }
 
 .hidden {

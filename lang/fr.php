@@ -62,7 +62,10 @@ return [
   'solaris_title' => 'Solaris - Classements',
   'solaris_nodatas' => 'Classement indisponible pour le moment',
   'return_lunar' => 'Retour à LunarPlay',
-  'ignisfera_description' => "Explorez Ignisfera, une planète brûlante aux paysages de lave et montagnes incandescentes. Dans ce monde hostile, défendez la planète contre des vagues d'ennemis dans Défense d’Ignisfera, inspiré de Space Invaders. Plongez dans un environnement dramatique où chaque tir compte face aux éruptions et rivières de magma pour une expérience de jeu intense et immersive.",
+  'ignisfera_description' => "Explorez Ignisfera, une planète brûlante aux paysages de lave et montagnes incandescentes. Dans ce monde hostile, défendez la planète contre des vagues d'ennemis dans Défense d'Ignisfera, inspiré de Space Invaders. Plongez dans un environnement dramatique où chaque tir compte face aux éruptions et rivières de magma pour une expérience de jeu intense et immersive.",
   'ignisfera_keywords' => "Ignisfera, planète de feu, jeu Space Invaders, Défense d'Ignisfera, paysage de lave, monde brûlant, planète hostile, jeu de tir intense, environnement extraterrestre, montagnes de feu, vagues d'ennemis, défense de planète, expérience de jeu immersive, combat stratégique, monde inhospitalier, environnement dramatique, survie extrême",
   'ignisfera_title' => 'Ignisfera - Défense d\'Ignisfera',
+  'aetheria_description' => "Explorez les terres volcaniques et instables d'Aetheria dans Mission Aetheria. Naviguez à travers des paysages uniques, esquivez les poches de gaz toxiques et survivez aux dangers imprévisibles de cette planète mystique du système LunarPlay. Une aventure pour les plus courageux, où stratégie et anticipation sont la clé de la survie.",
+  'aetheria_keywords' => "Aetheria, Mission Aetheria, LunarPlay, jeu d'exploration, planète mystique, paysage volcanique, gaz toxique, aventure spatiale, survie extrême, jeu de stratégie, dangers planétaires, jeu de science-fiction",
+  'aetheria_title' => 'Aetheria - Mission Aetheria',
 ];

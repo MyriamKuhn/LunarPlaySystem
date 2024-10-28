@@ -39,29 +39,24 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
 <body>
 	<canvas id="canvas1"></canvas>
-	<img src="/assets/img/ignisfera/beetlemorph.png" id="beetlemorph">
-	<img src="/assets/img/ignisfera/rhinomorph.png" id="rhinomorph">
-	<img src="/assets/img/ignisfera/squidmorph.png" id="squidmorph">
-	<img src="/assets/img/ignisfera/eaglemorph.png" id="eaglemorph">
-	<img src="/assets/img/ignisfera/lobstermorph.png" id="lobstermorph">
-	<img src="/assets/img/ignisfera/enemyProjectile.png" id="enemyProjectile">
-	<img src="/assets/img/ignisfera/boss.png" id="boss">
-	<img src="/assets/img/ignisfera/boss8.png" id="boss8">
-	<img src="/assets/img/ignisfera/player.png" id="player">
-	<img src="/assets/img/ignisfera/player_jets.png" id="player_jets">
-				
-				
+	<div class="hidden">
+		<img src="/assets/img/aetheria/planet.png" id="planet">
+		<img src="/assets/img/aetheria/player.png" id="player">
+	</div>
 
-				<div class="btn-div">
-					<a href="/<?= Security::secureInput($lang) ?>/lunarplay/" class="button" id="start-button"><?= Security::secureInput($translations['return_lunar']) ?></a>
-				</div>
-			
-		
-		<!-- START : Footer -->
-		<footer class="footer">
-			<p><?= Security::secureInput($translations['footer']) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
-		</footer>
-		<!-- END : Footer -->
+
+
+
+	<div class="btn-div">
+		<a href="/<?= Security::secureInput($lang) ?>/lunarplay/" class="button" id="start-button"><?= Security::secureInput($translations['return_lunar']) ?></a>
+	</div>
+
+
+	<!-- START : Footer -->
+	<footer class="footer">
+		<p><?= Security::secureInput($translations['footer']) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
+	</footer>
+	<!-- END : Footer -->
 
 	<!-- Scripts -->
 	<script type="module" src="/assets/js/aetheria.js"></script>
