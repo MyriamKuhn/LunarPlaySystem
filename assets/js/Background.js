@@ -1,9 +1,21 @@
 export class Background {
-
+  /**
+   * @property {HTMLElement} background - Élément HTML pour le fond d'écran
+   * @property {Array} colors - Palette de couleurs pour les étoiles
+   * @property {Number} maxStars - Nombre maximum d'étoiles actives
+   * 
+   * @method createStar - Fonction pour générer une étoile aléatoire et retourner l'élément HTML
+   * @method removeStar - Fonction pour faire disparaître une étoile après un délai prends l'étoile en paramètre
+   * @method regenerateStars - Fonction pour régénérer les étoiles
+   * @method init - Fonction pour initialiser les étoiles
+   * 
+   * @description
+   * Constructeur de la classe Background
+   * Initialiser les propriétés de la classe
+   * et appeler les fonctions pour initialiser les étoiles
+   */
   constructor() {
     this.background = document.querySelector('.background');
-
-    // Palette de couleurs pour les étoiles
     this.colors = [
       '#ffffff', 
       '#ffcc00', 
@@ -12,15 +24,10 @@ export class Background {
       '#ff66cc', 
       '#cc99ff', 
     ];
-
-    // Nombre maximum d'étoiles actives
     this.maxStars = 20;
-
-    // Appeler la fonction pour initialiser les étoiles
     this.init();
   }
 
-  // Fonction pour générer une étoile
   createStar() {
     const star = document.createElement('div');
     star.className = 'star';
@@ -49,7 +56,6 @@ export class Background {
     return star; 
   }
 
-  // Fonction pour faire disparaître une étoile
   removeStar(star) {
     star.style.opacity = 0; 
     setTimeout(() => {
@@ -57,7 +63,6 @@ export class Background {
     }, 1500); // Délai pour permettre à l'animation de disparition de se produire
   }
 
-  // Fonction pour régénérer les étoiles
   regenerateStars() {
     // Vérifier s'il y a des étoiles actives
     const stars = document.querySelectorAll('.star');
@@ -72,7 +77,6 @@ export class Background {
     this.createStar(); 
   }
 
-  // Fonction pour initialiser les étoiles
   init() {
     // Appeler la fonction pour générer les étoiles initialement
     for (let i = 0; i < this.maxStars; i++) {

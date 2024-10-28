@@ -16,6 +16,9 @@ class GeneralRepository
   protected $collection;
   protected $database;
 
+  /**
+   * Constructor of the GeneralRepository class
+   */
   public function __construct()
   {
     $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
@@ -26,7 +29,12 @@ class GeneralRepository
     $this->database = $this->client->selectDatabase($_ENV['MONGODB_DATABASE']);
   }
 
-  // Fonction pour obtenir les classements des planètes
+  /**
+   * Used to get the ranking of a planet
+   *
+   * @param string $planet
+   * @return array
+   */
   public function getRanking(string $planet): array
   {
     // Sélectionner le nom de la collection en fonction de la planète

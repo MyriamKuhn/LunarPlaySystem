@@ -133,7 +133,12 @@ const init = () => {
 /* PLANÈTES ET ANIMATION */
 
 /*************************/
-// Fonction pour générer une position aléatoire autour de Solaris
+/**
+ * @param {number} position 
+ * @returns {Object} x, z
+ * 
+ * @description Génère une position aléatoire autour de Solaris
+ */
 const randPosition = (position) => {
   let randAngle = Math.random() * Math.PI * 2;
   let positionX = Math.cos(randAngle) * position;
@@ -142,7 +147,17 @@ const randPosition = (position) => {
   return { x: positionX, z: positionY };
 };
 
-// Fonction pour créer une planète
+/**
+ * @param {number} size 
+ * @param {string} namePlanet 
+ * @param {string} texture 
+ * @param {number} position 
+ * @param {boolean} ring 
+ * @param {boolean} isSolaris 
+ * @returns {Object} mesh, obj, ringMesh
+ * 
+ * @description Crée une planète avec ou sans anneau
+ */
 const createPlanete = (size, namePlanet, texture, position, ring = false, isSolaris = false) => {
   let mat = {};
   let ringMesh = {};
@@ -191,7 +206,9 @@ const createPlanete = (size, namePlanet, texture, position, ring = false, isSola
   return { mesh, obj, ringMesh };
 };
 
-// Initialisation des planètes
+/**
+ * @description Initialisation de la scène 3D
+ */
 const initScene = () => {
   solaris = createPlanete(16, 'solaris', '/../assets/img/solaris.jpg', 0, false, true);
   ignisfera = createPlanete(2.6, 'ignisfera', '/../assets/img/ignisfera.jpg', 28);
@@ -240,6 +257,9 @@ initScene();
 /* ANIMATION DE LA SCÈNE */
 
 /*************************/
+/**
+ * @description Fonction pour animer la scène 3D et les planètes si la pause n'est pas activée
+  */
 function animate() {
   if (!isPaused) {
     // Rotation des planètes sur elles-mêmes
@@ -285,7 +305,11 @@ renderer.setAnimationLoop(animate)
 /* INTERACTIONS 3D */
 
 /*******************/
-// Fonction pour afficher les infos de la planète
+/**
+ * @param {string} planetName
+ * 
+ * @description Fonction pour afficher les infos de la planète
+ */
 const showPlanetInfo = (planetName) => {
   const infoBox = document.getElementById('planet-info');
   const playBtn = document.getElementById('play-game-button');
@@ -310,7 +334,9 @@ const showPlanetInfo = (planetName) => {
   }
 };
 
-// Fonction pour récupérer la planète sélectionnée
+/**
+ * @description Fonction pour récupérer la planète sélectionnée
+ */
 const getPlaneteSelected = () => {
   let planetSelected; 
   raycaster.setFromCamera(mouse, camera);
@@ -331,7 +357,9 @@ const getPlaneteSelected = () => {
   }
 };
 
-// Fonction pour afficher le nom de la planète survolée
+/**
+ * @description Fonction pour afficher le nom de la planète survolée
+ */
 const showPlanetName = () => {
   let planetSelected;
   let planetHovered = false;
@@ -354,7 +382,9 @@ const showPlanetName = () => {
   }
 };
 
-// Fonction pour récupérer la position du clic de la souris
+/**
+ * @description Fonction pour récupérer la position du clic de la souris
+ */
 const onPointerClick = (e) => {
   mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -364,7 +394,9 @@ const onPointerClick = (e) => {
 // Écouter les clics de la souris
 window.addEventListener('click', onPointerClick, false);
 
-// Fonction pour gérer le survol de la souris
+/**
+ * @description Fonction pour récupérer la position du mouvement de la souris
+ */
 const onPointerMove = (e) => {
   mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -374,7 +406,9 @@ const onPointerMove = (e) => {
 // Écouter les mouvements de la souris
 window.addEventListener('mousemove', onPointerMove, false);
 
-// Fonction pour gérer le redimensionnement de la fenêtre
+/**
+ * @description Fonction pour gérer le redimensionnement de la fenêtre
+ */
 const handleResize = () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
   camera.aspect = window.innerWidth / window.innerHeight;

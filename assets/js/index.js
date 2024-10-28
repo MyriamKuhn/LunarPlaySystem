@@ -1,9 +1,24 @@
+/***********/
+
+/* IMPORTS */
+
+/***********/
 import { Background } from '/assets/js/Background.js';
 
-// Initialiser l'arrière-plan animé
+
+/************************************/
+
+/* INITIALISATION DE L'ARRIERE PLAN */
+
+/************************************/
 const background = new Background();
 
-// Au chargement de la page pour la langue
+
+/************************************/
+
+/* LANGUES AU CHARGEMENT DE LA PAGE */
+
+/************************************/
 document.addEventListener("DOMContentLoaded", function() {
   // Fonction pour obtenir la langue actuelle à partir de l'URL
   function getCurrentLanguage() {
@@ -11,7 +26,9 @@ document.addEventListener("DOMContentLoaded", function() {
     return storedLanguage;
   }
 
-  // Mettre à jour le bouton avec le drapeau de la langue actuelle
+  /**
+   * @description Mettre à jour le bouton de langue en fonction de la langue actuelle
+   */
   function updateLanguageButton() {
     const currentLang = getCurrentLanguage();
     const dropdownButton = document.getElementById("language-button");
