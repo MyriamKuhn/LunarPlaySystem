@@ -42,6 +42,10 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<div class="hidden">
 		<img src="/assets/img/aetheria/planet.png" id="planet">
 		<img src="/assets/img/aetheria/player.png" id="player">
+		<img src="/assets/img/aetheria/asteroid.png" id="asteroid">
+		<img src="/assets/img/aetheria/lobstermorph.png" id="lobstermorph">
+		<img src="/assets/img/aetheria/beetlemorph.png" id="beetlemorph">
+		<img src="/assets/img/aetheria/rhinomorph.png" id="rhinomorph">
 	</div>
 
 
