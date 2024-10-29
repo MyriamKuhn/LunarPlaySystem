@@ -63,4 +63,10 @@ return [
   'solaris_title' => 'Solaris - Ranglisten',
   'solaris_nodatas' => 'Rangliste derzeit nicht verfügbar',
   'return_lunar' => 'Zurück zu LunarPlay',
+  'ignisfera_description' => "Erforsche Ignisfera, einen heißen Planeten mit Lavalandschaften und glühenden Bergen. Verteidige den Planeten in dieser feindseligen Welt gegen Wellen von Feinden in Ignisfera-Wächter. Tauche ein in eine dramatische Umgebung, in der angesichts von Eruptionen und Magmaflüssen jeder Schuss zählt, und erlebe ein intensives und immersives Spielerlebnis.",
+  'ignisfera_keywords' => "Ignisfera, Feuerplanet, Space Invaders-Spiel, Ignisfera-Wächter, Lavalandschaft, heiße Welt, lebensfeindlicher Planet, intensiver Shooter, außerirdische Umgebung, Feuerberge, Wellen von Feinden, Planetenverteidigung, immersive Spielerfahrung, strategischer Kampf, unwirtliche Welt, dramatische Umgebung, extremes Überleben",
+  'ignisfera_title' => "Ignisfera - Ignisfera-Wächter",
+  'elythium_description' => "Tauche ein in die zauberhafte Welt von Elythium, einem Planeten mit schwebenden Wäldern und biolumineszierender Flora, der von Invasoren aus dem All bedroht wird. In Verteidiger von Elythium schlüpfst du in die Rolle eines Raumschiffs, das diese paradiesische Welt umkreist, und wehrst Feinde aus allen Richtungen ab, um diesen magischen Planeten zu schützen. Mach dich auf eine intensive Herausforderung gefasst, bei der jede Bewegung zählt, um die Schönheit von Elythium zu bewahren!",
+  'elythium_keywords' => "Verteidiger von Elythium, Verteidigungsspiel, Planet Elythium, Space Shuttle, Invasoren, biolumineszierender Planet, schwebende Wälder, magisches Universum, Weltraumschießspiel, Planetenschutz, interstellares Abenteuer, außerirdische Biodiversität, Science-Fiction-Spiel",
+  'elythium_title' => "Elythium - Verteidiger von Elythium",
 ];

@@ -62,4 +62,10 @@ return [
   'solaris_title' => 'Solaris - Rankings',
   'solaris_nodatas' => 'Ranking unavailable at the moment',
   'return_lunar' => 'Back to LunarPlay',
+  'ignisfera_description' => "Explore Ignisfera, a scorching planet of lava landscapes and glowing mountains. In this hostile world, defend the planet against waves of enemies in Guardian of Ignisfera. Immerse yourself in a dramatic environment where every shot counts in the face of eruptions and rivers of magma for an intense, immersive gaming experience.",
+  'ignisfera_keywords' => "Ignisfera, planet of fire, Space Invaders game, Guardian of Ignisfera, lava landscape, burning world, hostile planet, intense shooter, alien environment, mountains of fire, waves of enemies, planet defense, immersive game experience, strategic combat, inhospitable world, dramatic environment, extreme survival",
+  'ignisfera_title' => "Ignisfera - Guardian of Ignisfera",
+  'elythium_description' => "Immerse yourself in the enchanting world of Elythium, a planet of floating forests and bioluminescent flora, threatened by invaders from outer space. In Defender of Elythium, take on the role of a space shuttle orbiting this heavenly world and repel enemies from all sides to protect this magical planet. Prepare for an intense challenge where every move counts to preserve the beauty of Elythium!",
+  'elythium_keywords' => "Defender of Elythium, defense game, planet Elythium, space shuttle, invaders, bioluminescent planet, floating forests, magical universe, space shooter, planet protection, interstellar adventure, extraterrestrial biodiversity, science fiction game",
+  'elythium_title' => "Elythium - Defender of Elythium",
 ];

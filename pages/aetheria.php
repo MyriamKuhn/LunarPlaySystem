@@ -33,19 +33,22 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<meta name="keywords" content="<?= Security::secureInput($translations['aetheria_keywords']) ?>" />
 	<title><?= Security::secureInput($translations['aetheria_title']) ?></title>
 	<link rel="shortcut icon" href="/assets/logo/logo_small.svg" type="image/svg+xml">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
 	<!-- Stylesheet -->
 	<link rel="stylesheet" href="/assets/css/aetheria.css" />
 </head>
 
 <body>
 	<canvas id="canvas1"></canvas>
+  <div class="controls">
+    <button id="fullScreenButton">F</button>
+    <button id="resetButton">R</button>
+  </div>
 	<div class="hidden">
-		<img src="/assets/img/aetheria/planet.png" id="planet">
-		<img src="/assets/img/aetheria/player.png" id="player">
-		<img src="/assets/img/aetheria/asteroid.png" id="asteroid">
-		<img src="/assets/img/aetheria/lobstermorph.png" id="lobstermorph">
-		<img src="/assets/img/aetheria/beetlemorph.png" id="beetlemorph">
-		<img src="/assets/img/aetheria/rhinomorph.png" id="rhinomorph">
+		
 	</div>
 
 
@@ -63,7 +66,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<!-- END : Footer -->
 
 	<!-- Scripts -->
-	<script type="module" src="/assets/js/aetheria.js"></script>
+	<script type="module" src="/assets/js/aetheria/main.js"></script>
 </body>
 
 </html>
