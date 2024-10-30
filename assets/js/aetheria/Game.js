@@ -3,7 +3,8 @@
 /* IMPORTS */
 
 /***********/
-import { Enemy } from '/assets/js/aetheria/Enemy.js';
+import { Beetlemorph, Lobstermorph, Phantommorph } from '/assets/js/aetheria/Enemy.js';
+import { AudioControl } from '/assets/js/aetheria/AudioControl.js'; 
 
 
 /*****************/
@@ -20,7 +21,7 @@ export class Game {
    * @property {CanvasRenderingContext2D} ctx - Le contexte 2D du canvas
    * @property {number} width - La largeur du canvas
    * @property {number} height - La hauteur du canvas
-   * @property {Array<Enemy>} enemyPool - Le pool d'ennemis
+   * @property {Array} enemyPool - Le pool d'ennemis
    * @property {number} numberOfEnemies - Le nombre d'ennemis
    * @property {number} enemyTimer - Le timer pour les ennemis
    * @property {number} enemyInterval - L'intervalle entre chaque ennemi
@@ -30,16 +31,27 @@ export class Game {
    * @property {string} message1 - Le premier message
    * @property {string} message2 - Le deuxième message
    * @property {string} message3 - Le troisième message
+   * @property {HTMLImageElement} crewImage - L'image du joueur
+   * @property {Array} crewMember - Les membres de l'équipage
    * @property {boolean} gameOver - Le jeu est-il terminé ?
+   * @property {boolean} debug - Le mode debug est-il activé ?
+   * @property {number} spriteTimer - Le timer pour les sprites
+   * @property {number} spriteInterval - L'intervalle entre chaque sprite
+   * @property {boolean} spriteUpdate - Le sprite a-t-il été mis à jour ?
+   * @property {AudioControl} sound - Le contrôleur des sons
    * @property {Object} mouse - Les coordonnées de la souris
    * 
    * @method start - Initialise le jeu
+   * @method generateCrew - Génère l'équipage
    * @method resize - Redimensionne le canvas
    * @method toggleFullScreen - Active ou désactive le mode plein écran
    * @method checkCollision - Vérifie s'il y a une collision entre deux objets
    * @method createEnemyPool - Crée un pool d'ennemis
    * @method getEnemy - Récupère un ennemi libre
    * @method handleEnemies - Gère les ennemis du jeu
+   * @method triggerGameOver - Déclenche la fin du jeu
+   * @method handleSpriteTimer - Gère le timer des sprites
+   * @method drawStatusText - Dessine le texte du jeu
    * @method render - Dessine le jeu, appelé à chaque frame du jeu
    * 
    * @description Constructeur de la classe Game
@@ -61,11 +73,20 @@ export class Game {
 
     this.score = 0;
     this.lives;
-    this.winningScore = 3;
+    this.winningScore = 20;
     this.message1 = 'Run!';
     this.message2 = 'Or get eaten!';
     this.message3 = 'Press "ENTER" or "R" to start!';
+    this.crewImage = document.getElementById('crewSprite');
+    this.crewMembers = [];
     this.gameOver = true;
+    this.debug = false;
+
+    this.spriteTimer = 0;
+    this.spriteInterval = 120;
+    this.spriteUpdate = false;
+
+    this.sound = new AudioControl();
 
     this.mouse = {
       x: undefined,
@@ -84,6 +105,10 @@ export class Game {
     this.fullScreenButton = document.getElementById('fullScreenButton');
     this.fullScreenButton.addEventListener('click', e => {
       this.toggleFullScreen();
+    });
+    this.backButton = document.getElementById('backButton');
+    this.backButton.addEventListener('click', e => {
+      window.location.href = '/index.php';
     });
 
     window.addEventListener('resize', e => {
@@ -121,13 +146,16 @@ export class Game {
         this.start();
       } else if (e.key === ' ' || e.key.toLowerCase() === 'f') {
         this.toggleFullScreen();
+      } else if (e.key.toLowerCase() === 'd') {
+        this.debug = !this.debug;
       }
     });
   }
 
   start() {
     this.score = 0;
-    this.lives = 10;
+    this.lives = 15;
+    this.generateCrew();
     this.gameOver = false;
     this.enemyPool.forEach(enemy => {
       enemy.reset();
@@ -135,6 +163,17 @@ export class Game {
     for (let i = 0; i < 2; i++) {
       const enemy = this.getEnemy();
       if (enemy) enemy.start();
+    }
+    this.sound.newgame.play();
+  }
+
+  generateCrew() {
+    this.crewMembers = [];
+    for (let i = 0; i < this.lives; i++) {
+      this.crewMembers.push({
+        frameX: Math.floor(Math.random() * 5),
+        frameY: Math.floor(Math.random() * 5),
+      });
     }
   }
 
@@ -179,7 +218,7 @@ export class Game {
 
   createEnemyPool() {
     for (let i = 0; i < this.numberOfEnemies; i++) {
-      this.enemyPool.push(new Enemy(this));
+      this.enemyPool.push(new Phantommorph(this));
     }
   }
 
@@ -210,10 +249,27 @@ export class Game {
       if (this.lives < 1) {
         this.message1 = 'Aargh!';
         this.message2 = 'The crew was eaten!';
+        this.sound.play(this.sound.lose);
       } else if (this.score >= this.winningScore) {
         this.message1 ='Well done!';
         this.message2 = 'You escaped the swarm!';
+        this.sound.play(this.sound.win);
       }
+    }
+  }
+
+  /**
+   * @param {number} deltaTime - Le temps écoulé depuis le dernier frame
+   * 
+   * @description Gère le timer des sprites
+   */
+  handleSpriteTimer(deltaTime) {
+    if (this.spriteTimer < this.spriteInterval) {
+      this.spriteTimer += deltaTime;
+      this.spriteUpdate = false;
+    } else {
+      this.spriteTimer = 0;
+      this.spriteUpdate = true;
     }
   }
 
@@ -222,7 +278,9 @@ export class Game {
     this.ctx.textAlign = 'left';
     this.ctx.fillText('Score: ' + this.score, 20, 40);
     for (let i = 0; i < this.lives; i++) {
-      this.ctx.fillText('❤️', 15 + i * 35, 80);
+      const w = 20;
+      const h = 45;
+      this.ctx.drawImage(this.crewImage, w * this.crewMembers[i].frameX, h * this.crewMembers[i].frameY, w, h, 20 + i * 16, 60, w, h);
     }
     if (this.lives < 1 || this.score >= this.winningScore) {
       this.triggerGameOver();
@@ -244,10 +302,14 @@ export class Game {
    * @description Dessine le jeu, appelé à chaque frame du jeu
    */
   render(deltaTime) {
+    this.handleSpriteTimer(deltaTime);
     this.drawStatusText();
     if (!this.gameOver) this.handleEnemies(deltaTime);
+    // Pour garantir que l'ennemi du dessus soit dessiné en dernier et donc est touché en premier)
+    for (let i = this.enemyPool.length - 1; i >= 0; i--) {
+      this.enemyPool[i].update(deltaTime);
+    }
     this.enemyPool.forEach(enemy => {
-      enemy.update();
       enemy.draw();
     });
   }

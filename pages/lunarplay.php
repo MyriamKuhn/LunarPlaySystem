@@ -51,7 +51,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
   <div id="planet-name-hover" class="planet-hover"></div>
 
   <footer class="footer">
-    <p><?= Security::secureInput($translations['footer']) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
+    <p><?= html_entity_decode(Security::secureInput($translations['footer'])) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
   </footer>
 
   <script type="module" src="/assets/js/lunarplay.js"></script>

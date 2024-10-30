@@ -42,6 +42,10 @@
   text-shadow: 4px 4px 4px black;
 }
 
+.assets {
+  display: none;
+}
+
 @media screen and (max-width: 900px) {
   #canvas1 {
     background: url('/assets/img/aetheria/background1080x1920.png');

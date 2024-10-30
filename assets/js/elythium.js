@@ -646,7 +646,8 @@ class Game {
     context.font = '30px Impact';
     context.fillText('Score: ' + this.score, 20, 30);
     for (let i = 0; i < this.lives; i++) {
-      context.fillRect(20 + i * 15, 60, 10, 30);
+      context.fillText('❤️', 20 + i * 30, 60);
+      //context.fillRect(20 + i * 15, 60, 10, 30);
     }
     if (this.gameOver) {
       context.textAlign = 'center';

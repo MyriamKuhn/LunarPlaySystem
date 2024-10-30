@@ -33,6 +33,10 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<meta name="keywords" content="<?= Security::secureInput($translations['ignisfera_keywords']) ?>" />
 	<title><?= Security::secureInput($translations['ignisfera_title']) ?></title>
 	<link rel="shortcut icon" href="/assets/logo/logo_small.svg" type="image/svg+xml">
+	<!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
 	<!-- Stylesheet -->
 	<link rel="stylesheet" href="/assets/css/ignisfera.css" />
 </head>
@@ -61,7 +65,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 		
 		<!-- START : Footer -->
 		<footer class="footer">
-			<p><?= Security::secureInput($translations['footer']) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
+			<p><?= html_entity_decode(Security::secureInput($translations['footer'])) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
 		</footer>
 		<!-- END : Footer -->
 

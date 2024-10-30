@@ -43,13 +43,30 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
 <body>
 	<canvas id="canvas1"></canvas>
+
   <div class="controls">
     <button id="fullScreenButton">F</button>
     <button id="resetButton">R</button>
+    <button id="backButton">B</button>
   </div>
-	<div class="hidden">
-		
-	</div>
+
+  <div class="assets">
+    <img src="/assets/img/aetheria/crew.png" id="crew">
+		<img src="/assets/img/aetheria/crewSprite.png" id="crewSprite">
+    <img src="/assets/img/aetheria/beetlemorph100x100.png" id="beetlemorph">
+		<img src="/assets/img/aetheria/lobstermorph100x100.png" id="lobstermorph">
+		<img src="/assets/img/aetheria/phantommorph100x100.png" id="phantommorph">
+
+		<audio src="/assets/audio/aetheria/newgame.mp3" id="newgame"></audio>
+		<audio src="/assets/audio/aetheria/boom1.mp3" id="boom1"></audio>
+		<audio src="/assets/audio/aetheria/boom2.mp3" id="boom2"></audio>
+		<audio src="/assets/audio/aetheria/boom3.mp3" id="boom3"></audio>
+		<audio src="/assets/audio/aetheria/boom4.mp3" id="boom4"></audio>
+		<audio src="/assets/audio/aetheria/slide.mp3" id="slide"></audio>
+		<audio src="/assets/audio/aetheria/lose.mp3" id="lose"></audio>
+		<audio src="/assets/audio/aetheria/scream.mp3" id="scream"></audio>
+		<audio src="/assets/audio/aetheria/win.mp3" id="win"></audio>
+  </div>
 
 
 
@@ -61,7 +78,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
 	<!-- START : Footer -->
 	<footer class="footer">
-		<p><?= Security::secureInput($translations['footer']) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
+		<p><?= html_entity_decode(Security::secureInput($translations['footer'])) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
 	</footer>
 	<!-- END : Footer -->
 

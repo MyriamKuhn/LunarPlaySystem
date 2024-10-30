@@ -58,7 +58,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
 	<!-- START : Footer -->
 	<footer class="footer">
-		<p><?= Security::secureInput($translations['footer']) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
+		<p><?= html_entity_decode(Security::secureInput($translations['footer'])) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
 	</footer>
 	<!-- END : Footer -->
 
