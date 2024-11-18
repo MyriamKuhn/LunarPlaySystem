@@ -9,11 +9,6 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
 ?>
 
-<script>
-  const initialLanguage = '<?= Security::secureInput($_SESSION['lang'] ?? 'en') ?>';
-  sessionStorage.setItem('lang', initialLanguage); // Stocke la langue dans sessionStorage
-</script>
-
 <!DOCTYPE html>
 <html lang="<?= Security::secureInput($lang) ?>">
 <head>
@@ -39,6 +34,8 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
   <link rel="stylesheet" href="/assets/css/index.css" />
   <link rel="stylesheet" href="/assets/css/flags.css" />
 </head>
+
+<div data-lang="<?= Security::secureInput($_SESSION['lang'] ?? 'en') ?>"></div>
 
 <body>
   <!-- Background -->
@@ -82,7 +79,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
           <p><?= Security::secureInput($translations['main_description_6']) ?></p>
         </div>
         <div>
-          <a href="/<?= Security::secureInput($lang) ?>/lunarplay/" class="button" id="start-button"><?= Security::secureInput($translations['start_button']) ?></a>
+          <a href="/<?= (empty($_SESSION['playername'])) ? Security::secureInput($lang) . '/player/' : Security::secureInput($lang) . '/lunarplay/' ?>" class="button" id="start-button"><?= Security::secureInput($translations['start_button']) ?></a>
         </div>
         <div class="info">
           <h2 class="info-title"><?= Security::secureInput($translations['info_title']) ?></h2>

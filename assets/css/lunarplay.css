@@ -110,6 +110,10 @@ body {
   clip-path: polygon(75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%, 25% 0);
 }
 
+.button.hidden {
+  display: none;
+}
+
 .button:hover {
   background-color: var(--color-orange);
   transform: scale(1.1);

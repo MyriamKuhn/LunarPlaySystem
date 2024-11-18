@@ -8,6 +8,7 @@ RewriteRule ^en/?$ /index.php?lang=en [L,QSA]
 
 # Redirection des URLs vers le fichier PHP correspondant
 RewriteRule ^(fr|en|de)/legal/?$ /pages/legal.php?lang=$1 [L,QSA]
+RewriteRule ^(fr|en|de)/player/?$ /pages/player.php?lang=$1 [L,QSA]
 RewriteRule ^(fr|en|de)/lunarplay/?$ /pages/lunarplay.php?lang=$1 [L,QSA]
 RewriteRule ^(fr|en|de)/solaris/?$ /pages/solaris.php?lang=$1 [L,QSA]
 RewriteRule ^(fr|en|de)/aetheria/?$ /pages/aetheria.php?lang=$1 [L,QSA]

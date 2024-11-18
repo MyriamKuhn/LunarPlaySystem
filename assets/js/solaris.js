@@ -4,7 +4,7 @@
 
 /***********/
 import { Background } from '/assets/js/Background.js';
-import { validateJSONStructure } from '/assets/js/utils.js';
+import { validateJSONStructure, secureInput } from '/assets/js/utils.js';
 import { descriptions } from '/assets/js/translations.js';
 
 
@@ -16,6 +16,15 @@ import { descriptions } from '/assets/js/translations.js';
 const background = new Background();
 
 
+/**********************/
+
+/* VARIABLES GLOBALES */
+
+/**********************/
+const lang = sessionStorage.getItem('lang') || document.querySelector('div[data-lang]').getAttribute('data-lang');
+const planetTitles = descriptions[lang];
+
+
 /******************************/
 
 /* AU CHARGEMENT DU DOCUMENT */
@@ -23,47 +32,6 @@ const background = new Background();
 /*****************************/
 document.addEventListener("DOMContentLoaded", function() {
   const links = document.querySelectorAll('.planet');
-  const lang = sessionStorage.getItem('lang') || initialLanguage;
-  const planetTitles = descriptions[lang];
-  // Fonction pour afficher les données de la planète
-  const showPlanetData = (planet) => {
-    // Afficher le titre de la planète
-    document.getElementById('planet-title').textContent = planetTitles[planet]['game'];
-    // Afficher le sous-titre de la planète
-    document.getElementById('planet-intro').textContent = planetTitles[planet]['desc'];
-
-    // Appeler le script PHP pour obtenir les données
-    fetch('/App/get_ranking.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-      },
-      body: JSON.stringify({ planet: planet })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (!validateJSONStructure(data)) {
-        console.error('Format inattendu des données');
-        return;
-      }
-      if (data.success === false) {
-        if (data.datas === "Aucun classement trouvé pour cette planète.") {
-          console.log('Aucun classement trouvé pour cette planète.');
-          document.getElementById('loading').classList.add('hidden');
-          const noDatas = document.getElementById('no-datas');
-          noDatas.classList.remove('hidden');
-          return;
-        } else {
-          console.error('Erreur lors de la récupération des données');
-          return;
-        }
-      } else {
-        displayRankingTable(data.datas, planet);
-      }
-    })
-    .catch(error => console.error('Erreur lors de la récupération des données:', error));
-  };
 
   links.forEach(link => {
     // Fonction pour gérer l'ajout de la classe active
@@ -76,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
       // Ajouter la classe active au lien cliqué
       link.classList.add('active');
 
+      // Récupérer la planète à afficher
       const planet = link.getAttribute('data-planet');
       showPlanetData(planet);
     };
@@ -91,46 +60,121 @@ document.addEventListener("DOMContentLoaded", function() {
   document.querySelector(`.planet[data-planet="${defaultPlanet}"]`).click(); 
 });
 
-function displayRankingTable(data, planet) {
-  const rankingsDiv = document.getElementById('planet-rankings');
-  rankingsDiv.innerHTML = ''; // Vider les anciens tableaux
-
-  // Créer le tableau
-  const table = document.createElement('table');
-  table.className = 'display'; // Classe pour DataTables
-
-  // Créer l'en-tête
-  const thead = document.createElement('thead');
-  const headerRow = document.createElement('tr');
-  data.columns.forEach(column => {
-      const th = document.createElement('th');
-      th.textContent = column; // Ajouter le titre de la colonne
-      headerRow.appendChild(th);
-  });
-  thead.appendChild(headerRow);
-  table.appendChild(thead);
-
-  // Créer le corps
-  const tbody = document.createElement('tbody');
-  data.rows.forEach(row => {
-      const tr = document.createElement('tr');
-      data.columns.forEach(column => {
-          const td = document.createElement('td');
-          td.textContent = row[column]; // Remplir les données
-          tr.appendChild(td);
-      });
-      tbody.appendChild(tr);
-  });
-  table.appendChild(tbody);
-  
-  rankingsDiv.appendChild(table);
-
-  // Initialiser DataTables
-  $(table).DataTable();
-
-  // Afficher le tableau
-  document.getElementById('loading').classList.add('hidden');
+/**
+ * Fonction pour afficher les données de la planète
+ * 
+ * @param {string} planet - Le nom de la planète
+ * @returns {void}
+ * @async
+ * @sideEffects
+ * @throws {Error} - Erreur lors de la récupération des données
+ * @throws {Error} - Format inattendu des données
+ * @throws {Error} - Aucun classement trouvé
+ */
+const showPlanetData = (planet) => {
+  document.getElementById('loading').classList.remove('hidden');
   document.getElementById('no-datas').classList.add('hidden');
-  document.getElementById('ranking-table').classList.remove('hidden');
+  document.getElementById('ranking-table').classList.add('hidden');
+  if ($.fn.dataTable.isDataTable('#ranking-table')) {
+    $('#ranking-table').DataTable().clear().destroy();
+  }
+  // Afficher le titre de la planète
+  document.getElementById('planet-title').textContent = planetTitles[planet]['game'];
+  // Afficher le sous-titre de la planète
+  document.getElementById('planet-intro').textContent = planetTitles[planet]['desc'];
 
+  // Appeler le script PHP pour obtenir les données
+  fetch('/App/get_ranking.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    },
+    body: JSON.stringify({ planet: planet })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (!validateJSONStructure(data)) {
+      console.error('Format inattendu des données');
+      return;
+    }
+    if (data.success === false) {
+      if (data.datas === "Aucun classement trouvé pour cette planète.") {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('no-datas').classList.remove('hidden');
+        document.getElementById('ranking-table').classList.add('hidden');
+        return;
+      } else {
+        console.error('Erreur lors de la récupération des données');
+        return;
+      }
+    } else {
+      displayRankingTable(data.datas);
+    }
+  })
+  .catch(error => console.error('Erreur lors de la récupération des données:', error));
+};
+
+/**
+ * Fonction pour afficher les données de la planète dans un tableau DataTable
+ * 
+ * @param {string} data - Les données du classement
+ * @returns {void}
+ */
+// Fonction pour afficher le tableau de classement
+function displayRankingTable(data) {
+  // Initialiser DataTables avec les données récupérées
+  const table = $('#ranking-table').DataTable({
+    data: data,  // Les données récupérées
+    columns: [
+      { 
+        data: "place", // Clé "place" dans les données
+        title: "Rang", // Titre de la colonne
+        render: function(data, type, row) {
+          return parseInt(data, 10);  // Conversion du rang en entier
+        }
+      },
+      { 
+        data: "playername", // Clé "playername" dans les données
+        title: "Pseudo", // Titre de la colonne
+        render: function(data, type, row) {
+          return secureInput(data).trim();  // Traitement du nom du joueur pour sécurité
+        }
+      },
+      { 
+        data: "score", // Clé "score" dans les données
+        title: "Score", // Titre de la colonne
+        render: function(data, type, row) {
+          return parseInt(data, 10);  // Conversion du score en entier
+        }
+      }
+    ],
+    "responsive": true,
+    "buttons": [],
+    "paging": true,
+    "pagingType": "simple_numbers",
+    "pageLength": 10,
+    "lengthMenu": [5, 10, 25, 50],
+    "ordering": true,
+    "order": [[0, 'asc']],
+    "searching": true,
+    "language": {
+      "paginate": {
+        "next":       ">>",
+        "previous":   "<<"
+      },
+      "lengthMenu": planetTitles['info']['pagination'],
+      "zeroRecords": planetTitles['info']['zeroRecords'],
+      "info": "",
+      "infoEmpty": "",
+      "infoFiltered": "",
+      "sSearch": planetTitles['info']['search'],
+    },
+    initComplete: function () {
+      document.getElementById('loading').classList.add('hidden');
+      document.getElementById('no-datas').classList.add('hidden');
+      document.getElementById('ranking-table').classList.remove('hidden');
+    }
+  });
+  
 }

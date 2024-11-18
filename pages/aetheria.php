@@ -7,6 +7,11 @@ use Tools\Security;
 $requestScheme = Security::secureInput($_SERVER['REQUEST_SCHEME']);
 $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
+if (!isset($_SESSION['playername'])) {
+  header('Location: /' . $lang . '/player/');
+  exit();
+}
+
 ?>
 
 <!DOCTYPE html>

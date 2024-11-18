@@ -19,10 +19,12 @@ const background = new Background();
 /* LANGUES AU CHARGEMENT DE LA PAGE */
 
 /************************************/
+const currentLanguage = document.querySelector('div[data-lang]').getAttribute('data-lang');
+
 document.addEventListener("DOMContentLoaded", function() {
   // Fonction pour obtenir la langue actuelle à partir de l'URL
   function getCurrentLanguage() {
-    const storedLanguage = sessionStorage.getItem('lang') || initialLanguage;
+    const storedLanguage = currentLanguage;
     return storedLanguage;
   }
 
@@ -31,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
    */
   function updateLanguageButton() {
     const currentLang = getCurrentLanguage();
+    sessionStorage.setItem('lang', currentLang);
     const dropdownButton = document.getElementById("language-button");
     // Nettoyer le contenu du bouton avant d'ajouter le nouveau
     dropdownButton.innerHTML = '';

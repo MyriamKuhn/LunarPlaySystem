@@ -58,6 +58,15 @@ export const descriptions = {
       desc: "C'est vous le meilleur joueur de LunarPlay ? Découvrez votre classement et celui des autres joueurs pour tous les jeux.",
       game: "LunarPlay",
     },
+    welcome: {
+      intro: "Bienvenue dans le système LunarPlay,",
+      desc: "Choisissez une planète pour commencer votre voyage ou explorez le système LunarPlay pour voir comment vous vous classez parmi les autres joueurs. Que les étoiles vous guident dans votre quête !",
+    },
+    info: {
+      pagination: "Afficher _MENU_ entrées par page",
+      zeroRecords: "Aucun enregistrement trouvé",
+      search: "Rechercher :",
+    },
   },
   en: {
     solaris: {
@@ -118,6 +127,15 @@ export const descriptions = {
       desc: "Are you LunarPlay's best player? Find out how you and other players rank in all games.",
       game: "LunarPlay",
     },
+    welcome: {
+      intro: "Welcome to the LunarPlay system,",
+      desc: "Choose a planet to begin your journey, or explore the LunarPlay system to see how you stack up against other players. May the stars guide you on your quest!",
+    },
+    info: {
+      pagination: "Display _MENU_ entries per page",
+      zeroRecords: "No records found",
+      search: "Search:",
+    },
   },
   de: {
     solaris: {
@@ -177,6 +195,15 @@ export const descriptions = {
     lunarplay: {
       desc: "Du bist der beste Spieler von LunarPlay? Sieh dir an, wie du und die anderen Spieler bei allen Spielen abschneiden.",
       game: "LunarPlay",
+    },
+    welcome: {
+      intro: "Willkommen im LunarPlay-System,",
+      desc: "Wähle einen Planeten, um deine Reise zu beginnen, oder erkunde das LunarPlay-System, um zu sehen, wie du im Vergleich zu anderen Spielern abschneidest. Mögen die Sterne dich auf deiner Suche leiten!",
+    },
+    info: {
+      pagination: "Zeige _MENU_ Einträge pro Seite an",
+      zeroRecords: "Keine Datensätze gefunden",
+      search: "Suche nach:",
     },
   },
 };

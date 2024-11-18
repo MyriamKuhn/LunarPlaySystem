@@ -5,6 +5,7 @@
 /***********/
 import { Beetlemorph, Lobstermorph, Phantommorph } from '/assets/js/aetheria/Enemy.js';
 import { AudioControl } from '/assets/js/aetheria/AudioControl.js'; 
+import { secureInput, securePlayername } from '/assets/js/utils.js';
 
 
 /*****************/
@@ -108,7 +109,7 @@ export class Game {
     });
     this.backButton = document.getElementById('backButton');
     this.backButton.addEventListener('click', e => {
-      window.location.href = '/index.php';
+      window.location.href = '/' + secureInput(sessionStorage.getItem('lang')) + '/lunarplay/';
     });
 
     window.addEventListener('resize', e => {
@@ -146,6 +147,8 @@ export class Game {
         this.start();
       } else if (e.key === ' ' || e.key.toLowerCase() === 'f') {
         this.toggleFullScreen();
+      } else if (e.key.toLowerCase() === 'b') {
+        window.location.href = '/' + secureInput(sessionStorage.getItem('lang')) + '/lunarplay/';
       } else if (e.key.toLowerCase() === 'd') {
         this.debug = !this.debug;
       }
@@ -247,14 +250,48 @@ export class Game {
     if (!this.gameOver) {
       this.gameOver = true;
       if (this.lives < 1) {
+        // Récupérer le nom du joueur depuis la session
+        const playerName = securePlayername(sessionStorage.getItem('playername')); 
+        const planet = 'aetheria';
+        const score = parseInt(this.score, 10); 
+
+        // Vérifier si le nom du joueur est disponible
+        if (playerName) {
+          
+          // Préparer les données à envoyer
+          const data = {
+            planet: planet,
+            playername: playerName,
+            score: score
+          };
+
+          if (!data.planet || !data.playername || !data.score) {
+            console.error('Données manquantes ou invalides:', data);
+            return;
+          }
+
+          // Envoyer la requête fetch pour ajouter le score
+          fetch('/App/add_score.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify(data)
+          })
+          .then(response => response.json())
+          .catch(error => {
+            console.error('Erreur:', error);
+          });
+        }
         this.message1 = 'Aargh!';
         this.message2 = 'The crew was eaten!';
         this.sound.play(this.sound.lose);
-      } else if (this.score >= this.winningScore) {
-        this.message1 ='Well done!';
-        this.message2 = 'You escaped the swarm!';
-        this.sound.play(this.sound.win);
-      }
+      } //else if (this.score >= this.winningScore) {
+        //  this.message1 ='Well done!';
+        //  this.message2 = 'You escaped the swarm!';
+        //  this.sound.play(this.sound.win);
+        //}
     }
   }
 
@@ -282,9 +319,10 @@ export class Game {
       const h = 45;
       this.ctx.drawImage(this.crewImage, w * this.crewMembers[i].frameX, h * this.crewMembers[i].frameY, w, h, 20 + i * 16, 60, w, h);
     }
-    if (this.lives < 1 || this.score >= this.winningScore) {
+    if (this.lives < 1) {
       this.triggerGameOver();
-    }
+    } //else if (this.score >= this.winningScore)) {
+
     if (this.gameOver) {
       this.ctx.textAlign = 'center';
       this.ctx.font = '80px Bangers';

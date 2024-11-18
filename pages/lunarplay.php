@@ -7,6 +7,22 @@ use Tools\Security;
 $requestScheme = Security::secureInput($_SERVER['REQUEST_SCHEME']);
 $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+      // Si le token CSRF ne correspond pas, bloquer l'action
+      die('Token CSRF invalide.');
+  }
+  // Vérifier si le nom du joueur est envoyé via POST
+  if (isset($_POST['playername'])) {
+    $_SESSION['playername'] = Security::secureInput($_POST['playername']);
+  }
+}
+
+if (!isset($_SESSION['playername'])) {
+  header('Location: /' . $lang . '/player/');
+  exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -33,10 +49,13 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
   <!-- Stylesheet -->
   <link rel="stylesheet" href="/assets/css/lunarplay.css" /> 
 </head>
+
+<div data-lang="<?= Security::secureInput($_SESSION['lang'] ?? 'en') ?>"></div>
+
 <body>
 
   <div class="container-progress-bar">
-    <label for="progress-bar"><?= Security::secureInput($translations['loading']) ?></label>
+    <label for="progress-bar"><?= Security::secureInput($translations['loading']) . ' ' . $_SESSION['playername'] ?></label>
     <progress id="progress-bar" value="0" max="100"></progress>
     <p id="progress-bar-value"></p>
   </div>
@@ -46,6 +65,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
     <p id="planet-story-1" class="description-1"></p>
     <p id="planet-story-2" class="description-2"></p>
     <a href="" id="play-game-button" class="button"><?= Security::secureInput($translations['travel']) ?></a>
+    <div id="access-game-button" class="button"><?= Security::secureInput($translations['access']) ?></div>
   </div>
 
   <div id="planet-name-hover" class="planet-hover"></div>

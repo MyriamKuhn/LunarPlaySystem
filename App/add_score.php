@@ -41,17 +41,20 @@ try {
     exit;
   }
   $planet = Security::secureInput($data['planet']);
+  $playername = Security::secureInput($data['playername']);
+  $score = Security::secureInput($data['score']);
 
-  // Obtenir les classements
-  $rankings = $generalRepository->getRanking($planet);
-
-  if (empty($rankings)) {
-    Security::sendResponse(false, 'Aucun classement trouvé pour cette planète.', 404);
+  // Ajouter le score
+  if ($generalRepository->addScore($planet, $playername, $score)) {
+    Security::sendResponse(true, 'Score ajouté avec succès.', 200);
   } else {
-    Security::sendResponse(true, $rankings, 200);
+    Security::sendResponse(false, 'Le score n\'a pas été mis à jour.', 400);
   }
+
 } catch (Throwable $t) {
+  error_log('Erreur serveur : ' . $t->getMessage());
   Security::sendResponse(false, $t->getMessage(), 500);
 } catch (Exception $e) {
+  error_log('Exception attrapée : ' . $e->getMessage());
   Security::sendResponse(false, $e->getMessage(), 500);
 }

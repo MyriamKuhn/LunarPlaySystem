@@ -5,10 +5,11 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 ini_set('error_log', $_SERVER['DOCUMENT_ROOT'] . '/error.log');
+ini_set('session.cookie_lifetime', 0);
 
 // Sécurisation du cookie de session avec httpOnly
 session_set_cookie_params([
-	'lifetime' => 3600,
+	'lifetime' => 0,
 	'path' => '/',
 	'domain' => $_SERVER['SERVER_NAME'],
 	//'secure' => true,
