@@ -51,3 +51,29 @@ export function secureInput(text) {
   };
   return text.replace(/[<>"'&]/g, (m) => map[m]);
 }
+
+
+/*******************************/
+
+// ENVOI SCORES AVEC FETCH API //
+
+/******************************/
+/**
+ * Envoi des scores au serveur
+ * @param {object} data
+ * @returns {Promise}
+ */
+export function sendScore(data) {
+  return fetch('/App/add_score.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .catch(error => {
+    console.error('Erreur:', error);
+  });
+};

@@ -29,7 +29,7 @@ let solaris,
 let mouse = new THREE.Vector2();
 let raycaster = new THREE.Raycaster();
 let isPaused = false;
-const storedLanguage = sessionStorage.getItem('lang') || document.querySelector('div[data-lang]').getAttribute('data-lang');
+const storedLanguage = sessionStorage.getItem('lang') || document.querySelector('meta[name="language"]').getAttribute('content');
 const planetStories = descriptions[storedLanguage];
 
 /*************************/

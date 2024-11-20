@@ -86,7 +86,7 @@ class GeneralRepository
 				// Si le nouveau score est inférieur ou égal à l'ancien, ne rien faire
 				if ($score <= $existingEntry['score']) {
 					$this->updateGlobalRanking($playerName, $score);
-					return false; // Le score n'a pas été mis à jour
+					return true; // Le score n'a pas été mis à jour
 				}
 
 				// Si le nouveau score est meilleur, supprimer l'ancien classement

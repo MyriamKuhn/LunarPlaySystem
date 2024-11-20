@@ -29,7 +29,9 @@ class Enemy {
    * @property {number} minFrame - La première frame de l'animation de l'ennemi
    * @property {number} maxFrame - La dernière frame de l'animation de l'ennemi
    * @property {number} lives - Le nombre de vies de l'ennemi
+   * @property {number} maxlives - Le nombre de vies maximum de l'ennemi
    * @property {boolean} free - L'ennemi est-il libre ?
+   * @property {sound} sound - Le son de l'ennemi lorsqu'il est touché
    * 
    * @method start - Initialise l'ennemi
    * @method reset - Remet l'ennemi dans le pool
@@ -57,7 +59,9 @@ class Enemy {
     this.minFrame;
     this.maxFrame;
     this.lives;
+    this.maxlives;
     this.free = true;
+    this.sound;
   }
 
   start() {
@@ -78,6 +82,7 @@ class Enemy {
 
   hit() {
     if (this.game.checkCollision(this, this.game.mouse) && this.game.mouse.pressed && !this.game.mouse.fired) {
+      if (this.sound) this.game.sound.play(this.sound);
       this.lives--;
       this.game.mouse.fired = true;
     }
@@ -107,7 +112,7 @@ class Enemy {
           this.frameX++;
           if (this.frameX > this.lastFrame) {
             this.reset();
-            if (!this.game.gameOver) this.game.score++;
+            if (!this.game.gameOver) this.game.score += this.maxlives;
           }
         }
       }
@@ -131,7 +136,7 @@ class Enemy {
 /* BEETLEMORPH */
 
 /***************/
-export class Beetlemorph extends Enemy {
+export class BeetlemorphOne extends Enemy {
   /**
    * @param {Game} game - Le jeu dans lequel l'ennemi est créé
    * 
@@ -149,15 +154,61 @@ export class Beetlemorph extends Enemy {
 
   start() {
     super.start();
-    this.speedX = 0;
-    this.speedY = Math.random() * 2 + 0.2;
+    this.speedX = Math.random() * 2 - 1;
+    this.speedY = Math.random() * 0.5 + 0.2;
     this.lives = 1;
+    this.maxlives = 1;
     this.lastFrame = 3;
+    this.sound = this.game.sound.boom1;
+    this.frameY = 0;
   }
 
   update() {
     super.update();
     if (!this.free) {
+      if (this.x <= 0 || this.x >= this.game.width - this.width) {
+        this.speedX *= -1;
+      }
+      if (this.isAlive()) {
+        this.hit();
+      }
+    }
+  }
+}
+
+export class BeetlemorphTwo extends Enemy {
+  /**
+   * @param {Game} game - Le jeu dans lequel l'ennemi est créé
+   * 
+   * @property {HTMLImageElement} image - L'image de l'ennemi
+   * 
+   * @method start - Initialise l'ennemi
+   * @method update - Met à jour les propriétés de l'ennemi
+   * 
+   * @description Constructeur de la classe Beetlemorph
+   */
+  constructor(game) {
+    super(game);
+    this.image = document.getElementById('beetlemorph');
+  }
+
+  start() {
+    super.start();
+    this.speedX = Math.random() * 2 - 1;
+    this.speedY = Math.random() * 0.5 + 0.5;
+    this.lives = 1;
+    this.maxlives = 1;
+    this.lastFrame = 3;
+    this.sound = this.game.sound.boom1;
+    this.frameY = 1;
+  }
+
+  update() {
+    super.update();
+    if (!this.free) {
+      if (this.x <= 0 || this.x >= this.game.width - this.width) {
+        this.speedX *= -1;
+      }
       if (this.isAlive()) {
         this.hit();
       }
@@ -195,6 +246,7 @@ export class Lobstermorph extends Enemy {
     this.speedX = 0;
     this.speedY = Math.random() * 0.5 + 0.2;
     this.lives = 3;
+    this.maxlives = 3;
   }
 
   update() {
@@ -259,6 +311,7 @@ export class Phantommorph extends Enemy {
     this.speedX = Math.random() * 2 - 1;
     this.speedY = Math.random() * 0.5 + 0.2;
     this.lives = 1;
+    this.maxlives = 1;
     this.minFrame = 3;
     this.maxFrame = 5;
     this.setState(Math.floor(Math.random() * 2));

@@ -22,6 +22,7 @@ if (!isset($_SESSION['playername'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- CSRF Token -->
   <meta name="csrf-token" content="<?= $_SESSION['csrf_token']; ?>">
+  <meta name="language" content="<?= Security::secureInput($_SESSION['lang'] ?? 'en') ?>">
   <!-- Meta pour les langues -->
   <link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/fr/solaris/' ?>" hreflang="fr" />
   <link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/en/solaris/' ?>" hreflang="en" />

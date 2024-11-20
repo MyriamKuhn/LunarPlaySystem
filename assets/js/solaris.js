@@ -21,7 +21,7 @@ const background = new Background();
 /* VARIABLES GLOBALES */
 
 /**********************/
-const lang = sessionStorage.getItem('lang') || document.querySelector('div[data-lang]').getAttribute('data-lang');
+const lang = sessionStorage.getItem('lang') || document.querySelector('meta[name="language"]').getAttribute('content');
 const planetTitles = descriptions[lang];
 
 
@@ -128,24 +128,24 @@ function displayRankingTable(data) {
     data: data,  // Les données récupérées
     columns: [
       { 
-        data: "place", // Clé "place" dans les données
-        title: "Rang", // Titre de la colonne
+        data: "place", 
+        title: planetTitles['info']['rank'], 
         render: function(data, type, row) {
-          return parseInt(data, 10);  // Conversion du rang en entier
+          return parseInt(data, 10);  
         }
       },
       { 
-        data: "playername", // Clé "playername" dans les données
-        title: "Pseudo", // Titre de la colonne
+        data: "playername", 
+        title: planetTitles['info']['playername'], 
         render: function(data, type, row) {
-          return secureInput(data).trim();  // Traitement du nom du joueur pour sécurité
+          return secureInput(data).trim();  
         }
       },
       { 
-        data: "score", // Clé "score" dans les données
-        title: "Score", // Titre de la colonne
+        data: "score", 
+        title: planetTitles['info']['score'], 
         render: function(data, type, row) {
-          return parseInt(data, 10);  // Conversion du score en entier
+          return parseInt(data, 10);  
         }
       }
     ],

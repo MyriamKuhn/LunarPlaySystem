@@ -3,10 +3,12 @@
 /* IMPORTS */
 
 /***********/
-import { Beetlemorph, Lobstermorph, Phantommorph } from '/assets/js/aetheria/Enemy.js';
+import { BeetlemorphOne, BeetlemorphTwo, Lobstermorph, Phantommorph } from '/assets/js/aetheria/Enemy.js';
 import { AudioControl } from '/assets/js/aetheria/AudioControl.js'; 
-import { secureInput, securePlayername } from '/assets/js/utils.js';
+import { secureInput, securePlayername, sendScore } from '/assets/js/utils.js';
 
+
+const lang = sessionStorage.getItem('lang') || document.querySelector('meta[name="language"]').getAttribute('content');
 
 /*****************/
 
@@ -27,6 +29,7 @@ export class Game {
    * @property {number} enemyTimer - Le timer pour les ennemis
    * @property {number} enemyInterval - L'intervalle entre chaque ennemi
    * @property {number} score - Le score du joueur
+   * @property {number} level - Le niveau du joueur
    * @property {number} lives - Le nombre de vies du joueur
    * @property {number} winningScore - Le score pour gagner
    * @property {string} message1 - Le premier message
@@ -73,6 +76,7 @@ export class Game {
     this.enemyInterval = 1000;
 
     this.score = 0;
+    this.level = 1;
     this.lives;
     this.winningScore = 20;
     this.message1 = 'Run!';
@@ -109,7 +113,7 @@ export class Game {
     });
     this.backButton = document.getElementById('backButton');
     this.backButton.addEventListener('click', e => {
-      window.location.href = '/' + secureInput(sessionStorage.getItem('lang')) + '/lunarplay/';
+      window.location.href = '/' + lang + '/lunarplay/';
     });
 
     window.addEventListener('resize', e => {
@@ -148,7 +152,7 @@ export class Game {
       } else if (e.key === ' ' || e.key.toLowerCase() === 'f') {
         this.toggleFullScreen();
       } else if (e.key.toLowerCase() === 'b') {
-        window.location.href = '/' + secureInput(sessionStorage.getItem('lang')) + '/lunarplay/';
+        window.location.href = '/' + lang + '/lunarplay/';
       } else if (e.key.toLowerCase() === 'd') {
         this.debug = !this.debug;
       }
@@ -157,7 +161,7 @@ export class Game {
 
   start() {
     this.score = 0;
-    this.lives = 15;
+    this.lives = 10;
     this.generateCrew();
     this.gameOver = false;
     this.enemyPool.forEach(enemy => {
@@ -221,7 +225,7 @@ export class Game {
 
   createEnemyPool() {
     for (let i = 0; i < this.numberOfEnemies; i++) {
-      this.enemyPool.push(new Phantommorph(this));
+      this.enemyPool.push(new BeetlemorphOne(this));
     }
   }
 
@@ -257,42 +261,59 @@ export class Game {
 
         // Vérifier si le nom du joueur est disponible
         if (playerName) {
-          
           // Préparer les données à envoyer
           const data = {
             planet: planet,
             playername: playerName,
             score: score
           };
-
           if (!data.planet || !data.playername || !data.score) {
             console.error('Données manquantes ou invalides:', data);
             return;
           }
-
           // Envoyer la requête fetch pour ajouter le score
-          fetch('/App/add_score.php', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify(data)
-          })
-          .then(response => response.json())
-          .catch(error => {
-            console.error('Erreur:', error);
-          });
+          sendScore(data);
         }
         this.message1 = 'Aargh!';
         this.message2 = 'The crew was eaten!';
         this.sound.play(this.sound.lose);
-      } //else if (this.score >= this.winningScore) {
-        //  this.message1 ='Well done!';
-        //  this.message2 = 'You escaped the swarm!';
-        //  this.sound.play(this.sound.win);
-        //}
+      }
     }
+  }
+
+  triggerNextLevel() {
+    // Remplace un nombre limité d'ennemis dans le pool
+    const enemiesToReplace = Math.floor(this.level);
+
+    let replacedCount = 0;
+    for (let i = 0; i < this.enemyPool.length && replacedCount < enemiesToReplace; i++) {
+      const enemy = this.enemyPool[i];
+
+      // Remplace seulement les ennemis "libres"
+      if (enemy.free) {
+        const rand = Math.random();
+        this.enemyPool[i] = rand < 0.75 ? new BeetlemorphOne(this) : new BeetlemorphTwo(this);
+        this.enemyPool[i].reset();
+        replacedCount++;
+      }
+    }
+
+    // Ajoute des ennemis si nécessaire pour maintenir la taille du pool
+    const additionalEnemies = Math.max(0, enemiesToReplace - replacedCount);
+    for (let i = 0; i < additionalEnemies; i++) {
+      const rand = Math.random();
+      const newEnemy = rand < 0.75 ? new BeetlemorphOne(this) : new BeetlemorphTwo(this);
+      newEnemy.reset();
+      this.enemyPool.push(newEnemy);
+    }
+
+    // Active quelques ennemis au début du niveau
+    for (let i = 0; i < 2; i++) {
+      const enemy = this.getEnemy();
+      if (enemy) enemy.start();
+    }
+    console.log('Niveau:', this.level);
+    console.log('Ennemis:', this.enemyPool);
   }
 
   /**
@@ -321,7 +342,10 @@ export class Game {
     }
     if (this.lives < 1) {
       this.triggerGameOver();
-    } //else if (this.score >= this.winningScore)) {
+    } else if (Math.floor(this.score / 20) > this.level) {
+      this.level = Math.floor(this.score / 20); // Met à jour le niveau
+      this.triggerNextLevel(); // Passe au niveau suivant
+    }
 
     if (this.gameOver) {
       this.ctx.textAlign = 'center';

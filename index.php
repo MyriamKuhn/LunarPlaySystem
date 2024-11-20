@@ -16,6 +16,8 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="LunarPlay System">
+  <meta name="csrf-token" content="<?= $_SESSION['csrf_token']; ?>">
+  <meta name="language" content="<?= Security::secureInput($_SESSION['lang'] ?? 'en') ?>">
   <!-- Meta pour les langues -->
   <link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/fr/' ?>" hreflang="fr" />
   <link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/en/' ?>" hreflang="en" />
@@ -34,8 +36,6 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
   <link rel="stylesheet" href="/assets/css/index.css" />
   <link rel="stylesheet" href="/assets/css/flags.css" />
 </head>
-
-<div data-lang="<?= Security::secureInput($_SESSION['lang'] ?? 'en') ?>"></div>
 
 <body>
   <!-- Background -->

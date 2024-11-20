@@ -32,6 +32,8 @@ if (!isset($_SESSION['playername'])) {
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="LunarPlay System">
+  <meta name="csrf-token" content="<?= $_SESSION['csrf_token']; ?>">
+  <meta name="language" content="<?= Security::secureInput($_SESSION['lang'] ?? 'en') ?>">
   <!-- Meta pour les langues -->
   <link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/fr/lunarplay/' ?>" hreflang="fr" />
   <link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/en/lunarplay/' ?>" hreflang="en" />
@@ -49,8 +51,6 @@ if (!isset($_SESSION['playername'])) {
   <!-- Stylesheet -->
   <link rel="stylesheet" href="/assets/css/lunarplay.css" /> 
 </head>
-
-<div data-lang="<?= Security::secureInput($_SESSION['lang'] ?? 'en') ?>"></div>
 
 <body>
 

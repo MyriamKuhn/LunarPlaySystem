@@ -66,6 +66,9 @@ export const descriptions = {
       pagination: "Afficher _MENU_ entrées par page",
       zeroRecords: "Aucun enregistrement trouvé",
       search: "Rechercher :",
+      rank: "Rang",
+      playername: "Pseudo",
+      score: "Score",
     },
   },
   en: {
@@ -135,6 +138,9 @@ export const descriptions = {
       pagination: "Display _MENU_ entries per page",
       zeroRecords: "No records found",
       search: "Search:",
+      rank: "Rank",
+      playername: "Nickname",
+      score: "Score",
     },
   },
   de: {
@@ -204,6 +210,9 @@ export const descriptions = {
       pagination: "Zeige _MENU_ Einträge pro Seite an",
       zeroRecords: "Keine Datensätze gefunden",
       search: "Suche nach:",
+      rank: "Rang",
+      playername: "Spielername",
+      score: "Punkte",
     },
   },
 };

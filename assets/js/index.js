@@ -19,9 +19,8 @@ const background = new Background();
 /* LANGUES AU CHARGEMENT DE LA PAGE */
 
 /************************************/
-const currentLanguage = document.querySelector('div[data-lang]').getAttribute('data-lang');
-
 document.addEventListener("DOMContentLoaded", function() {
+  const currentLanguage = document.querySelector('meta[name="language"]').getAttribute('content');
   // Fonction pour obtenir la langue actuelle à partir de l'URL
   function getCurrentLanguage() {
     const storedLanguage = currentLanguage;
