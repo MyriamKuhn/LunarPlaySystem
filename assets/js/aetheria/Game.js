@@ -3,12 +3,20 @@
 /* IMPORTS */
 
 /***********/
-import { BeetlemorphOne, BeetlemorphTwo, Lobstermorph, Phantommorph } from '/assets/js/aetheria/Enemy.js';
+import { BeetlemorphOne } from '/assets/js/aetheria/Beetlemorph.js';
+import { MantismorphOne } from '/assets/js/aetheria/Mantismorph.js';
+import { WaveManager } from '/assets/js/aetheria/WaveManager.js';
 import { AudioControl } from '/assets/js/aetheria/AudioControl.js'; 
-import { secureInput, securePlayername, sendScore } from '/assets/js/utils.js';
+import { secureInput, securePlayername, sendScore, shuffleArray } from '/assets/js/utils.js';
 
 
+/*************/
+
+/* VARIABLES */
+
+/*************/
 const lang = sessionStorage.getItem('lang') || document.querySelector('meta[name="language"]').getAttribute('content');
+
 
 /*****************/
 
@@ -28,10 +36,11 @@ export class Game {
    * @property {number} numberOfEnemies - Le nombre d'ennemis
    * @property {number} enemyTimer - Le timer pour les ennemis
    * @property {number} enemyInterval - L'intervalle entre chaque ennemi
+   * @property {WaveManager} waveManager - Le gestionnaire des vagues
    * @property {number} score - Le score du joueur
+   * @property {number} scoreToCheck - Le score à vérifier
    * @property {number} level - Le niveau du joueur
    * @property {number} lives - Le nombre de vies du joueur
-   * @property {number} winningScore - Le score pour gagner
    * @property {string} message1 - Le premier message
    * @property {string} message2 - Le deuxième message
    * @property {string} message3 - Le troisième message
@@ -74,11 +83,13 @@ export class Game {
     this.createEnemyPool();
     this.enemyTimer = 0;
     this.enemyInterval = 1000;
+    this.waveManager = new WaveManager();
+    this.isBossDead = false;
 
     this.score = 0;
+    this.scoreToCheck = 0;
     this.level = 1;
     this.lives;
-    this.winningScore = 20;
     this.message1 = 'Run!';
     this.message2 = 'Or get eaten!';
     this.message3 = 'Press "ENTER" or "R" to start!';
@@ -92,6 +103,7 @@ export class Game {
     this.spriteUpdate = false;
 
     this.sound = new AudioControl();
+    this.sound.setVolume(0.3);
 
     this.mouse = {
       x: undefined,
@@ -116,9 +128,21 @@ export class Game {
       window.location.href = '/' + lang + '/lunarplay/';
     });
 
+    this.volumeButton = document.getElementById('volumeButton');
+    this.volumeButton.addEventListener('click', e => {
+      if (this.sound.volume === 0) {
+        this.sound.setVolume(0.3);
+        this.volumeButton.innerHTML = '🔊';
+      } else {
+        this.sound.setVolume(0);
+        this.volumeButton.innerHTML = '🔇'
+      };
+    });
+
     window.addEventListener('resize', e => {
       this.resize(e.target.innerWidth, e.target.innerHeight);
     });
+
     window.addEventListener('mousedown', e => {
       e.preventDefault();
       this.mouse.x = e.x;
@@ -126,12 +150,14 @@ export class Game {
       this.mouse.pressed = true;
       this.mouse.fired = false;
     });
+
     window.addEventListener('mouseup', e => {
       e.preventDefault();
       this.mouse.x = e.x;
       this.mouse.y = e.y;
       this.mouse.pressed = false;
     });
+
     window.addEventListener('touchstart', e => {
       e.preventDefault();
       console.log(e);
@@ -140,12 +166,14 @@ export class Game {
       this.mouse.pressed = true;
       this.mouse.fired = false;
     });
+
     window.addEventListener('touchend', e => {
       e.preventDefault();
       this.mouse.x = e.changedTouches[0].pageX;
       this.mouse.y = e.changedTouches[0].pageY;
       this.mouse.pressed = false;
     });
+    
     window.addEventListener('keyup', e => {
       if (e.key === 'Enter' || e.key.toLowerCase() === 'r') {
         this.start();
@@ -160,8 +188,12 @@ export class Game {
   }
 
   start() {
+    this.enemyPool = [];
+    this.createEnemyPool();
     this.score = 0;
+    this.scoreToCheck = 0;
     this.lives = 10;
+    this.level = 1;
     this.generateCrew();
     this.gameOver = false;
     this.enemyPool.forEach(enemy => {
@@ -171,7 +203,7 @@ export class Game {
       const enemy = this.getEnemy();
       if (enemy) enemy.start();
     }
-    this.sound.newgame.play();
+    this.sound.play(this.sound.newgame);
   }
 
   generateCrew() {
@@ -225,7 +257,7 @@ export class Game {
 
   createEnemyPool() {
     for (let i = 0; i < this.numberOfEnemies; i++) {
-      this.enemyPool.push(new BeetlemorphOne(this));
+      this.enemyPool.push(new MantismorphOne(this));
     }
   }
 
@@ -253,68 +285,74 @@ export class Game {
   triggerGameOver() {
     if (!this.gameOver) {
       this.gameOver = true;
-      if (this.lives < 1) {
-        // Récupérer le nom du joueur depuis la session
-        const playerName = securePlayername(sessionStorage.getItem('playername')); 
-        const planet = 'aetheria';
-        const score = parseInt(this.score, 10); 
+      // Récupérer le nom du joueur depuis la session
+      const playerName = securePlayername(sessionStorage.getItem('playername')); 
+      const planet = 'aetheria';
+      const score = parseInt(this.score, 10); 
 
-        // Vérifier si le nom du joueur est disponible
-        if (playerName) {
-          // Préparer les données à envoyer
-          const data = {
-            planet: planet,
-            playername: playerName,
-            score: score
-          };
-          if (!data.planet || !data.playername || !data.score) {
-            console.error('Données manquantes ou invalides:', data);
-            return;
-          }
-          // Envoyer la requête fetch pour ajouter le score
-          sendScore(data);
+      // Vérifier si le nom du joueur est disponible
+      if (playerName) {
+        // Préparer les données à envoyer
+        const data = {
+          planet: planet,
+          playername: playerName,
+          score: score
+        };
+        if (!data.planet || !data.playername || !data.score) {
+          this.enemyPool.forEach(enemy => {
+            enemy.reset();
+          });
+          this.message1 = 'Aargh!';
+          this.message2 = 'The crew was eaten!';
+          this.sound.play(this.sound.lose);
+          return;
         }
-        this.message1 = 'Aargh!';
-        this.message2 = 'The crew was eaten!';
-        this.sound.play(this.sound.lose);
+        // Envoyer la requête fetch pour ajouter le score
+        sendScore(data);
       }
+      this.enemyPool.forEach(enemy => {
+        enemy.reset();
+      });
+      this.message1 = 'Aargh!';
+      this.message2 = 'The crew was eaten!';
+      this.sound.play(this.sound.lose);
     }
   }
 
-  triggerNextLevel() {
-    // Remplace un nombre limité d'ennemis dans le pool
-    const enemiesToReplace = Math.floor(this.level);
 
-    let replacedCount = 0;
-    for (let i = 0; i < this.enemyPool.length && replacedCount < enemiesToReplace; i++) {
-      const enemy = this.enemyPool[i];
-
-      // Remplace seulement les ennemis "libres"
-      if (enemy.free) {
-        const rand = Math.random();
-        this.enemyPool[i] = rand < 0.75 ? new BeetlemorphOne(this) : new BeetlemorphTwo(this);
-        this.enemyPool[i].reset();
-        replacedCount++;
+  triggerNextLevel(level) {
+    this.level++;
+    const currentWave = this.waveManager.getWaveEnemies(level);
+      
+    // Remplacement des ennemis dans le pool
+    currentWave.enemies.forEach(enemyConfig => {
+      const index = this.enemyPool.findIndex(enemy => enemy instanceof enemyConfig.oldType && enemy.free);
+      if (index !== -1) {
+        this.enemyPool[index] = new enemyConfig.newType(this);
+        this.enemyPool[index].reset();
       }
-    }
+    });
 
-    // Ajoute des ennemis si nécessaire pour maintenir la taille du pool
-    const additionalEnemies = Math.max(0, enemiesToReplace - replacedCount);
-    for (let i = 0; i < additionalEnemies; i++) {
-      const rand = Math.random();
-      const newEnemy = rand < 0.75 ? new BeetlemorphOne(this) : new BeetlemorphTwo(this);
-      newEnemy.reset();
-      this.enemyPool.push(newEnemy);
-    }
+    // Mélanger le tableau des ennemis après avoir fait les changements
+    shuffleArray(this.enemyPool);
+  
+    // Activation des ennemis à activer
+    currentWave.toActivate.forEach(enemyType => {
+      const enemy = this.enemyPool.find(enemy => enemy instanceof enemyType);
+      if (enemy && enemy.free) {
+        enemy.start();
+      }
+    });
 
-    // Active quelques ennemis au début du niveau
-    for (let i = 0; i < 2; i++) {
-      const enemy = this.getEnemy();
-      if (enemy) enemy.start();
-    }
-    console.log('Niveau:', this.level);
+    // Mise à jour du boss si c'est un boss
+    this.isBossDead = false;
+
     console.log('Ennemis:', this.enemyPool);
+    console.log('Vague activée :', currentWave);
+    console.log('Niveau:', this.level);
   }
+  
+  
 
   /**
    * @param {number} deltaTime - Le temps écoulé depuis le dernier frame
@@ -332,6 +370,16 @@ export class Game {
   }
 
   drawStatusText() {
+    if (this.gameOver) {
+      this.ctx.save();
+      this.ctx.textAlign = 'center';
+      this.ctx.font = '80px Bangers';
+      this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.5 - 25);
+      this.ctx.font = '20px Bangers';
+      this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.5 + 25);
+      this.ctx.fillText(this.message3, this.width * 0.5, this.height * 0.5 + 50);
+      this.ctx.restore();
+    }
     this.ctx.save();
     this.ctx.textAlign = 'left';
     this.ctx.fillText('Score: ' + this.score, 20, 40);
@@ -340,20 +388,25 @@ export class Game {
       const h = 45;
       this.ctx.drawImage(this.crewImage, w * this.crewMembers[i].frameX, h * this.crewMembers[i].frameY, w, h, 20 + i * 16, 60, w, h);
     }
+
+    // Affiche le message de fin de jeu et enregistre le score si le joueur n'a plus de vies
     if (this.lives < 1) {
       this.triggerGameOver();
-    } else if (Math.floor(this.score / 20) > this.level) {
-      this.level = Math.floor(this.score / 20); // Met à jour le niveau
-      this.triggerNextLevel(); // Passe au niveau suivant
     }
 
-    if (this.gameOver) {
-      this.ctx.textAlign = 'center';
-      this.ctx.font = '80px Bangers';
-      this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.5 - 25);
-      this.ctx.font = '20px Bangers';
-      this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.5 + 25);
-      this.ctx.fillText(this.message3, this.width * 0.5, this.height * 0.5 + 50);
+    // Vérifie si le niveau a un boss check et si il est bien tué
+    if (this.waveManager.getIsBossCheck(this.level) && !this.isBossDead) {
+      return;
+    }
+
+    const nextLevelScore = this.scoreToCheck + this.waveManager.getPointsRequired(this.level);
+    // Passe au niveau suivant lorsque le score est suffisant
+      if (nextLevelScore <= this.score) {
+      this.triggerNextLevel(this.level); 
+      this.scoreToCheck = this.score;
+      console.log('Score mémorisé:', this.scoreToCheck);
+      console.log('Points requis:', this.waveManager.getPointsRequired(this.level));
+      console.log('Score requis:', nextLevelScore);
     }
     this.ctx.restore();
   }
@@ -366,13 +419,15 @@ export class Game {
   render(deltaTime) {
     this.handleSpriteTimer(deltaTime);
     this.drawStatusText();
-    if (!this.gameOver) this.handleEnemies(deltaTime);
-    // Pour garantir que l'ennemi du dessus soit dessiné en dernier et donc est touché en premier)
-    for (let i = this.enemyPool.length - 1; i >= 0; i--) {
-      this.enemyPool[i].update(deltaTime);
+    if (!this.gameOver) {
+      this.handleEnemies(deltaTime);
+      // Pour garantir que l'ennemi du dessus soit dessiné en dernier et donc est touché en premier)
+      for (let i = this.enemyPool.length - 1; i >= 0; i--) {
+        this.enemyPool[i].update(deltaTime);
+      }
+      this.enemyPool.forEach(enemy => {
+        enemy.draw();
+      });
     }
-    this.enemyPool.forEach(enemy => {
-      enemy.draw();
-    });
   }
 }

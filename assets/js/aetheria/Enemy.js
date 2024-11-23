@@ -1,21 +1,14 @@
 /***********/
 
-/* IMPORTS */
-
-/***********/
-import { Flying, Phasing, Imploding } from '/assets/js/aetheria/EnemyState.js';
-
-
-/***********/
-
 /* ENNEMIS */
 
 /***********/
-class Enemy {
+export class Enemy {
   /**
    * @param {Game} game - Le jeu dans lequel l'ennemi est créé
    * 
    * @property {Game} game - Le jeu dans lequel l'ennemi est créé
+   * @property {HTMLImageElement} image - L'image de l'ennemi
    * @property {number} spriteWidth - La largeur de l'image de l'ennemi
    * @property {number} spriteHeight - La hauteur de l'image de l'ennemi
    * @property {number} width - La largeur de l'ennemi
@@ -44,6 +37,7 @@ class Enemy {
    */
   constructor(game) {
     this.game = game;
+    this.image;
     this.spriteWidth = 100;
     this.spriteHeight = 100;
     this.sizeModifier = Math.random() * 0.3 + 0.8;
@@ -68,7 +62,6 @@ class Enemy {
     this.x = Math.random() * this.game.width;
     this.y = -this.height;
     this.frameX = 0;
-    this.frameY = Math.floor(Math.random() * 4);
     this.free = false;
   }
 
@@ -103,7 +96,7 @@ class Enemy {
         this.reset();
         if (!this.game.gameOver) {
           this.game.lives--;
-          this.game.sound.scream.play();
+          this.game.sound.play(this.game.sound.scream);
         } 
       }
 
@@ -129,240 +122,3 @@ class Enemy {
     }
   }
 }
-
-
-/***************/
-
-/* BEETLEMORPH */
-
-/***************/
-export class BeetlemorphOne extends Enemy {
-  /**
-   * @param {Game} game - Le jeu dans lequel l'ennemi est créé
-   * 
-   * @property {HTMLImageElement} image - L'image de l'ennemi
-   * 
-   * @method start - Initialise l'ennemi
-   * @method update - Met à jour les propriétés de l'ennemi
-   * 
-   * @description Constructeur de la classe Beetlemorph
-   */
-  constructor(game) {
-    super(game);
-    this.image = document.getElementById('beetlemorph');
-  }
-
-  start() {
-    super.start();
-    this.speedX = Math.random() * 2 - 1;
-    this.speedY = Math.random() * 0.5 + 0.2;
-    this.lives = 1;
-    this.maxlives = 1;
-    this.lastFrame = 3;
-    this.sound = this.game.sound.boom1;
-    this.frameY = 0;
-  }
-
-  update() {
-    super.update();
-    if (!this.free) {
-      if (this.x <= 0 || this.x >= this.game.width - this.width) {
-        this.speedX *= -1;
-      }
-      if (this.isAlive()) {
-        this.hit();
-      }
-    }
-  }
-}
-
-export class BeetlemorphTwo extends Enemy {
-  /**
-   * @param {Game} game - Le jeu dans lequel l'ennemi est créé
-   * 
-   * @property {HTMLImageElement} image - L'image de l'ennemi
-   * 
-   * @method start - Initialise l'ennemi
-   * @method update - Met à jour les propriétés de l'ennemi
-   * 
-   * @description Constructeur de la classe Beetlemorph
-   */
-  constructor(game) {
-    super(game);
-    this.image = document.getElementById('beetlemorph');
-  }
-
-  start() {
-    super.start();
-    this.speedX = Math.random() * 2 - 1;
-    this.speedY = Math.random() * 0.5 + 0.5;
-    this.lives = 1;
-    this.maxlives = 1;
-    this.lastFrame = 3;
-    this.sound = this.game.sound.boom1;
-    this.frameY = 1;
-  }
-
-  update() {
-    super.update();
-    if (!this.free) {
-      if (this.x <= 0 || this.x >= this.game.width - this.width) {
-        this.speedX *= -1;
-      }
-      if (this.isAlive()) {
-        this.hit();
-      }
-    }
-  }
-}
-
-
-/****************/
-
-/* LOBSTERMORPH */
-
-/****************/
-export class Lobstermorph extends Enemy {
-  /**
-   * @param {Game} game - Le jeu dans lequel l'ennemi est créé
-   * 
-   * @property {Game} game - Le jeu dans lequel l'ennemi est créé
-   * @property {HTMLImageElement} image - L'image de l'ennemi
-   * @property {number} lastFrame - La dernière frame de l'animation de l'ennemi
-   * 
-   * @method start - Initialise l'ennemi
-   * @method update - Met à jour les propriétés de l'ennemi
-   * 
-   * @description Constructeur de la classe Lobstermorph
-   */
-  constructor(game) {
-    super(game);
-    this.image = document.getElementById('lobstermorph');
-    this.lastFrame = 14
-  }
-
-  start() {
-    super.start();
-    this.speedX = 0;
-    this.speedY = Math.random() * 0.5 + 0.2;
-    this.lives = 3;
-    this.maxlives = 3;
-  }
-
-  update() {
-    super.update();
-    if (!this.free) {
-      if (this.lives >= 3) {
-        this.maxFrame = 0;
-      } else if (this.lives === 2) {
-        this.maxFrame = 3;
-      } else if (this.lives === 1) {
-        this.maxFrame = 7;
-      }
-      if (this.isAlive()) {
-        this.hit();
-        if (this.frameX < this.maxFrame && this.game.spriteUpdate) {
-          this.frameX++;
-        }
-      }
-    }
-  }
-}
-
-
-/****************/
-
-/* PHANTOMMORPH */
-
-/****************/
-export class Phantommorph extends Enemy {
-  /**
-  * @param {Game} game - Le jeu dans lequel l'ennemi est créé
-  * 
-  * @property {Game} game - Le jeu dans lequel l'ennemi est créé
-  * @property {HTMLImageElement} image - L'image de l'ennemi
-  * @property {number} lastFrame - La dernière frame de l'animation de l'ennemi
-  * @property {Array} states - Les états de l'ennemi
-  * @property {EnemyState} currentState - L'état actuel de l'ennemi
-  * @property {number} switchTimer - Le timer pour changer d'état
-  * @property {number} switchInterval - L'intervalle pour changer d'état
-  * 
-  * @method start - Initialise l'ennemi
-  * @method setState - Définit l'état de l'ennemi
-  * @method handleFrames - Gère les frames de l'animation de l'ennemi
-  * @method switch - Change l'état de l'ennemi
-  * @method update - Met à jour les propriétés de l'ennemi
-  * 
-  * @description Constructeur de la classe Phantommorph
-  * Utilise le State Design Pattern pour gérer les états de l'ennemi
-   */
-  constructor(game) {
-    super(game);
-    this.image = document.getElementById('phantommorph');
-    this.lastFrame = 14;
-    this.states = [new Flying(game, this), new Phasing(game, this), new Imploding(game, this)];
-    this.currentState;
-    this.switchTimer = 0;
-    this.switchInterval = Math.random() * 2000 + 1000; 
-  }
-
-  start() {
-    super.start();
-    this.speedX = Math.random() * 2 - 1;
-    this.speedY = Math.random() * 0.5 + 0.2;
-    this.lives = 1;
-    this.maxlives = 1;
-    this.minFrame = 3;
-    this.maxFrame = 5;
-    this.setState(Math.floor(Math.random() * 2));
-  }
-
-  setState(state) {
-    this.currentState = this.states[state];
-    this.currentState.start();
-  }
-
-  handleFrames() {
-    if (this.game.spriteUpdate) {
-      if (this.frameX < this.maxFrame) {
-        this.frameX++;
-      } else {
-        this.frameX = this.minFrame;
-      }
-    }
-  }
-
-  switch() {
-    if (this.currentState === this.states[0]) {
-      this.setState(1);
-    } else {
-      this.setState(0);
-    }
-  }
-
-  hit() {
-    super.hit();
-    if (!this.isAlive()) this.setState(2);
-  }
-
-  update(deltaTime) {
-    super.update();
-    if (!this.free) {
-      this.currentState.update();
-      if (this.x <= 0 || this.x >= this.game.width - this.width) {
-        this.speedX *= -1;
-      }
-      
-      if (this.isAlive()) {
-        if (this.switchTimer < this.switchInterval) {
-          this.switchTimer += deltaTime;
-        } else {
-          this.switchTimer = 0;
-          this.switch();
-        }
-      }
-    }
-  }
-}
-
-

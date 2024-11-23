@@ -54,14 +54,18 @@ if (!isset($_SESSION['playername'])) {
     <button id="fullScreenButton">F</button>
     <button id="resetButton">R</button>
     <button id="backButton">B</button>
+		<button id="volumeButton">🔊</button>
   </div>
 
   <div class="assets">
     <img src="/assets/img/aetheria/crew.png" id="crew">
 		<img src="/assets/img/aetheria/crewSprite.png" id="crewSprite">
     <img src="/assets/img/aetheria/beetlemorph100x100.png" id="beetlemorph">
+		<img src="/assets/img/aetheria/rhinomorph100x100" id="rhinomorph">
 		<img src="/assets/img/aetheria/lobstermorph100x100.png" id="lobstermorph">
 		<img src="/assets/img/aetheria/phantommorph100x100.png" id="phantommorph">
+		<img src="/assets/img/aetheria/mantismorph100x100.png" id="mantismorph">
+		<img src="/assets/img/aetheria/boss8.png" id="boss">
 
 		<audio src="/assets/audio/aetheria/newgame.mp3" id="newgame"></audio>
 		<audio src="/assets/audio/aetheria/boom1.mp3" id="boom1"></audio>

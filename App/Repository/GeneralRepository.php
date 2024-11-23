@@ -7,7 +7,6 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 use Dotenv\Dotenv;
 use App\Db\MongoDb;
 use MongoDB\Client;
-use stdClass;
 use Tools\Security;
 
 class GeneralRepository
@@ -184,30 +183,38 @@ class GeneralRepository
 			]);
 		}
 
+		// Créer un index pour améliorer la performance de tri
+    $globalCollection->createIndex(['score' => -1]);
+
 		// Récupérer tous les joueurs et leurs scores pour trier et ajouter les rangs
 		$rankedResults = $globalCollection->find([], ['sort' => ['score' => -1]]);
 
 		// Ajouter un rang à chaque joueur
 		$rank = 1;
-		$rankedResultsWithRank = [];
+		$rankedPlayers = [];
 		foreach ($rankedResults as $result) {
-			$rankedResultsWithRank[] = [
+			$rankedPlayers[] = [
 				'playername' => $result['playername'],
 				'score' => $result['score'],
 				'place' => $rank++
 			];
 		}
 
-		// Vider la collection de classement global avant d'y insérer les nouveaux résultats
-		$globalCollection->deleteMany([]);
+		// Préparer les opérations en vrac pour mettre à jour le classement global
+		$bulkOperations = [];
 
-		// Insérer les résultats finaux avec les rangs
-		foreach ($rankedResultsWithRank as $result) {
-			$globalCollection->insertOne([
-				'playername' => $result['playername'],
-				'score' => $result['score'],
-				'place' => $result['place'],
-			]);
-		}
+		// Ajouter des opérations d'update pour chaque joueur dans le nouveau tableau
+    foreach ($rankedPlayers as $player) {
+      $bulkOperations[] = [
+        'updateOne' => [
+          ['playername' => $player['playername']], // Filtre pour trouver le joueur
+          ['$set' => ['score' => $player['score'], 'place' => $player['place']]], // Mettre à jour le score et la place
+          ['upsert' => true] // Insérer si le joueur n'existe pas
+        ]
+      ];
+    }
+
+		// Exécuter toutes les opérations en une seule requête
+		$globalCollection->bulkWrite($bulkOperations);
 	}
 }

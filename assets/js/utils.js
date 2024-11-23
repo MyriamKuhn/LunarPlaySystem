@@ -77,3 +77,21 @@ export function sendScore(data) {
     console.error('Erreur:', error);
   });
 };
+
+
+/************************************/
+
+// MELANGER LES ELEMENTS D'UN TABLEAU //
+
+/************************************/
+/**
+ * Mélange les éléments d'un tableau de manière aléatoire (algorithme de Fisher-Yates)
+ * @param {array} array
+ * @returns {array}
+ */
+export function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1)); 
+    [array[i], array[j]] = [array[j], array[i]]; 
+  }
+}
