@@ -7,7 +7,12 @@ import { BeetlemorphOne, BeetlemorphTwo, BeetlemorphThree, BeetlemorphFour} from
 import { RhinomorphOne, RhinomorphTwo, RhinomorphThree, RhinomorphFour } from '/assets/js/aetheria/Rhinomorph.js';
 import { LobstermorphOne, LobstermorphTwo, LobstermorphThree, LobstermorphFour } from '/assets/js/aetheria/Lobstermorph.js';
 import { PhantommorphOne, PhantommorphTwo, PhantommorphThree, PhantommorphFour } from '/assets/js/aetheria/Phantommorph.js';
-import { Boss1, Boss2, Boss3, Boss4 } from '/assets/js/aetheria/Boss.js';
+import { MantismorphOne, MantismorphTwo, MantismorphThree, MantismorphFour } from '/assets/js/aetheria/Mantismorph.js';
+import { EaglemorphOne, EaglemorphTwo, EaglemorphThree, EaglemorphFour } from '/assets/js/aetheria/Eaglemorph.js';
+
+import { SquidmorphOne, SquidmorphTwo, SquidmorphThree, SquidmorphFour } from '/assets/js/aetheria/Squidmorph.js';
+import { Boss1, Boss2, Boss3, Boss4, Boss5, Boss6, Boss7, Boss8 } from '/assets/js/aetheria/Boss.js';
+import { SquidmorphOne } from '/assets/js/aetheria/Locustmorph.js';
 
 
 export class WaveManager {
@@ -340,11 +345,90 @@ export class WaveManager {
       },
       {
         level: 41,
-        enemies: [{ oldType: LobstermorphOne, newType: PhantommorphOne, count: 1 },
-                  { oldType: LobstermorphThree, newType: PhantommorphTwo, count: 1 },
-                  { oldType: Boss4, newType: LobstermorphThree, count: 1 }],
-        toActivate: [LobstermorphThree],
+        enemies: [{ oldType: BeetlemorphOne, newType: RhinomorphTwo, count: 1 },
+                  { oldType: BeetlemorphTwo, newType: RhinomorphThree, count: 1 },
+                  { oldType: BeetlemorphThree, newType: RhinomorphFour, count: 1 },
+                  { oldType: RhinomorphOne, newType: LobstermorphThree, count: 1 },
+                  { oldType: PhantommorphOne, newType: MantismorphOne, count: 4 },
+                  { oldType: PhantommorphFour, newType: LobstermorphFour, count: 1 },
+                  { oldType: Boss4, newType: MantismorphOne, count: 1 }],
+        toActivate: [MantismorphOne, MantismorphOne, MantismorphOne, MantismorphOne, MantismorphOne, MantismorphOne, MantismorphOne],
         pointsRequired: 25,
+        isBossCheck: true,
+      },
+      {
+        level: 42,
+        enemies: [{ oldType: PhantommorphOne, newType: MantismorphThree, count: 1 },
+                  { oldType: PhantommorphTwo, newType: MantismorphTwo, count: 2 },
+                  { oldType: PhantommorphThree, newType: MantismorphFour, count: 1 }],
+        toActivate: [MantismorphTwo, MantismorphTwo, MantismorphThree, MantismorphFour],
+        pointsRequired: 25,
+        isBossCheck: false,
+      },
+      {
+        level: 43,
+        enemies: [],
+        toActivate: [],
+        pointsRequired: 25,
+        isBossCheck: false,
+      },
+      {
+        level: 44,
+        enemies: [],
+        toActivate: [],
+        pointsRequired: 25,
+        isBossCheck: false,
+      },
+      {
+        level: 45,
+        enemies: [],
+        toActivate: [],
+        pointsRequired: 25,
+        isBossCheck: false,
+      },
+      {
+        level: 46,
+        enemies: [{ oldType: BeetlemorphOne, newType: MantismorphTwo, count: 1 },
+                  { oldType: PhantommorphOne, newType: MantismorphThree, count: 1 }],
+        toActivate: [MantismorphTwo, MantismorphThree],
+        pointsRequired: 25,
+        isBossCheck: false,
+      },
+      {
+        level: 47,
+        enemies: [],
+        toActivate: [],
+        pointsRequired: 25,
+        isBossCheck: false,
+      },
+      {
+        level: 48,
+        enemies: [],
+        toActivate: [],
+        pointsRequired: 25,
+        isBossCheck: false,
+      },
+      {
+        level: 49,
+        enemies: [],
+        toActivate: [],
+        pointsRequired: 25,
+        isBossCheck: false,
+      },
+      {
+        level: 50,
+        enemies: [{ oldType: LobstermorphOne, newType: PhantommorphFour, count: 1 },
+                  { oldType: LobstermorphTwo, newType: Boss5, count: 1 }],
+        toActivate: [Boss5],
+        pointsRequired: 25,
+        isBossCheck: false,
+      },
+      {
+        level: 51,
+        enemies: [{ oldType: LobstermorphOne, newType: PhantommorphFour, count: 1 },
+                  { oldType: Boss5, newType: Boss5, count: 1 }],
+        toActivate: [PhantommorphFour],
+        pointsRequired: 30,
         isBossCheck: true,
       },
     ];

@@ -4,7 +4,8 @@
 
 /***********/
 import { BeetlemorphOne } from '/assets/js/aetheria/Beetlemorph.js';
-import { MantismorphOne } from '/assets/js/aetheria/Mantismorph.js';
+import { Projectile } from '/assets/js/aetheria/Projectile.js';
+import { SquidmorphOne } from '/assets/js/aetheria/Squidmorph.js';
 import { WaveManager } from '/assets/js/aetheria/WaveManager.js';
 import { AudioControl } from '/assets/js/aetheria/AudioControl.js'; 
 import { secureInput, securePlayername, sendScore, shuffleArray } from '/assets/js/utils.js';
@@ -81,6 +82,9 @@ export class Game {
     this.enemyPool = [];
     this.numberOfEnemies = 50;
     this.createEnemyPool();
+    this.projectilePool = [];
+    this.numberOfProjectiles = 50;
+    this.createProjectilePool();
     this.enemyTimer = 0;
     this.enemyInterval = 1000;
     this.waveManager = new WaveManager();
@@ -190,6 +194,8 @@ export class Game {
   start() {
     this.enemyPool = [];
     this.createEnemyPool();
+    this.projectilePool = [];
+    this.createProjectilePool();
     this.score = 0;
     this.scoreToCheck = 0;
     this.lives = 10;
@@ -199,10 +205,13 @@ export class Game {
     this.enemyPool.forEach(enemy => {
       enemy.reset();
     });
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
       const enemy = this.getEnemy();
       if (enemy) enemy.start();
     }
+    this.projectilePool.forEach(projectile => {
+      projectile.reset();
+    });
     this.sound.play(this.sound.newgame);
   }
 
@@ -257,13 +266,25 @@ export class Game {
 
   createEnemyPool() {
     for (let i = 0; i < this.numberOfEnemies; i++) {
-      this.enemyPool.push(new MantismorphOne(this));
+      this.enemyPool.push(new SquidmorphOne(this));
+    }
+  }
+
+  createProjectilePool() {
+    for (let i = 0; i < this.numberOfProjectiles; i++) {
+      this.projectilePool.push(new Projectile(this));
     }
   }
 
   getEnemy() {
     for (let i = 0; i < this.enemyPool.length; i++) {
       if (this.enemyPool[i].free) return this.enemyPool[i];
+    }
+  }
+
+  getEnemyProjectile() {
+    for (let i = 0; i < this.projectilePool.length; i++) {
+      if (this.projectilePool[i].free) return this.projectilePool[i];
     }
   }
 
@@ -427,6 +448,12 @@ export class Game {
       }
       this.enemyPool.forEach(enemy => {
         enemy.draw();
+      });
+      for (let i = this.projectilePool.length - 1; i >= 0; i--) {
+        this.projectilePool[i].update(deltaTime);
+      };
+      this.projectilePool.forEach(projectile => {
+        projectile.draw();
       });
     }
   }

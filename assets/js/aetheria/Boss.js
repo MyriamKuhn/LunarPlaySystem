@@ -205,3 +205,71 @@ export class Boss4 extends Boss
     this.frameY = 3;
   }
 }
+
+export class Boss5 extends Boss
+{
+  constructor(game) {
+    super(game);
+    this.image = document.getElementById('boss');
+  }
+
+  start() {
+    super.start();
+    this.speedX = Math.random() * 4 - 2;
+    this.speedY = Math.random() * 0.8 + 0.5;
+    this.lives = 30;
+    this.maxlives = 30;
+    this.frameY = 4;
+  }
+}
+
+export class Boss6 extends Boss
+{
+  constructor(game) {
+    super(game);
+    this.image = document.getElementById('boss');
+  }
+
+  start() {
+    super.start();
+    this.speedX = Math.random() * 4 - 2;
+    this.speedY = Math.random() * 0.8 + 0.5;
+    this.lives = 35;
+    this.maxlives = 35;
+    this.frameY = 5;
+  }
+}
+
+export class Boss7 extends Boss
+{
+  constructor(game) {
+    super(game);
+    this.image = document.getElementById('boss');
+  }
+
+  start() {
+    super.start();
+    this.speedX = Math.random() * 4 - 2;
+    this.speedY = Math.random() * 0.8 + 0.5;
+    this.lives = 40;
+    this.maxlives = 40;
+    this.frameY = 6;
+  }
+}
+
+export class Boss8 extends Boss
+{
+  constructor(game) {
+    super(game);
+    this.image = document.getElementById('boss');
+  }
+
+  start() {
+    super.start();
+    this.speedX = Math.random() * 4 - 2;
+    this.speedY = Math.random() * 0.8 + 0.5;
+    this.lives = 45;
+    this.maxlives = 45;
+    this.frameY = 7;
+  }
+}

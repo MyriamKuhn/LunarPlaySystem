@@ -58,13 +58,16 @@ if (!isset($_SESSION['playername'])) {
   </div>
 
   <div class="assets">
-    <img src="/assets/img/aetheria/crew.png" id="crew">
 		<img src="/assets/img/aetheria/crewSprite.png" id="crewSprite">
     <img src="/assets/img/aetheria/beetlemorph100x100.png" id="beetlemorph">
 		<img src="/assets/img/aetheria/rhinomorph100x100" id="rhinomorph">
 		<img src="/assets/img/aetheria/lobstermorph100x100.png" id="lobstermorph">
 		<img src="/assets/img/aetheria/phantommorph100x100.png" id="phantommorph">
 		<img src="/assets/img/aetheria/mantismorph100x100.png" id="mantismorph">
+		<img src="/assets/img/aetheria/eaglemorph100x100.png" id="eaglemorph">
+		<img src="/assets/img/aetheria/projectileLarge.png" id="projectile">
+		<img src="/assets/img/aetheria/locustmorph100x100.png" id="locustmorph">
+		<img src="/assets/img/aetheria/squidmorph100x100.png" id="squidmorph">
 		<img src="/assets/img/aetheria/boss8.png" id="boss">
 
 		<audio src="/assets/audio/aetheria/newgame.mp3" id="newgame"></audio>
