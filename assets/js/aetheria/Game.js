@@ -78,6 +78,7 @@ export class Game {
    * @property {number} enemyInterval - L'intervalle entre chaque ennemi
    * @property {WaveManager} waveManager - Le gestionnaire des vagues
    * @property {number} score - Le score du joueur
+   * @property {number} scoreMultiplier - Le multiplicateur de score
    * @property {number} scoreToCheck - Le score à vérifier
    * @property {number} nextLevelScore - Le score pour passer au niveau suivant
    * @property {number} level - Le niveau du joueur
@@ -143,6 +144,7 @@ export class Game {
     this.isBossDead = false;
 
     this.score = 0;
+    this.scoreMultiplier = 1;
     this.scoreToCheck = 0;
     this.nextLevelScore = 0;
     this.level = 1;
@@ -279,6 +281,7 @@ export class Game {
     this.hasTriggeredWin = false;
     this.hasTriggeredGameOver = false;
     this.hasTriggeredNextLevel = false;
+    this.scoreMultiplier = 1;
     this.enemyPool = [];
     this.createEnemyPool();
     this.projectilePool = [];
@@ -574,6 +577,7 @@ export class Game {
       // Appeler immédiatement le code de l'intervalle
       if (this.enemyInterval > 0) {
         this.enemyInterval -= 100;
+        this.scoreMultiplier += 0.5;
         this.sound.play('win');
       }
       // Appeler l'intervalle toutes les 60 secondes
@@ -582,6 +586,7 @@ export class Game {
           clearInterval(this.intervalId); 
         } else {
           this.enemyInterval -= 100;
+          this.scoreMultiplier += 0.5;
           this.sound.play('win');
         }
       }, 60000);
