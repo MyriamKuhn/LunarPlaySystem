@@ -27,6 +27,7 @@ const translations = {
     'press2': 'Appuyez sur "ESPACE" ou "F" pour le plein écran !',
     'press3': 'Appuyez sur "B" pour revenir au menu !',
     'press4': 'Appuyez sur "M" pour activer/désactiver le son !',
+    'press5': 'Sur mobile, utilisez les boutons en bas à gauche !',
     'score': 'Score : ',
   },
   'en': {
@@ -38,6 +39,7 @@ const translations = {
     'press2': 'Press "SPACE" or "F" for fullscreen!',
     'press3': 'Press "B" to go back to the menu!',
     'press4': 'Press "M" to toggle sound on/off!',
+    'press5': 'On mobile, use the buttons at the bottom left!',
     'score': 'Score: ',
   },
   'de': {
@@ -49,6 +51,7 @@ const translations = {
     'press2': 'Drück "LEERTASTE" oder "F" für Vollbild!',
     'press3': 'Drück "B", um zum Menü zurückzukehren!',
     'press4': 'Drück "M", um den Ton ein-/auszuschalten!',
+    'press5': 'Auf Mobilgeräten die Tasten unten links verwenden!',
     'score': 'Punkte: ',
   },
 };
@@ -138,6 +141,7 @@ export class Game {
     this.message4 = translations[lang].press2;
     this.message5 = translations[lang].press3;
     this.message6 = translations[lang].press4;
+    this.message7 = translations[lang].press5;
     this.crewImage = document.getElementById('crewSprite');
     this.crewMembers = [];
     this.gameOver = true;
@@ -488,6 +492,7 @@ export class Game {
       this.ctx.fillText(this.message4, this.width * 0.5, this.height * 0.5 + lineSpacingSmall * 3);
       this.ctx.fillText(this.message5, this.width * 0.5, this.height * 0.5 + lineSpacingSmall * 4);
       this.ctx.fillText(this.message6, this.width * 0.5, this.height * 0.5 + lineSpacingSmall * 5);
+      this.ctx.fillText(this.message7, this.width * 0.5, this.height * 0.5 + lineSpacingSmall * 6);
 
       this.ctx.restore();
     }
