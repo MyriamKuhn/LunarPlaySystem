@@ -37,7 +37,7 @@ export class LobstermorphOne extends Enemy {
     this.lives = 3;
     this.maxlives = 3;
     this.frameY = 0;
-    this.sound = this.game.sound.boom3;
+    this.sound = 'boom3';
   }
 
   update() {
@@ -86,7 +86,7 @@ export class LobstermorphTwo extends Enemy {
     this.lives = 3;
     this.maxlives = 3;
     this.frameY = 1;
-    this.sound = this.game.sound.boom3;
+    this.sound = 'boom3';
   }
 
   update() {
@@ -135,7 +135,7 @@ export class LobstermorphThree extends Enemy {
     this.lives = 3;
     this.maxlives = 3;
     this.frameY = 2;
-    this.sound = this.game.sound.boom3;
+    this.sound = 'boom3';
   }
 
   update() {
@@ -184,7 +184,7 @@ export class LobstermorphFour extends Enemy {
     this.lives = 3;
     this.maxlives = 3;
     this.frameY = 3;
-    this.sound = this.game.sound.boom3;
+    this.sound = 'boom3';
   }
 
   update() {
