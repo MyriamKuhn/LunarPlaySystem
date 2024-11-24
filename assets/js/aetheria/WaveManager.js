@@ -9,10 +9,9 @@ import { LobstermorphOne, LobstermorphTwo, LobstermorphThree, LobstermorphFour }
 import { PhantommorphOne, PhantommorphTwo, PhantommorphThree, PhantommorphFour } from '/assets/js/aetheria/Phantommorph.js';
 import { MantismorphOne, MantismorphTwo, MantismorphThree, MantismorphFour } from '/assets/js/aetheria/Mantismorph.js';
 import { EaglemorphOne, EaglemorphTwo, EaglemorphThree, EaglemorphFour } from '/assets/js/aetheria/Eaglemorph.js';
-
+import { LocustmorphOne, LocustmorphTwo, LocustmorphThree, LocustmorphFour } from '/assets/js/aetheria/Locustmorph.js';
 import { SquidmorphOne, SquidmorphTwo, SquidmorphThree, SquidmorphFour } from '/assets/js/aetheria/Squidmorph.js';
 import { Boss1, Boss2, Boss3, Boss4, Boss5, Boss6, Boss7, Boss8 } from '/assets/js/aetheria/Boss.js';
-import { SquidmorphOne } from '/assets/js/aetheria/Locustmorph.js';
 
 
 export class WaveManager {
@@ -425,10 +424,161 @@ export class WaveManager {
       },
       {
         level: 51,
-        enemies: [{ oldType: LobstermorphOne, newType: PhantommorphFour, count: 1 },
-                  { oldType: Boss5, newType: Boss5, count: 1 }],
-        toActivate: [PhantommorphFour],
+        enemies: [{ oldType: PhantommorphOne, newType: EaglemorphOne, count: 2 },
+                  { oldType: Boss5, newType: EaglemorphOne, count: 1 }],
+        toActivate: [EaglemorphOne, EaglemorphOne, EaglemorphOne],
         pointsRequired: 30,
+        isBossCheck: true,
+      },
+      {
+        level: 52,
+        enemies: [{ oldType: PhantommorphTwo, newType: EaglemorphOne, count: 1 },
+                  { oldType: PhantommorphThree, newType: EaglemorphOne, count: 1 },
+                  { oldType: PhantommorphFour, newType: EaglemorphTwo, count: 1 }],
+        toActivate: [EaglemorphOne, EaglemorphOne, EaglemorphTwo],
+        pointsRequired: 30,
+        isBossCheck: false,
+      },
+      {
+        level: 53,
+        enemies: [{ oldType: LobstermorphThree, newType: EaglemorphThree, count: 1 }],
+        toActivate: [EaglemorphThree],
+        pointsRequired: 30,
+        isBossCheck: false,
+      },
+      {
+        level: 54,
+        enemies: [{ oldType: LobstermorphOne, newType: EaglemorphTwo, count: 1 },
+                  { oldType: MantismorphOne, newType: EaglemorphFour, count: 1 }],
+        toActivate: [EaglemorphTwo, EaglemorphFour],
+        pointsRequired: 30,
+        isBossCheck: false,
+      },
+      {
+        level: 55,
+        enemies: [{ oldType: MantismorphTwo, newType: EaglemorphOne, count: 1 },
+                  { oldType: MantismorphThree, newType: EaglemorphTwo, count: 1 }],
+        toActivate: [EaglemorphOne, EaglemorphTwo],
+        pointsRequired: 30,
+        isBossCheck: false,
+      },
+      {
+        level: 56,
+        enemies: [{ oldType: BeetlemorphOne, newType: EaglemorphTwo, count: 1 },
+                  { oldType: BeetlemorphThree, newType: EaglemorphThree, count: 1 }],
+        toActivate: [EaglemorphTwo, EaglemorphThree],
+        pointsRequired: 30,
+        isBossCheck: false,
+      },
+      {
+        level: 57,
+        enemies: [{ oldType: BeetlemorphFour, newType: EaglemorphFour, count: 1 }],
+        toActivate: [EaglemorphFour],
+        pointsRequired: 30,
+        isBossCheck: false,
+      },
+      {
+        level: 58,
+        enemies: [{ oldType: BeetlemorphFour, newType: EaglemorphThree, count: 1 }],
+        toActivate: [EaglemorphThree],
+        pointsRequired: 30,
+        isBossCheck: false,
+      },
+      {
+        level: 59,
+        enemies: [{ oldType: BeetlemorphThree, newType: EaglemorphOne, count: 1 }],
+        toActivate: [EaglemorphOne],
+        pointsRequired: 30,
+        isBossCheck: false,
+      },
+      {
+        level: 60,
+        enemies: [{ oldType: BeetlemorphTwo, newType: Boss6, count: 1 }],
+        toActivate: [Boss6],
+        pointsRequired: 30,
+        isBossCheck: false,
+      },
+      {
+        level: 61,
+        enemies: [{ oldType: Boss6, newType: LocustmorphOne, count: 1 }],
+        toActivate: [LocustmorphOne],
+        pointsRequired: 35,
+        isBossCheck: true,
+      },
+      {
+        level: 62,
+        enemies: [{ oldType: MantismorphOne, newType: LocustmorphOne, count: 1 },
+                  { oldType: EaglemorphOne, newType: LocustmorphTwo, count: 1 }],
+        toActivate: [LocustmorphOne, LocustmorphTwo],
+        pointsRequired: 35,
+        isBossCheck: false,
+      },
+      {
+        level: 63,
+        enemies: [{ oldType: MantismorphOne, newType: LocustmorphThree, count: 1 },
+                  { oldType: EaglemorphFour, newType: LocustmorphFour, count: 1 }],
+        toActivate: [LocustmorphThree, LocustmorphFour],
+        pointsRequired: 35,
+        isBossCheck: false,
+      },
+      {
+        level: 64,
+        enemies: [{ oldType: EaglemorphThree, newType: LocustmorphOne, count: 1 }],
+        toActivate: [LocustmorphOne],
+        pointsRequired: 35,
+        isBossCheck: false,
+      },
+      {
+        level: 65,
+        enemies: [{ oldType: EaglemorphOne, newType: LocustmorphOne, count: 1 },
+                  { oldType: EaglemorphTwo, newType: LocustmorphTwo, count: 1 }],
+        toActivate: [LocustmorphOne, LocustmorphTwo],
+        pointsRequired: 35,
+        isBossCheck: false,
+      },
+      {
+        level: 66,
+        enemies: [{ oldType: EaglemorphOne, newType: LocustmorphThree, count: 1 },
+                  { oldType: EaglemorphThree, newType: LocustmorphFour, count: 1 }],
+        toActivate: [LocustmorphThree, LocustmorphFour],
+        pointsRequired: 35,
+        isBossCheck: false,
+      },
+      {
+        level: 67,
+        enemies: [],
+        toActivate: [],
+        pointsRequired: 35,
+        isBossCheck: false,
+      },
+      {
+        level: 68,
+        enemies: [],
+        toActivate: [],
+        pointsRequired: 35,
+        isBossCheck: false,
+      },
+      {
+        level: 69,
+        enemies: [{ oldType: EaglemorphOne, newType: LocustmorphOne, count: 1 },
+                  { oldType: EaglemorphTwo, newType: LocustmorphTwo, count: 1 }],
+        toActivate: [LocustmorphOne, LocustmorphTwo],
+        pointsRequired: 35,
+        isBossCheck: false,
+      },
+      {
+        level: 70,
+        enemies: [{ oldType: EaglemorphOne, newType: Boss7, count: 1 }],
+        toActivate: [Boss7],
+        pointsRequired: 35,
+        isBossCheck: false,
+      },
+      {
+        level: 71,
+        enemies: [{ oldType: BeetlemorphOne, newType: SquidmorphOne, count: 1 },
+                  { oldType: Boss7, newType: SquidmorphOne, count: 1 }],
+        toActivate: [SquidmorphOne, SquidmorphOne],
+        pointsRequired: 40,
         isBossCheck: true,
       },
     ];

@@ -20,9 +20,11 @@ class Boss {
     this.game = game;
     this.spriteWidth = 200;
     this.spriteHeight = 200;
+    const referenceWidth = 1920;
+    const scalingFactor = Math.min(Math.max(this.game.width / referenceWidth, 0.5), 1.5);
     this.sizeModifier = 1.5;
-    this.width = this.spriteWidth * this.sizeModifier;
-    this.height = this.spriteHeight * this.sizeModifier;
+    this.width = this.spriteWidth * this.sizeModifier * scalingFactor;
+    this.height = this.spriteHeight * this.sizeModifier * scalingFactor;
     this.x;
     this.y;
     this.speedX;

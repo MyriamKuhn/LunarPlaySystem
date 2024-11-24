@@ -26,14 +26,21 @@
   width: 3rem;
   height: 3rem;
   background: transparent;
-  color: white;
-  font-family: "Bangers", system-ui;
-  font-size: 2rem;
   border: 1px solid white;
+  font-size: 2rem;
   margin: 5px;
   box-shadow: 1px 1px 1px black;
   text-shadow: 1px 1px 1px black;
   transition: 0.3s;
+}
+
+/* Ajout d'une règle de mise à l'échelle dynamique */
+@media (max-width: 1024px) {
+  .controls > button {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
 }
 
 .controls > button:hover, .controls > button:active, .controls > button:focus {

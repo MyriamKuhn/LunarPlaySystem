@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Écouter les événements de clic et de toucher
     link.addEventListener('click', activateLink);
-    link.addEventListener('touchstart', activateLink); // Gérer les événements tactiles
+    link.addEventListener('touchstart', activateLink, { passive: false }); 
   });
 
   // Afficher les données de la première planète par défaut

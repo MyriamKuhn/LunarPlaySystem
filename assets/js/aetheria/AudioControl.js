@@ -40,4 +40,19 @@ export class AudioControl {
       this.volume = value;
     }
   }
+
+  /**
+  * Bascule le son entre muet et non muet
+   * @returns {number} - Niveau de volume entre 0 et 1
+   */
+  toggleMute() {
+    const volumeButton = document.getElementById('volumeButton');
+    if (this.volume === 0) {
+      this.volume = 0.3;
+      volumeButton.innerHTML = '🔊';
+    } else {
+      this.volume = 0;
+      volumeButton.innerHTML = '🔇';
+    }
+  }
 }

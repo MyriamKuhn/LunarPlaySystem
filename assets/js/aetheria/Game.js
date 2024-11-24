@@ -5,7 +5,6 @@
 /***********/
 import { BeetlemorphOne } from '/assets/js/aetheria/Beetlemorph.js';
 import { Projectile } from '/assets/js/aetheria/Projectile.js';
-import { SquidmorphOne } from '/assets/js/aetheria/Squidmorph.js';
 import { WaveManager } from '/assets/js/aetheria/WaveManager.js';
 import { AudioControl } from '/assets/js/aetheria/AudioControl.js'; 
 import { secureInput, securePlayername, sendScore, shuffleArray } from '/assets/js/utils.js';
@@ -17,6 +16,43 @@ import { secureInput, securePlayername, sendScore, shuffleArray } from '/assets/
 
 /*************/
 const lang = sessionStorage.getItem('lang') || document.querySelector('meta[name="language"]').getAttribute('content');
+
+const translations = {
+  'fr': {
+    'gameover': 'Aargh!',
+    'gameover2' : 'Tout votre équipage a été mangé !',
+    'run': 'Anéantissez les envahisseurs,',
+    'eaten': 'avant qu\'ils ne vous dévorent !',
+    'press': 'Appuyez sur "ENTRÉE" ou "R" pour commencer !',
+    'press2': 'Appuyez sur "ESPACE" ou "F" pour le plein écran !',
+    'press3': 'Appuyez sur "B" pour revenir au menu !',
+    'press4': 'Appuyez sur "M" pour activer/désactiver le son !',
+    'score': 'Score : ',
+  },
+  'en': {
+    'gameover': 'Aargh!',
+    'gameover2' : 'All your crew has been eaten!',
+    'run': 'Destroy the invaders,',
+    'eaten': 'before they eat you!',
+    'press': 'Press "ENTER" or "R" to start!',
+    'press2': 'Press "SPACE" or "F" for fullscreen!',
+    'press3': 'Press "B" to go back to the menu!',
+    'press4': 'Press "M" to toggle sound on/off!',
+    'score': 'Score: ',
+  },
+  'de': {
+    'gameover': 'Aargh!',
+    'gameover2' : 'Deine Crew wurde gefressen!',
+    'run': 'Zerstöre die Eindringlinge,',
+    'eaten': 'bevor sie dich fressen!',
+    'press': 'Drück "ENTER" oder "R", um zu beginnen!',
+    'press2': 'Drück "LEERTASTE" oder "F" für Vollbild!',
+    'press3': 'Drück "B", um zum Menü zurückzukehren!',
+    'press4': 'Drück "M", um den Ton ein-/auszuschalten!',
+    'score': 'Punkte: ',
+  },
+};
+    
 
 
 /*****************/
@@ -40,6 +76,7 @@ export class Game {
    * @property {WaveManager} waveManager - Le gestionnaire des vagues
    * @property {number} score - Le score du joueur
    * @property {number} scoreToCheck - Le score à vérifier
+   * @property {number} nextLevelScore - Le score pour passer au niveau suivant
    * @property {number} level - Le niveau du joueur
    * @property {number} lives - Le nombre de vies du joueur
    * @property {string} message1 - Le premier message
@@ -92,11 +129,15 @@ export class Game {
 
     this.score = 0;
     this.scoreToCheck = 0;
+    this.nextLevelScore = 0;
     this.level = 1;
     this.lives;
-    this.message1 = 'Run!';
-    this.message2 = 'Or get eaten!';
-    this.message3 = 'Press "ENTER" or "R" to start!';
+    this.message1 = translations[lang].run;
+    this.message2 = translations[lang].eaten;
+    this.message3 = translations[lang].press;
+    this.message4 = translations[lang].press2;
+    this.message5 = translations[lang].press3;
+    this.message6 = translations[lang].press4;
     this.crewImage = document.getElementById('crewSprite');
     this.crewMembers = [];
     this.gameOver = true;
@@ -123,25 +164,37 @@ export class Game {
     this.resetButton.addEventListener('click', e => {
       this.start();
     });
+    this.resetButton.addEventListener('touchend', e => {
+      e.preventDefault();
+      this.start();
+    }, { passive: false });
+
     this.fullScreenButton = document.getElementById('fullScreenButton');
     this.fullScreenButton.addEventListener('click', e => {
       this.toggleFullScreen();
     });
+    this.fullScreenButton.addEventListener('touchend', e => {
+      e.preventDefault();
+      this.toggleFullScreen();
+    }, { passive: false });
+
     this.backButton = document.getElementById('backButton');
     this.backButton.addEventListener('click', e => {
       window.location.href = '/' + lang + '/lunarplay/';
     });
+    this.backButton.addEventListener('touchend', e => {
+      e.preventDefault();
+      window.location.href = '/' + lang + '/lunarplay/';
+    }, { passive: false });
 
     this.volumeButton = document.getElementById('volumeButton');
     this.volumeButton.addEventListener('click', e => {
-      if (this.sound.volume === 0) {
-        this.sound.setVolume(0.3);
-        this.volumeButton.innerHTML = '🔊';
-      } else {
-        this.sound.setVolume(0);
-        this.volumeButton.innerHTML = '🔇'
-      };
+      this.sound.toggleMute();
     });
+    this.volumeButton.addEventListener('touchend', e => {
+      e.preventDefault();
+      this.sound.toggleMute();
+    }, { passive: false });
 
     window.addEventListener('resize', e => {
       this.resize(e.target.innerWidth, e.target.innerHeight);
@@ -160,23 +213,22 @@ export class Game {
       this.mouse.x = e.x;
       this.mouse.y = e.y;
       this.mouse.pressed = false;
-    });
+    }, { passive: false });
 
     window.addEventListener('touchstart', e => {
       e.preventDefault();
-      console.log(e);
       this.mouse.x = e.changedTouches[0].pageX;
       this.mouse.y = e.changedTouches[0].pageY;
       this.mouse.pressed = true;
       this.mouse.fired = false;
-    });
+    }, { passive: false });
 
     window.addEventListener('touchend', e => {
       e.preventDefault();
       this.mouse.x = e.changedTouches[0].pageX;
       this.mouse.y = e.changedTouches[0].pageY;
       this.mouse.pressed = false;
-    });
+    }, { passive: false });
     
     window.addEventListener('keyup', e => {
       if (e.key === 'Enter' || e.key.toLowerCase() === 'r') {
@@ -187,6 +239,8 @@ export class Game {
         window.location.href = '/' + lang + '/lunarplay/';
       } else if (e.key.toLowerCase() === 'd') {
         this.debug = !this.debug;
+      } else if (e.key.toLowerCase() === 'm') {
+        this.sound.toggleMute();
       }
     });
   }
@@ -202,6 +256,7 @@ export class Game {
     this.level = 1;
     this.generateCrew();
     this.gameOver = false;
+    this.nextLevelScore = this.scoreToCheck + this.waveManager.getPointsRequired(this.level);
     this.enemyPool.forEach(enemy => {
       enemy.reset();
     });
@@ -266,7 +321,7 @@ export class Game {
 
   createEnemyPool() {
     for (let i = 0; i < this.numberOfEnemies; i++) {
-      this.enemyPool.push(new SquidmorphOne(this));
+      this.enemyPool.push(new BeetlemorphOne(this));
     }
   }
 
@@ -323,8 +378,8 @@ export class Game {
           this.enemyPool.forEach(enemy => {
             enemy.reset();
           });
-          this.message1 = 'Aargh!';
-          this.message2 = 'The crew was eaten!';
+          this.message1 = translations[lang].gameover;
+          this.message2 = translations[lang].gameover2;
           this.sound.play(this.sound.lose);
           return;
         }
@@ -334,8 +389,8 @@ export class Game {
       this.enemyPool.forEach(enemy => {
         enemy.reset();
       });
-      this.message1 = 'Aargh!';
-      this.message2 = 'The crew was eaten!';
+      this.message1 = translations[lang].gameover;
+      this.message2 = translations[lang].gameover2;
       this.sound.play(this.sound.lose);
     }
   }
@@ -343,6 +398,12 @@ export class Game {
 
   triggerNextLevel(level) {
     this.level++;
+    if (this.level === 82) {
+      this.level = 1;
+      this.enemyInterval -= 100;
+    } 
+      
+    this.nextLevelScore = this.scoreToCheck + this.waveManager.getPointsRequired(this.level);
     const currentWave = this.waveManager.getWaveEnemies(level);
       
     // Remplacement des ennemis dans le pool
@@ -368,9 +429,9 @@ export class Game {
     // Mise à jour du boss si c'est un boss
     this.isBossDead = false;
 
-    console.log('Ennemis:', this.enemyPool);
-    console.log('Vague activée :', currentWave);
-    console.log('Niveau:', this.level);
+    //console.log('Ennemis:', this.enemyPool);
+    //console.log('Vague activée :', currentWave);
+    //console.log('Niveau:', this.level);
   }
   
   
@@ -391,44 +452,86 @@ export class Game {
   }
 
   drawStatusText() {
+    // Calcul de la taille de la police en fonction de la largeur de l'écran
+    const referenceWidth = 1920;
+    const scalingFactor = Math.min(Math.max(referenceWidth / this.width, 0.8), 1.3);
+    const baseFontSize = Math.min(this.width, this.height) / 20;  
+    const dynamicFontSize = baseFontSize * scalingFactor;
+
+    const smallFontSize = dynamicFontSize / 1.5;
+
+    // Calcul de l'espacement entre les lignes de texte, relatif à la taille de la police
+    const lineSpacing = dynamicFontSize * 1.2; 
+    const lineSpacingSmall = smallFontSize * 1.2; 
+
     if (this.gameOver) {
       this.ctx.save();
       this.ctx.textAlign = 'center';
-      this.ctx.font = '80px Bangers';
-      this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.5 - 25);
-      this.ctx.font = '20px Bangers';
-      this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.5 + 25);
-      this.ctx.fillText(this.message3, this.width * 0.5, this.height * 0.5 + 50);
+
+      // Ajustement de la taille de la police pour les messages principaux
+      this.ctx.font = `${dynamicFontSize}px Bangers`;
+      this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.5 - lineSpacing);
+      this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.5);
+
+      // Ajustement de la taille de la police pour les messages secondaires
+      this.ctx.font = `${smallFontSize}px Bangers`;
+      this.ctx.fillText(this.message3, this.width * 0.5, this.height * 0.5 + lineSpacingSmall * 2);
+      this.ctx.fillText(this.message4, this.width * 0.5, this.height * 0.5 + lineSpacingSmall * 3);
+      this.ctx.fillText(this.message5, this.width * 0.5, this.height * 0.5 + lineSpacingSmall * 4);
+      this.ctx.fillText(this.message6, this.width * 0.5, this.height * 0.5 + lineSpacingSmall * 5);
+
       this.ctx.restore();
     }
+
+    // Affichage du score et des vies, positionné en haut à gauche
     this.ctx.save();
     this.ctx.textAlign = 'left';
-    this.ctx.fillText('Score: ' + this.score, 20, 40);
+    this.ctx.font = `${dynamicFontSize}px Bangers`;  // Petite taille pour le score et les vies
+    this.ctx.fillText(translations[lang].score + ' ' + this.score, 20, lineSpacing);
+
+    // Affichage des vies restantes de l'équipage
     for (let i = 0; i < this.lives; i++) {
-      const w = 20;
-      const h = 45;
-      this.ctx.drawImage(this.crewImage, w * this.crewMembers[i].frameX, h * this.crewMembers[i].frameY, w, h, 20 + i * 16, 60, w, h);
+      const imageWidth = 20;
+      const imageHeight = 45;
+
+      // Appliquer le facteur de mise à l'échelle uniquement aux dimensions de l'image
+      const scalingFactorPics = Math.min(Math.max(this.width / referenceWidth, 0.5), 2.5);
+      const w = imageWidth * scalingFactorPics;
+      const h = imageHeight * scalingFactorPics;
+
+      // Dessiner l'image avec la taille ajustée, mais garder la position et les dimensions d'origine pour l'image source
+      const spacing = 16 * scalingFactorPics;  // Ajuster l'espacement entre les coéquipiers
+      this.ctx.drawImage(this.crewImage, 
+        this.crewMembers[i].frameX * imageWidth, 
+        this.crewMembers[i].frameY * imageHeight, 
+        imageWidth, 
+        imageHeight, 
+        20 + i * spacing, 
+        lineSpacing + lineSpacingSmall, 
+        w, 
+        h
+      );
     }
 
-    // Affiche le message de fin de jeu et enregistre le score si le joueur n'a plus de vies
+    // Affichage du message de fin de jeu si les vies sont épuisées
     if (this.lives < 1) {
       this.triggerGameOver();
     }
 
-    // Vérifie si le niveau a un boss check et si il est bien tué
+    // Vérification du boss et passage au niveau suivant
     if (this.waveManager.getIsBossCheck(this.level) && !this.isBossDead) {
       return;
     }
 
-    const nextLevelScore = this.scoreToCheck + this.waveManager.getPointsRequired(this.level);
-    // Passe au niveau suivant lorsque le score est suffisant
-      if (nextLevelScore <= this.score) {
+      // Passage au niveau suivant lorsque le score est suffisant
+      if (this.nextLevelScore <= this.score) {
       this.triggerNextLevel(this.level); 
       this.scoreToCheck = this.score;
-      console.log('Score mémorisé:', this.scoreToCheck);
-      console.log('Points requis:', this.waveManager.getPointsRequired(this.level));
-      console.log('Score requis:', nextLevelScore);
+      //console.log('Score mémorisé:', this.scoreToCheck);
+      //console.log('Points requis:', this.waveManager.getPointsRequired(this.level));
+      //console.log('Score requis:', this.nextLevelScore);
     }
+
     this.ctx.restore();
   }
 

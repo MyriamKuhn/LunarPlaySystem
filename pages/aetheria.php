@@ -51,9 +51,9 @@ if (!isset($_SESSION['playername'])) {
 	<canvas id="canvas1"></canvas>
 
   <div class="controls">
-    <button id="fullScreenButton">F</button>
-    <button id="resetButton">R</button>
-    <button id="backButton">B</button>
+    <button id="fullScreenButton">💻</button>
+    <button id="resetButton">⚔️</button>
+    <button id="backButton">👈</button>
 		<button id="volumeButton">🔊</button>
   </div>
 
