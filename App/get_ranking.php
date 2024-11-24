@@ -36,30 +36,22 @@ try {
 
   // Récupérer la planète depuis la requête POST
   $data = json_decode(file_get_contents('php://input'), true);
+  if (json_last_error() !== JSON_ERROR_NONE) {
+    Security::sendResponse(false, 'Données JSON invalides.', 400);
+    exit;
+  }
   $planet = Security::secureInput($data['planet']);
 
   // Obtenir les classements
   $rankings = $generalRepository->getRanking($planet);
 
-  // Définir les colonnes dynamiquement, ici en supposant qu'elles sont toujours les mêmes
-  $columns = ['Position', 'Joueur', 'Score'];
-  $rows = [];
-
-  // Préparer les lignes pour la réponse
-  foreach ($rankings as $ranking) {
-    $rows[] = [
-        'Position' => Security::secureInput($ranking['place']),
-        'Joueur' => Security::secureInput($ranking['player_name']),
-        'Score' => Security::secureInput($ranking['score']),
-    ];
-  }
-
-  if (empty($rows)) {
+  if (empty($rankings)) {
     Security::sendResponse(false, 'Aucun classement trouvé pour cette planète.', 404);
   } else {
-    Security::sendResponse(true, ['columns' => $columns, 'rows' => $rows]);
+    Security::sendResponse(true, $rankings, 200);
   }
-
+} catch (Throwable $t) {
+  Security::sendResponse(false, $t->getMessage(), 500);
 } catch (Exception $e) {
   Security::sendResponse(false, $e->getMessage(), 500);
 }

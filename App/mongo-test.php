@@ -4,9 +4,7 @@
 require_once __DIR__.'/../Autoload.php';
 Autoload::register();
 
-use Repository\GeneralRepository;
+use App\Repository\GeneralRepository;
 
 $generalRepository = new GeneralRepository();
-$collection = $generalRepository->getRanking('lunarplay');
-
-var_dump($collection);
+$collection = $generalRepository->addScore('aetheria', 'Mimi', 20);

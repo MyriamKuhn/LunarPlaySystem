@@ -9,6 +9,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
 ?>
 
+
 <!DOCTYPE html>
 <html lang="<?= Security::secureInput($lang) ?>">
 
@@ -16,8 +17,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- CSRF Token -->
-	<meta name="csrf-token" content="<?= $_SESSION['csrf_token']; ?>">
+	<meta name="author" content="LunarPlay System">
 	<!-- Meta pour les langues -->
 	<link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/fr/ignisfera/' ?>" hreflang="fr" />
 	<link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/en/ignisfera/' ?>" hreflang="en" />
@@ -25,46 +25,58 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<link rel="canonical" href="<?= $requestScheme . '://' . $serverName . '/' . Security::secureInput($lang) . '/ignisfera/' ?>" />
 	<link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/en/ignisfera/' ?>" hreflang="x-default" />
 	<!-- Meta pour le SEO -->
-	<meta name="author" content="LunarPlay System">
-	<meta name="description" content="<?= Security::secureInput($translations['ignisfera_description']) ?>" />
-	<meta property="og:title" content="<?= Security::secureInput($translations['ignisfera_title']) ?>">
-	<meta property="og:description" content="<?= Security::secureInput($translations['ignisfera_description']) ?>">
+	<meta name="description" content="<?= Security::secureInput($translations['under_construction_description']) ?>" />
+	<meta property="og:title" content="<?= Security::secureInput($translations['under_construction_title']) ?>">
+	<meta property="og:description" content="<?= Security::secureInput($translations['under_construction_description']) ?>">
 	<meta property="og:image" content="/assets/logo/logo_big.svg">
-	<meta name="keywords" content="<?= Security::secureInput($translations['ignisfera_keywords']) ?>" />
-	<title><?= Security::secureInput($translations['ignisfera_title']) ?></title>
+	<meta name="keywords" content="<?= Security::secureInput($translations['under_construction_keywords']) ?>" />
+	<title><?= Security::secureInput($translations['under_construction_title']) ?></title>
 	<link rel="shortcut icon" href="/assets/logo/logo_small.svg" type="image/svg+xml">
+	<!-- Google Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 	<!-- Stylesheet -->
-	<link rel="stylesheet" href="/assets/css/ignisfera.css" />
+	<link rel="stylesheet" href="/assets/css/construction.css" />
 </head>
 
 <body>
-	<canvas id="canvas1"></canvas>
-	<img src="/assets/img/ignisfera/beetlemorph.png" id="beetlemorph">
-	<img src="/assets/img/ignisfera/rhinomorph.png" id="rhinomorph">
-	<img src="/assets/img/ignisfera/squidmorph.png" id="squidmorph">
-	<img src="/assets/img/ignisfera/eaglemorph.png" id="eaglemorph">
-	<img src="/assets/img/ignisfera/lobstermorph.png" id="lobstermorph">
-	<img src="/assets/img/ignisfera/enemyProjectile.png" id="enemyProjectile">
-	<img src="/assets/img/ignisfera/boss.png" id="boss">
-	<img src="/assets/img/ignisfera/boss8.png" id="boss8">
-	<img src="/assets/img/ignisfera/player.png" id="player">
-	<img src="/assets/img/ignisfera/player_jets.png" id="player_jets">
-				
-				
-
-				<div class="btn-div">
-					<a href="/<?= Security::secureInput($lang) ?>/lunarplay/" class="button" id="start-button"><?= Security::secureInput($translations['return_lunar']) ?></a>
-				</div>
-			
-		
+	<!-- Background -->
+	<div class="background"></div>
+	<!-- START : Wrapper -->
+	<div class="wrapper">
+		<!-- START : Container -->
+		<div class="container">
+			<!-- START : Header -->
+			<header class="header">
+				<img src="/assets/logo/logo_small.svg" alt="Logo de LunarPlay System" width="100">
+				<h1 class="main-title"><?= Security::secureInput($translations['under_construction']) ?></h1>
+				<img src="/assets/logo/logo_small.svg" alt="Logo de LunarPlay System" width="100">
+			</header>
+			<!-- END : Header -->
+			<!-- START : Main -->
+			<main class="main">
+				<section class="section">
+					<p><?= Security::secureInput($translations['under_construction_description']) ?></p>
+					<div class="btn-div">
+						<a href="/<?= Security::secureInput($lang) ?>/lunarplay/" class="button" id="start-button"><?= Security::secureInput($translations['return_lunar']) ?></a>
+					</div>
+				</section>
+			</main>
+			<!-- END : Main -->
+		</div>
+		<!-- END : Container -->
 		<!-- START : Footer -->
 		<footer class="footer">
-			<p><?= Security::secureInput($translations['footer']) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
-		</footer>
+      <p><?= html_entity_decode(Security::secureInput($translations['footer'])) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
+    </footer>
 		<!-- END : Footer -->
+	</div>
+	<!-- END : Wrapper -->
 
 	<!-- Scripts -->
-	<script type="module" src="/assets/js/ignisfera.js"></script>
+	<script type="module" src="/assets/js/construction.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  cursor: url('/assets/img/cur1054.cur'), default;
+}
+
+#canvas1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  background: url('/assets/img/aetheria/background1920x1080.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.controls {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.controls.hidden {
+  display: none;
+}
+
+.controls > button {
+  width: 3rem;
+  height: 3rem;
+  cursor: url('/assets/img/cur1051.cur'), pointer;
+  background: transparent;
+  border: 1px solid white;
+  font-size: 2rem;
+  margin: 5px;
+  box-shadow: 1px 1px 1px black;
+  text-shadow: 1px 1px 1px black;
+  transition: 0.3s;
+}
+
+/* Ajout d'une règle de mise à l'échelle dynamique */
+@media (max-width: 1024px) {
+  .controls > button {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+}
+
+.controls > button:hover, .controls > button:active, .controls > button:focus {
+  background: #7a2c8a;
+  box-shadow: 4px 4px 4px black;
+  text-shadow: 4px 4px 4px black;
+}
+
+.assets {
+  display: none;
+}
+
+@media screen and (max-width: 900px) {
+  #canvas1 {
+    background: url('/assets/img/aetheria/background1080x1920.png');
+    background-size: cover;
+    background-position: center;
+  }
+  
+}

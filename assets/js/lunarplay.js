@@ -29,7 +29,7 @@ let solaris,
 let mouse = new THREE.Vector2();
 let raycaster = new THREE.Raycaster();
 let isPaused = false;
-const storedLanguage = sessionStorage.getItem('lang') || initialLanguage;
+const storedLanguage = sessionStorage.getItem('lang') || document.querySelector('meta[name="language"]').getAttribute('content');
 const planetStories = descriptions[storedLanguage];
 
 /*************************/
@@ -53,6 +53,10 @@ THREE.DefaultLoadingManager.onProgress = function (
 // Fin du chargement
 THREE.DefaultLoadingManager.onLoad = function () {
   containerProgressBar.style.display = 'none';
+  // Lancement du premier message d'information
+  if (sessionStorage.getItem('starting') === 'true') {
+    showPlanetInfo('', true);
+  }
 };
 // Erreur de chargement
 THREE.DefaultLoadingManager.onError = function (url) {
@@ -297,8 +301,7 @@ function animate() {
   renderer.render(scene, camera);
 }
 // Lancement de l'animation
-renderer.setAnimationLoop(animate) 
-
+renderer.setAnimationLoop(animate);
 
 /********************/
 
@@ -310,21 +313,43 @@ renderer.setAnimationLoop(animate)
  * 
  * @description Fonction pour afficher les infos de la planète
  */
-const showPlanetInfo = (planetName) => {
+const showPlanetInfo = (planetName, isStart = false) => {
   const infoBox = document.getElementById('planet-info');
   const playBtn = document.getElementById('play-game-button');
+  const accessBtn = document.getElementById('access-game-button');
+
+  // Si c'est au démarrage
+  if (isStart) {
+    sessionStorage.setItem('starting', 'false');
+    // Mettre à jour les informations générales
+    document.getElementById('planet-name').textContent = sessionStorage.getItem('playername');
+    document.getElementById('planet-story-1').textContent = planetStories['welcome']['intro'] + ' ' + sessionStorage.getItem('playername') + '!';
+    document.getElementById('planet-story-2').textContent = planetStories['welcome']['desc'];
+    playBtn.classList.add('hidden');
+    accessBtn.classList.remove('hidden');
+    // Afficher les informations
+    infoBox.classList.remove('hidden');
+    isPaused = true;
+    // Au clic sur le bouton de lecture
+    playBtn.onclick = () => {
+      infoBox.classList.add('hidden');
+      isPaused = false;
+    }
+    return;
+  }
 
   // Si aucune planète n'est sélectionnée
   if (!planetName) {
     infoBox.classList.add('hidden');
     isPaused = false;
     return;
-
   } else {
     // Mettre à jour les informations de la planète
     document.getElementById('planet-name').textContent = planetName;
-    document.getElementById('planet-story-1').textContent = planetStories[planetName]['intro'] || 'Histoire non disponible.';
-    document.getElementById('planet-story-2').textContent = planetStories[planetName]['desc'] || 'Histoire non disponible.';
+    document.getElementById('planet-story-1').textContent = planetStories[planetName]['intro'];
+    document.getElementById('planet-story-2').textContent = planetStories[planetName]['desc'];
+    playBtn.classList.remove('hidden');
+    accessBtn.classList.add('hidden');
 
     playBtn.href = `/${storedLanguage}/${planetName}/`;
 

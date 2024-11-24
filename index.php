@@ -9,11 +9,6 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
 ?>
 
-<script>
-  const initialLanguage = '<?= Security::secureInput($_SESSION['lang'] ?? 'en') ?>';
-  sessionStorage.setItem('lang', initialLanguage); // Stocke la langue dans sessionStorage
-</script>
-
 <!DOCTYPE html>
 <html lang="<?= Security::secureInput($lang) ?>">
 <head>
@@ -21,6 +16,8 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="LunarPlay System">
+  <meta name="csrf-token" content="<?= $_SESSION['csrf_token']; ?>">
+  <meta name="language" content="<?= Security::secureInput($_SESSION['lang'] ?? 'en') ?>">
   <!-- Meta pour les langues -->
   <link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/fr/' ?>" hreflang="fr" />
   <link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/en/' ?>" hreflang="en" />
@@ -35,6 +32,11 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
   <meta name="keywords" content="<?= Security::secureInput($translations['index_keywords']) ?>" />
   <title><?= Security::secureInput($translations['index_title']) ?></title>
   <link rel="shortcut icon" href="/assets/logo/logo_small.svg" type="image/svg+xml">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <!-- Stylesheet -->
   <link rel="stylesheet" href="/assets/css/index.css" />
   <link rel="stylesheet" href="/assets/css/flags.css" />
@@ -82,7 +84,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
           <p><?= Security::secureInput($translations['main_description_6']) ?></p>
         </div>
         <div>
-          <a href="/<?= Security::secureInput($lang) ?>/lunarplay/" class="button" id="start-button"><?= Security::secureInput($translations['start_button']) ?></a>
+          <a href="/<?= (empty($_SESSION['playername'])) ? Security::secureInput($lang) . '/player/' : Security::secureInput($lang) . '/lunarplay/' ?>" class="button" id="start-button"><?= Security::secureInput($translations['start_button']) ?></a>
         </div>
         <div class="info">
           <h2 class="info-title"><?= Security::secureInput($translations['info_title']) ?></h2>
@@ -102,7 +104,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
     <!-- END : Container -->
     <!-- START : Footer -->
       <footer class="footer">
-        <p><?= Security::secureInput($translations['footer']) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
+        <p><?= html_entity_decode(Security::secureInput($translations['footer'])) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
       </footer>
     <!-- END : Footer -->
   </div>

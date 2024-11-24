@@ -8,6 +8,7 @@ RewriteRule ^en/?$ /index.php?lang=en [L,QSA]
 
 # Redirection des URLs vers le fichier PHP correspondant
 RewriteRule ^(fr|en|de)/legal/?$ /pages/legal.php?lang=$1 [L,QSA]
+RewriteRule ^(fr|en|de)/player/?$ /pages/player.php?lang=$1 [L,QSA]
 RewriteRule ^(fr|en|de)/lunarplay/?$ /pages/lunarplay.php?lang=$1 [L,QSA]
 RewriteRule ^(fr|en|de)/solaris/?$ /pages/solaris.php?lang=$1 [L,QSA]
 RewriteRule ^(fr|en|de)/aetheria/?$ /pages/aetheria.php?lang=$1 [L,QSA]
@@ -32,5 +33,5 @@ RewriteRule ^(fr|en|de)/ringuara/?$ /pages/ringuara.php?lang=$1 [L,QSA]
 </Files>
 
 <IfModule mod_headers.c>
-Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.datatables.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.datatables.net/v/bs5/jq-3.7.0/jszip-3.10.1/dt-2.1.7/b-3.1.2/b-html5-3.1.2/r-3.0.3/datatables.min.css; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
+Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.datatables.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.datatables.net/v/dt/dt-2.1.8/r-3.0.3/sb-1.8.1/sp-2.3.3/datatables.min.css https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
 </IfModule>

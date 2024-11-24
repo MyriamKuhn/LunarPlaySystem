@@ -5,9 +5,9 @@ export const descriptions = {
       desc: "C'est ici que vous trouverez les classements des joueurs, tant pour les différents jeux que pour le score global, faisant de Solaris le pivot central de la compétition. Représentant à la fois la sécurité et un défi constant, Solaris est le point de départ des grandes explorations et aventures, attirant tous ceux qui cherchent à prouver leur valeur dans cet univers captivant.",
     },
     aetheria: {
-      intro: "Perdue dans un océan de nuages épais et de vapeurs brûlantes, Aetheria est la planète la plus énigmatique du système de LunarPlay. Enveloppée d'une brume mystique, elle dévoile parfois, à travers les nuées, des paysages d'une rare beauté. Sur cette terre volcanique et instable, les explorateurs intrépides découvrent des plaines de cendres et des formations rocheuses uniques, sculptées par des millénaires d'activité volcanique. Mais attention, l'atmosphère dense d'Aetheria est loin d'être accueillante : des gaz toxiques flottent dans l'air, les températures sont suffocantes, et les créatures qui y vivent ont évolué pour prospérer dans ces conditions extrêmes.",
-      desc: "Sur Aetheria, seuls les plus courageux s'aventurent dans les dédales de cette planète aux multiples pièges. Dans Mission Aetheria, vous devrez naviguer à travers des zones de danger, en détectant et en évitant les poches de gaz toxiques et les éruptions de chaleur. À chaque pas, le terrain cache un danger potentiel : l'anticipation et la stratégie sont essentielles pour survivre dans cette contrée aussi belle qu'imprévisible.",
-      game: "Mission Aetheria",
+      intro: "Aetheria, planète énigmatique du système LunarPlay, flotte au cœur d'un océan violet de nuages épais et de vapeurs brûlantes. Couverte d'une brume mystique, ses paysages sont d'une beauté étrange, dissimulés sous une couverture volcanique où le sol tremble sous l'effet des éruptions constantes. En dépit de sa beauté cachée, Aetheria est un terrain de survie impitoyable : des gaz toxiques flottent dans l'air, des températures étouffantes règnent, et des créatures redoutables ont évolué pour prospérer dans cet environnement hostile.",
+      desc: "Sur Aetheria, la survie dépend de votre rapidité et de vos réflexes. Dans Aetherian Rift, vous incarnez un membre d'une équipe d'explorateurs dont la mission est de repousser les Aetheriens qui tombent du ciel. À chaque clic, vous devez les faire exploser avant qu'ils n'atteignent le bas de l'écran et ne dévorent un de vos coéquipiers. Chaque Aetherien éliminé est un pas de plus vers la victoire, mais attention, si un Aetherien Boss atteint le bas de l'écran, il engloutira tous vos coéquipiers restants d'un seul coup, mettant fin à la mission. La partie s'arrête une fois que les dix coéquipiers ont été dévorés. Restez vigilants et agissez vite pour sauver l'équipe !",
+      game: "Aetherian Rift"
     },
     aqualis: {
       intro: "Éclatante de nuances bleues et vertes, Aqualis est une planète à l'atmosphère aussi envoûtante qu'intrigante. Elle fascine par ses tempêtes atmosphériques colorées et ses vastes océans de méthane liquide, créant un spectacle de couleurs et de mouvements uniques dans tout le système. Inclinée de manière atypique, la planète connaît des saisons intenses, où ses paysages évoluent constamment sous l'effet de forces naturelles impressionnantes. Aqualis abrite aussi des écosystèmes sous-marins vibrants, peuplés de créatures fascinantes et de courants marins puissants, où seuls les plus habiles peuvent naviguer sans risquer de se perdre.",
@@ -21,8 +21,8 @@ export const descriptions = {
     },
     elythium: {
       intro: "Avec ses forêts flottantes et sa flore lumineuse, Elythium est un véritable paradis naturel, rappelant la Terre mais baigné d'une touche de magie et d'exotisme. Ce monde est riche en biodiversité, abritant des écosystèmes variés allant des océans scintillants aux montagnes imposantes, peuplés de créatures étranges et de végétation bioluminescente. La vie y prospère dans un cadre où chaque plante et chaque créature semble émettre sa propre lumière, rendant Elythium aussi accueillante que mystérieuse. C'est une planète qui évoque la beauté de la Terre, mais dans un décor enchanté et futuriste.",
-      desc: "Dans Gardien d'Elythium, prenez soin d'une créature unique d'Elythium, dans un environnement où la magie de la planète se reflète dans chaque interaction. Nourrissez, soignez, et faites évoluer votre compagnon alien dans ce monde paradisiaque, en tirant parti des ressources locales comme les plantes lumineuses et les forêts flottantes. Votre créature réagira à son environnement magique et s'adaptera, créant une expérience captivante et pleine de découvertes.",
-      game: "Gardien d'Elythium",
+      desc: "Dans Défenseur d'Elythium, incarnez un pilote de navette spatiale stationné en orbite autour d'Elythium pour protéger ce monde enchanteur. Les envahisseurs attaquent de toutes parts, et votre mission est d'éliminer chaque menace avant qu'elle n'atteigne la surface de la planète. Votre vaisseau est ancré à Elythium et tourne autour de celle-ci, vous permettant de repousser les ennemis venant de tous les côtés. Préparez-vous à une lutte intense pour la survie de cette planète, où chaque attaque nécessite de la précision et des réflexes pour préserver la magie d'Elythium.",
+      game: "Défenseur d'Elythium",
     },
     goliathor: {
       intro: "Imposante et majestueuse, Goliathor est une planète gazeuse aux proportions titanesques, un véritable gardien dans le système. Sa puissante atmosphère est parcourue de tempêtes monumentales et d'anneaux majestueux qui scintillent dans le ciel. Les cyclones géants et les vents violents forment un terrain difficile et imprévisible pour quiconque s'aventure dans ses nuées. Des formes de vie exotiques, adaptées aux conditions extrêmes, dérivent entre les couches nuageuses, et certaines régions de l'atmosphère abritent d'étranges colonies flottantes qui évoluent au gré des tempêtes de Goliathor. La planète inspire à la fois respect et fascination par sa puissance mythique.",
@@ -31,8 +31,8 @@ export const descriptions = {
     },
     ignisfera: {
       intro: "La planète la plus proche de Solaris, Ignisfera est un monde de feu et de flammes, où la chaleur extrême façonne des paysages aussi magnifiques qu'hostiles. Des montagnes incandescentes aux mers de lave en fusion, cette planète est un véritable test d'endurance pour tout explorateur audacieux. Les jours y sont interminables, baignés d'une lumière intense qui reflète l'aspect brûlant de son environnement. Seules les créatures les plus résistantes peuvent survivre dans ce fourneau planétaire, où le moindre pas peut devenir un défi face aux éruptions et rivières de magma qui serpentent la surface.",
-      desc: "Dans Défense d'Ignisfera, vous devrez affronter des vagues d'envahisseurs extraterrestres menaçant de ravager encore plus la surface ardente de cette planète. À partir de votre base de tir, repoussez les attaques sous une pluie de cendres et de feu, où chaque tir compte dans la défense d'Ignisfera. Ce combat stratégique au cœur des éléments extrêmes promet une expérience intense, immergée dans un décor brûlant et impitoyable.",
-      game: "Défense d'Ignisfera",
+      desc: "Dans Gardien d'Ignisfera, vous devrez affronter des vagues d'envahisseurs extraterrestres menaçant de ravager encore plus la surface ardente de cette planète. À partir de votre base de tir, repoussez les attaques sous une pluie de cendres et de feu, où chaque tir compte dans la défense d'Ignisfera. Ce combat stratégique au cœur des éléments extrêmes promet une expérience intense, immergée dans un décor brûlant et impitoyable.",
+      game: "Gardien d'Ignisfera",
     },
     lunara: {
       intro: "Mystérieuse et envoûtante, Lunara est une lune au paysage contrasté, qui influence les marées et les saisons des planètes environnantes. Avec ses cratères anciens et ses vallées luxuriantes, elle fascine tous ceux qui l'observent. Des formations rocheuses uniques, des cavernes dissimulant des cristaux luminescents et des créatures nocturnes peuplent sa surface, ajoutant à son aura de mystère. Lors des éclipses lunaires, des auréoles lumineuses illuminent Lunara d'une lumière magique, offrant un spectacle à couper le souffle.",
@@ -58,6 +58,18 @@ export const descriptions = {
       desc: "C'est vous le meilleur joueur de LunarPlay ? Découvrez votre classement et celui des autres joueurs pour tous les jeux.",
       game: "LunarPlay",
     },
+    welcome: {
+      intro: "Bienvenue dans le système LunarPlay,",
+      desc: "Choisissez une planète pour commencer votre voyage ou explorez le système LunarPlay pour voir comment vous vous classez parmi les autres joueurs. Que les étoiles vous guident dans votre quête !",
+    },
+    info: {
+      pagination: "Afficher _MENU_ entrées par page",
+      zeroRecords: "Aucun enregistrement trouvé",
+      search: "Rechercher :",
+      rank: "Rang",
+      playername: "Pseudo",
+      score: "Score",
+    },
   },
   en: {
     solaris: {
@@ -65,9 +77,9 @@ export const descriptions = {
       desc: "This is where you'll find player rankings, both for individual games and overall scores, making Solaris the central hub of the competition. Representing both security and constant challenge, Solaris is the starting point for great exploration and adventure, attracting all those seeking to prove their worth in this captivating universe.",
     },
     aetheria: {
-      intro: "Lost in an ocean of thick clouds and burning vapors, Aetheria is the most enigmatic planet in the LunarPlay system. Wrapped in a mystical mist, it sometimes reveals landscapes of rare beauty through the clouds. In this volcanic and unstable land, intrepid explorers discover plains of ash and unique rock formations, sculpted by millennia of volcanic activity. But be warned, Aetheria's dense atmosphere is far from welcoming: toxic gases float in the air, temperatures are suffocating, and the creatures that live there have evolved to thrive in these extreme conditions.",
-      desc: "On Aetheria, only the bravest venture into the maze of this planet full of traps. In Mission Aetheria, you'll have to navigate through danger zones, detecting and avoiding pockets of toxic gas and heat eruptions. At every step, the terrain conceals a potential danger: anticipation and strategy are essential for survival in this land as beautiful as it is unpredictable.",
-      game: "Mission Aetheria",
+      intro: "Aetheria, an enigmatic planet in the LunarPlay system, floats at the heart of a purple ocean of thick clouds and burning vapors. Covered in a mystical haze, its landscapes are strangely beautiful, hidden beneath a volcanic blanket where the ground trembles from constant eruptions. Despite its hidden beauty, Aetheria is a ruthless terrain for survival: toxic gases float in the air, stifling temperatures reign, and fearsome creatures have evolved to thrive in this hostile environment.",
+      desc: "O,n Aetheria, survival depends on your speed and reflexes. In Aetherian Rift, you play a member of a team of explorers whose mission is to fend off the Aetherians falling from the sky. With each click, you must blast them away before they reach the bottom of the screen and devour one of your teammates. Each Aetherian eliminated is a step closer to victory, but beware: if a Boss Aetherian reaches the bottom of the screen, it will engulf all your remaining teammates in one fell swoop, ending the mission. The game ends once all ten teammates have been devoured. Stay alert and act fast to save the team!",
+      game: "Aetherian Rift",
     },
     aqualis: {
       intro: "Dazzling in shades of blue and green, Aqualis is a planet with an atmosphere as bewitching as it is intriguing. It fascinates with its colorful atmospheric storms and vast oceans of liquid methane, creating a spectacle of color and movement unique in the entire system. Atypically inclined, the planet experiences intense seasons, where its landscapes constantly evolve under the effect of impressive natural forces. Aqualis is also home to vibrant underwater ecosystems, populated by fascinating creatures and powerful ocean currents, where only the most skilful can navigate without risking getting lost.",
@@ -81,8 +93,8 @@ export const descriptions = {
     },
     elythium: {
       intro: "With its floating forests and luminous flora, Elythium is a veritable natural paradise, reminiscent of Earth but bathed in a touch of magic and exoticism. This world is rich in biodiversity, home to a variety of ecosystems ranging from sparkling oceans to towering mountains, populated by strange creatures and bioluminescent vegetation. Life thrives in a setting where every plant and creature seems to emit its own light, making Elythium as welcoming as it is mysterious. It's a planet that evokes the beauty of Earth, but in an enchanted, futuristic setting.",
-      desc: "In Elythium Guardian, care for a unique creature from Elythium, in an environment where the planet's magic is reflected in every interaction. Nourish, heal and evolve your alien companion in this paradise world, taking advantage of local resources such as luminous plants and floating forests. Your creature will react and adapt to its magical environment, creating a captivating experience full of discovery.",
-      game: "Elythium Guardian",
+      desc: "In Defender of Elythium, take on the role of a space shuttle pilot stationed in orbit around Elythium to protect this enchanting world. Invaders are attacking from all sides, and your mission is to eliminate each threat before it reaches the planet's surface. Your ship is anchored in Elythium and revolves around it, allowing you to fend off enemies from all sides. Prepare for an intense struggle for survival on this planet, where every attack requires precision and reflexes to preserve Elythium's magic.",
+      game: "Defender of Elythium",
     },
     goliathor: {
       intro: "Imposing and majestic, Goliathor is a gaseous planet of titanic proportions, a veritable guardian in the system. Its powerful atmosphere is punctuated by monumental storms and majestic rings that glitter in the sky. Giant cyclones and violent winds make for difficult and unpredictable terrain for anyone venturing into its clouds. Exotic forms of life, adapted to extreme conditions, drift between the cloud layers, and certain regions of the atmosphere are home to strange floating colonies that evolve with Goliathor's storms. The planet inspires both respect and fascination with its mythical power.",
@@ -91,8 +103,8 @@ export const descriptions = {
     },
     ignisfera: {
       intro: "The closest planet to Solaris, Ignisfera is a world of fire and flame, where extreme heat shapes landscapes as magnificent as they are hostile. From incandescent mountains to seas of molten lava, this planet is a true test of endurance for any daring explorer. The days are endless, bathed in an intense light that reflects the scorching nature of the environment. Only the hardiest creatures can survive in this planetary furnace, where the slightest step can become a challenge in the face of the eruptions and rivers of magma that snake across the surface.",
-      desc: "In Defense of Ignisfera, you'll face waves of alien invaders threatening to wreak further havoc on this planet's fiery surface. From your firing base, repel attacks in a rain of ash and fire, where every shot counts in the defense of Ignisfera. This strategic battle in the heart of the extreme elements promises an intense experience, immersed in a scorching, unforgiving setting.",
-      game: "Defense of Ignisfera",
+      desc: "In Guardian of Ignisfera, you'll face waves of alien invaders threatening to wreak further havoc on this planet's fiery surface. From your firing base, repel attacks in a rain of ash and fire, where every shot counts in the defense of Ignisfera. This strategic battle in the heart of the extreme elements promises an intense experience, immersed in a scorching, unforgiving setting.",
+      game: "Guardian of Ignisfera",
     },
     lunara: {
       intro: "Mysterious and enchanting, Lunara is a moon of contrasting landscapes, influencing the tides and seasons of the surrounding planets. With its ancient craters and lush valleys, it fascinates all who see it. Unique rock formations, caves concealing luminescent crystals and nocturnal creatures populate its surface, adding to its aura of mystery. During lunar eclipses, luminous haloes illuminate Lunara with a magical light, offering a breathtaking spectacle.",
@@ -118,6 +130,18 @@ export const descriptions = {
       desc: "Are you LunarPlay's best player? Find out how you and other players rank in all games.",
       game: "LunarPlay",
     },
+    welcome: {
+      intro: "Welcome to the LunarPlay system,",
+      desc: "Choose a planet to begin your journey, or explore the LunarPlay system to see how you stack up against other players. May the stars guide you on your quest!",
+    },
+    info: {
+      pagination: "Display _MENU_ entries per page",
+      zeroRecords: "No records found",
+      search: "Search:",
+      rank: "Rank",
+      playername: "Nickname",
+      score: "Score",
+    },
   },
   de: {
     solaris: {
@@ -125,9 +149,9 @@ export const descriptions = {
       desc: "Hier findest du die Ranglisten der Spieler, sowohl für die einzelnen Spiele als auch für die Gesamtpunktzahl, wodurch Solaris zum zentralen Dreh- und Angelpunkt des Wettbewerbs wird. Da Solaris sowohl Sicherheit als auch eine ständige Herausforderung darstellt, ist es der Ausgangspunkt für große Entdeckungen und Abenteuer und zieht all jene an, die sich in diesem fesselnden Universum beweisen wollen.",
     },
     aetheria: {
-      intro: "Verloren in einem Meer aus dichten Wolken und heißen Dämpfen ist Aetheria der rätselhafteste Planet im LunarPlay-System. In mystischen Nebel gehüllt, enthüllt er manchmal durch die Wolken Landschaften von seltener Schönheit. In diesem instabilen, vulkanischen Land entdecken unerschrockene Forscher Ascheebenen und einzigartige Felsformationen, die durch jahrtausendelange vulkanische Aktivität geformt wurden. Aber Vorsicht, die dichte Atmosphäre von Aetheria ist alles andere als einladend: In der Luft schweben giftige Gase, die Temperaturen sind erdrückend, und die Kreaturen, die hier leben, haben sich entwickelt, um unter diesen extremen Bedingungen zu gedeihen.",
-      desc: "Auf Aetheria wagen sich nur die Mutigsten in die Labyrinthe dieses Planeten mit seinen vielen Fallen. In Mission Aetheria musst du durch Gefahrenzonen navigieren und dabei Giftgaseinschlüsse und Hitzeausbrüche aufspüren und ihnen ausweichen. Bei jedem Schritt verbirgt das Terrain eine potenzielle Gefahr: Vorausschauendes Denken und strategisches Handeln sind entscheidend, um in diesem ebenso schönen wie unberechenbaren Land zu überleben.",
-      game: "Mission Aetheria",
+      intro: "Aetheria, ein rätselhafter Planet im LunarPlay-System, schwebt inmitten eines violetten Ozeans aus dichten Wolken und heißen Dämpfen. Seine Landschaften sind von mystischem Nebel bedeckt und von seltsamer Schönheit, verborgen unter einer vulkanischen Decke, in der der Boden durch die ständigen Eruptionen bebt. Trotz seiner verborgenen Schönheit ist Aetheria ein erbarmungsloser Ort des Überlebens: In der Luft schweben giftige Gase, es herrschen schwüle Temperaturen und furchterregende Kreaturen haben sich entwickelt, um in dieser feindseligen Umgebung zu gedeihen.",
+      desc: "In Aetheria hängt das Überleben von deiner Schnelligkeit und deinen Reflexen ab. In Aetherian Rift übernimmst du die Rolle eines Mitglieds eines Forscherteams, dessen Aufgabe es ist, die vom Himmel fallenden Aetherianer abzuwehren. Mit jedem Klick musst du sie wegpusten, bevor sie den unteren Rand des Bildschirms erreichen und einen deiner Teamkollegen verschlingen. Jeder eliminierte Aetherianer ist ein weiterer Schritt in Richtung Sieg, aber Vorsicht: Wenn ein Boss-Aetherianer den unteren Bildschirmrand erreicht, verschlingt er alle deine verbliebenen Teamkameraden auf einmal und beendet damit die Mission. Das Spiel endet, sobald alle zehn Teamkameraden verschlungen wurden. Bleib wachsam und handle schnell, um das Team zu retten!",
+      game: "Aetherian Rift",
     },
     aqualis: {
       intro: "Aqualis ist ein in Blau- und Grüntönen schillernder Planet mit einer Atmosphäre, die ebenso fesselnd wie faszinierend ist. Er fasziniert mit seinen farbenfrohen atmosphärischen Stürmen und weiten Ozeanen aus flüssigem Methan, die im gesamten System ein einzigartiges Schauspiel aus Farben und Bewegungen erzeugen. Da der Planet auf untypische Weise geneigt ist, erlebt er intensive Jahreszeiten, in denen sich seine Landschaften unter dem Einfluss beeindruckender Naturkräfte ständig verändern. Aqualis beherbergt auch pulsierende Unterwasserökosysteme mit faszinierenden Kreaturen und starken Meeresströmungen, in denen nur die Geschicktesten navigieren können, ohne Gefahr zu laufen, sich zu verirren.",
@@ -141,8 +165,8 @@ export const descriptions = {
     },
     elythium: {
       intro: "Mit seinen schwimmenden Wäldern und seiner leuchtenden Flora ist Elythium ein wahres Naturparadies, das an die Erde erinnert, aber in einen Hauch von Magie und Exotik getaucht ist. Diese Welt ist reich an Biodiversität und beherbergt vielfältige Ökosysteme, die von glitzernden Ozeanen bis hin zu imposanten Bergen reichen und von seltsamen Kreaturen und biolumineszierender Vegetation bewohnt werden. Das Leben gedeiht in einer Umgebung, in der jede Pflanze und jede Kreatur ihr eigenes Licht auszustrahlen scheint, was Elythium ebenso einladend wie geheimnisvoll macht. Es ist ein Planet, der an die Schönheit der Erde erinnert, jedoch in einer verzauberten und futuristischen Umgebung.",
-      desc: "In Elythium Wächter kümmerst du dich um eine einzigartige Kreatur aus Elythium, in einer Umgebung, in der sich die Magie des Planeten in jeder Interaktion widerspiegelt. Füttere, pflege und entwickle deinen außerirdischen Begleiter in dieser paradiesischen Welt und nutze dabei die lokalen Ressourcen wie leuchtende Pflanzen und schwebende Wälder. Deine Kreatur wird auf ihre magische Umgebung reagieren und sich anpassen, wodurch ein fesselndes Erlebnis voller Entdeckungen entsteht.",
-      game: "Elythium Wächter",
+      desc: "In Verteidiger von Elythium schlüpfen Sie in die Rolle eines Space-Shuttle-Piloten, der im Orbit von Elythium stationiert ist, um diese bezaubernde Welt zu beschützen. Invasoren greifen von allen Seiten an, und Ihre Aufgabe ist es, jede Bedrohung zu beseitigen, bevor sie die Oberfläche des Planeten erreicht. Ihr Raumschiff ist in Elythium verankert und umkreist es, sodass Sie die Feinde von allen Seiten abwehren können. Machen Sie sich auf einen intensiven Kampf um das Überleben dieses Planeten gefasst, bei dem jeder Angriff Präzision und Reflexe erfordert, um die Magie Elythiums zu bewahren.",
+      game: "Verteidiger von Elythium",
     },
     goliathor: {
       intro: "Imposant und majestätisch: Goliathor ist ein Gasplanet von titanischen Ausmaßen, ein wahrer Wächter im System. Seine mächtige Atmosphäre wird von monumentalen Stürmen und majestätischen Ringen durchzogen, die am Himmel glitzern. Riesige Wirbelstürme und heftige Winde bilden ein schwieriges und unberechenbares Terrain für jeden, der sich in seine Wolken wagt. Exotische Lebensformen, die an die extremen Bedingungen angepasst sind, treiben zwischen den Wolkenschichten umher, und in einigen Regionen der Atmosphäre gibt es seltsame schwebende Kolonien, die sich mit den Stürmen von Goliathor verändern. Der Planet flößt durch seine mythische Kraft sowohl Respekt als auch Faszination ein.",
@@ -151,8 +175,8 @@ export const descriptions = {
     },
     ignisfera: {
       intro: "Ignisfera, der Solaris am nächsten gelegene Planet, ist eine Welt aus Feuer und Flamme, in der die extreme Hitze wunderschöne, aber auch feindselige Landschaften formt. Von glühenden Bergen bis hin zu Meeren aus geschmolzener Lava ist dieser Planet ein echter Härtetest für jeden wagemutigen Entdecker. Die Tage sind endlos lang und werden von einem intensiven Licht durchflutet, das den heißen Aspekt der Umgebung widerspiegelt. Nur die zähesten Kreaturen können in diesem planetaren Ofen überleben, wo jeder Schritt angesichts der Eruptionen und Magmaflüsse, die sich durch die Oberfläche schlängeln, zu einer Herausforderung werden kann.",
-      desc: "In Verteidigung von Ignisfera musst du dich gegen Wellen von außerirdischen Invasoren zur Wehr setzen, die drohen, die glühende Oberfläche des Planeten noch weiter zu verwüsten. Von deiner Feuerbasis aus wehrst du die Angriffe in einem Regen aus Asche und Feuer ab, wobei bei der Verteidigung von Ignisfera jeder Schuss zählt. Dieser strategische Kampf inmitten der extremen Elemente verspricht ein intensives Erlebnis, eingetaucht in eine brennende und erbarmungslose Szenerie.",
-      game: "Verteidigung von Ignisfera",
+      desc: "In Ignisfera-Wächter musst du dich gegen Wellen von außerirdischen Invasoren zur Wehr setzen, die drohen, die glühende Oberfläche des Planeten noch weiter zu verwüsten. Von deiner Feuerbasis aus wehrst du die Angriffe in einem Regen aus Asche und Feuer ab, wobei bei der Verteidigung von Ignisfera jeder Schuss zählt. Dieser strategische Kampf inmitten der extremen Elemente verspricht ein intensives Erlebnis, eingetaucht in eine brennende und erbarmungslose Szenerie.",
+      game: "Ignisfera-Wächter",
     },
     lunara: {
       intro: "Der geheimnisvolle und fesselnde Lunara ist ein Mond mit einer kontrastreichen Landschaft, die die Gezeiten und Jahreszeiten der umliegenden Planeten beeinflusst. Mit seinen uralten Kratern und üppigen Tälern fasziniert er jeden, der ihn beobachtet. Einzigartige Felsformationen, Höhlen mit leuchtenden Kristallen und nachtaktive Kreaturen bevölkern seine Oberfläche und tragen zu seiner geheimnisvollen Aura bei. Während der Mondfinsternis erstrahlen leuchtende Halos, die Lunara in ein magisches Licht tauchen und einen atemberaubenden Anblick bieten.",
@@ -177,6 +201,18 @@ export const descriptions = {
     lunarplay: {
       desc: "Du bist der beste Spieler von LunarPlay? Sieh dir an, wie du und die anderen Spieler bei allen Spielen abschneiden.",
       game: "LunarPlay",
+    },
+    welcome: {
+      intro: "Willkommen im LunarPlay-System,",
+      desc: "Wähle einen Planeten, um deine Reise zu beginnen, oder erkunde das LunarPlay-System, um zu sehen, wie du im Vergleich zu anderen Spielern abschneidest. Mögen die Sterne dich auf deiner Suche leiten!",
+    },
+    info: {
+      pagination: "Zeige _MENU_ Einträge pro Seite an",
+      zeroRecords: "Keine Datensätze gefunden",
+      search: "Suche nach:",
+      rank: "Rang",
+      playername: "Spielername",
+      score: "Punkte",
     },
   },
 };

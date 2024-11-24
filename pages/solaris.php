@@ -7,6 +7,11 @@ use Tools\Security;
 $requestScheme = Security::secureInput($_SERVER['REQUEST_SCHEME']);
 $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
+if (!isset($_SESSION['playername'])) {
+  header('Location: /' . $lang . '/player/');
+  exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +22,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- CSRF Token -->
   <meta name="csrf-token" content="<?= $_SESSION['csrf_token']; ?>">
+  <meta name="language" content="<?= Security::secureInput($_SESSION['lang'] ?? 'en') ?>">
   <!-- Meta pour les langues -->
   <link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/fr/solaris/' ?>" hreflang="fr" />
   <link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/en/solaris/' ?>" hreflang="en" />
@@ -32,9 +38,14 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
   <meta name="keywords" content="<?= Security::secureInput($translations['solaris_keywords']) ?>" />
   <title><?= Security::secureInput($translations['solaris_title']) ?></title>
   <link rel="shortcut icon" href="/assets/logo/logo_small.svg" type="image/svg+xml">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <!-- Stylesheet -->
+  <link href="https://cdn.datatables.net/v/dt/dt-2.1.8/r-3.0.3/sb-1.8.1/sp-2.3.3/datatables.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/solaris.css" />
-  <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/jszip-3.10.1/dt-2.1.7/b-3.1.2/b-html5-3.1.2/r-3.0.3/datatables.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -76,10 +87,20 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
           <h2 id="planet-title"></h2>
           <p id="planet-intro" class="intro"></p>
           <p id="no-datas" class="nodatas"><?= Security::secureInput($translations['solaris_nodatas']) ?></p>
-          <table class="ranking-table hidden" id="ranking-table">
-            <!-- Tableau des scores -->
-          </table>
         </section>
+
+        <table class="ranking-table hidden" id="ranking-table">
+          <thead>
+            <tr>
+              <th><?= Security::secureInput($translations['rank']) ?></th>
+              <th><?= Security::secureInput($translations['playername']) ?></th>
+              <th><?= Security::secureInput($translations['score']) ?></th>
+            </tr>
+          </thead>
+          <tbody id="ranking-body"></tbody>
+            <!-- Emplacement des données -->
+          </tbody>
+        </table>
         
         <div class="btn-div">
           <a href="/<?= Security::secureInput($lang) ?>/lunarplay/" class="button" id="start-button"><?= Security::secureInput($translations['return_lunar']) ?></a>
@@ -90,14 +111,14 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
     <!-- END : Container -->
     <!-- START : Footer -->
       <footer class="footer">
-        <p><?= Security::secureInput($translations['footer']) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
+        <p><?= html_entity_decode(Security::secureInput($translations['footer'])) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
       </footer>
     <!-- END : Footer -->
   </div>
   <!-- END : Wrapper -->
 
   <!-- Scripts -->
-  <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/jszip-3.10.1/dt-2.1.7/b-3.1.2/b-html5-3.1.2/r-3.0.3/datatables.min.js"></script>
+  <script src="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.1.8/r-3.0.3/sb-1.8.1/sp-2.3.3/datatables.min.js"></script>
   <script type="module" src="/assets/js/solaris.js"></script>
 </body>
 </html>
