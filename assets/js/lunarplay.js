@@ -3,8 +3,9 @@
 /* IMPORTS DES MODULES */
 
 /***********************/
-import * as THREE from '../../modules/three.module.js';
-import { OrbitControls } from '../../modules/OrbitControls.js';
+import * as THREE from '/../../modules/three.module.js';
+import { OrbitControls } from '/../../modules/OrbitControls.js';
+import { descriptions } from '/assets/js/translations.js';
 
 
 /***********************/
@@ -28,14 +29,8 @@ let solaris,
 let mouse = new THREE.Vector2();
 let raycaster = new THREE.Raycaster();
 let isPaused = false;
-// Liste des histoires des planètes (exemple)
-const planetStories = {
-  solaris: "Solaris est le cœur du système, à la fois source d'énergie et de lumière pour toutes les autres planètes. Un monde exceptionnel autour duquel tout gravite. En tant que planète centrale, Solaris est le point de départ des explorations dans le reste du système. Ce nom suggère sa primauté et son importance, tout en évoquant une atmosphère imposante et solaire. Solaris est le pivot autour duquel les mini jeux et les intrigues se développent.",
-  ignisfera: 'Ignisfera est une planète brûlante entourée de flammes éternelles.',
-  aetheria: 'Aetheria est connue pour ses cieux brumeux et ses vents violents.',
-  // Ajouter une histoire pour chaque planète
-};
-
+const storedLanguage = sessionStorage.getItem('lang') || document.querySelector('meta[name="language"]').getAttribute('content');
+const planetStories = descriptions[storedLanguage];
 
 /*************************/
 
@@ -58,6 +53,10 @@ THREE.DefaultLoadingManager.onProgress = function (
 // Fin du chargement
 THREE.DefaultLoadingManager.onLoad = function () {
   containerProgressBar.style.display = 'none';
+  // Lancement du premier message d'information
+  if (sessionStorage.getItem('starting') === 'true') {
+    showPlanetInfo('', true);
+  }
 };
 // Erreur de chargement
 THREE.DefaultLoadingManager.onError = function (url) {
@@ -115,7 +114,7 @@ const init = () => {
   const textureLoader = new THREE.TextureLoader();
 
   // Chargement de la texture de fond
-  texture = textureLoader.load('../assets/img/space-stars.jpg');
+  texture = textureLoader.load('/../assets/img/space-stars.jpg');
   texture.minFilter = THREE.LinearFilter;
   texture.magFilter = THREE.LinearFilter;
   scene.background = texture;
@@ -138,7 +137,12 @@ const init = () => {
 /* PLANÈTES ET ANIMATION */
 
 /*************************/
-// Fonction pour générer une position aléatoire autour de Solaris
+/**
+ * @param {number} position 
+ * @returns {Object} x, z
+ * 
+ * @description Génère une position aléatoire autour de Solaris
+ */
 const randPosition = (position) => {
   let randAngle = Math.random() * Math.PI * 2;
   let positionX = Math.cos(randAngle) * position;
@@ -147,7 +151,17 @@ const randPosition = (position) => {
   return { x: positionX, z: positionY };
 };
 
-// Fonction pour créer une planète
+/**
+ * @param {number} size 
+ * @param {string} namePlanet 
+ * @param {string} texture 
+ * @param {number} position 
+ * @param {boolean} ring 
+ * @param {boolean} isSolaris 
+ * @returns {Object} mesh, obj, ringMesh
+ * 
+ * @description Crée une planète avec ou sans anneau
+ */
 const createPlanete = (size, namePlanet, texture, position, ring = false, isSolaris = false) => {
   let mat = {};
   let ringMesh = {};
@@ -196,39 +210,41 @@ const createPlanete = (size, namePlanet, texture, position, ring = false, isSola
   return { mesh, obj, ringMesh };
 };
 
-// Initialisation des planètes
+/**
+ * @description Initialisation de la scène 3D
+ */
 const initScene = () => {
-  solaris = createPlanete(16, 'solaris', '../assets/img/solaris.jpg', 0, false, true);
-  ignisfera = createPlanete(2.6, 'ignisfera', '../assets/img/ignisfera.jpg', 28);
-  aetheria = createPlanete(5.3, 'aetheria', '../assets/img/aetheria.jpg', 44);
-  elythium = createPlanete(6, 'elythium', '../assets/img/elythium.jpg', 78);
+  solaris = createPlanete(16, 'solaris', '/../assets/img/solaris.jpg', 0, false, true);
+  ignisfera = createPlanete(2.6, 'ignisfera', '/../assets/img/ignisfera.jpg', 28);
+  aetheria = createPlanete(5.3, 'aetheria', '/../assets/img/aetheria.jpg', 44);
+  elythium = createPlanete(6, 'elythium', '/../assets/img/elythium.jpg', 78);
   // Création des nuages autour d'Elythium
   const textureLoader = new THREE.TextureLoader();
   cloud = new THREE.Mesh(
     new THREE.SphereGeometry(6.1, 32, 32),
     new THREE.MeshPhongMaterial({
-      map: textureLoader.load('../assets/img/clouds.png'),
+      map: textureLoader.load('/../assets/img/clouds.png'),
       transparent: true,
     })
   );
   elythium.mesh.add(cloud);
 
-  lunara = createPlanete(1.2, 'lunara', '../assets/img/lunara.jpg', 11);
+  lunara = createPlanete(1.2, 'lunara', '/../assets/img/lunara.jpg', 11);
   elythium.mesh.add(lunara.mesh);
-  rhodaria = createPlanete(3.2, 'rhodaria', '../assets/img/rhodaria.jpg', 118);
-  goliathor = createPlanete(11, 'goliathor', '../assets/img/goliathor.jpg', 150);
-  ringuara = createPlanete(9, 'ringuara', '../assets/img/ringuara.jpg', 198, {
+  rhodaria = createPlanete(3.2, 'rhodaria', '/../assets/img/rhodaria.jpg', 118);
+  goliathor = createPlanete(11, 'goliathor', '/../assets/img/goliathor.jpg', 150);
+  ringuara = createPlanete(9, 'ringuara', '/../assets/img/ringuara.jpg', 198, {
     innerRadius: 12.2,
     outerRadius: 21,
-    texture: '../assets/img/ringuara-ring.png',
+    texture: '/../assets/img/ringuara-ring.png',
   });
-  aqualis = createPlanete(8, 'aqualis', '../assets/img/aqualis.jpg', 262, {
+  aqualis = createPlanete(8, 'aqualis', '/../assets/img/aqualis.jpg', 262, {
     innerRadius: 9.5,
     outerRadius: 12,
-    texture: '../assets/img/aqualis-ring.png',
+    texture: '/../assets/img/aqualis-ring.png',
   });
-  nereidia = createPlanete(7, 'nereidia', '../assets/img/nereidia.jpg', 280);
-  cryos = createPlanete(3, 'cryos', '../assets/img/cryos.jpg', 290);
+  nereidia = createPlanete(7, 'nereidia', '/../assets/img/nereidia.jpg', 280);
+  cryos = createPlanete(3, 'cryos', '/../assets/img/cryos.jpg', 290);
 
   // Ajout de la lumière ponctuelle
   const pointLight = new THREE.PointLight(0xffffff, 1.4, 600);
@@ -245,6 +261,9 @@ initScene();
 /* ANIMATION DE LA SCÈNE */
 
 /*************************/
+/**
+ * @description Fonction pour animer la scène 3D et les planètes si la pause n'est pas activée
+  */
 function animate() {
   if (!isPaused) {
     // Rotation des planètes sur elles-mêmes
@@ -282,31 +301,57 @@ function animate() {
   renderer.render(scene, camera);
 }
 // Lancement de l'animation
-renderer.setAnimationLoop(animate) 
-
+renderer.setAnimationLoop(animate);
 
 /********************/
 
 /* INTERACTIONS 3D */
 
 /*******************/
-// Fonction pour afficher les infos de la planète
-const showPlanetInfo = (planetName) => {
+/**
+ * @param {string} planetName
+ * 
+ * @description Fonction pour afficher les infos de la planète
+ */
+const showPlanetInfo = (planetName, isStart = false) => {
   const infoBox = document.getElementById('planet-info');
   const playBtn = document.getElementById('play-game-button');
+  const accessBtn = document.getElementById('access-game-button');
+
+  // Si c'est au démarrage
+  if (isStart) {
+    sessionStorage.setItem('starting', 'false');
+    // Mettre à jour les informations générales
+    document.getElementById('planet-name').textContent = sessionStorage.getItem('playername');
+    document.getElementById('planet-story-1').textContent = planetStories['welcome']['intro'] + ' ' + sessionStorage.getItem('playername') + '!';
+    document.getElementById('planet-story-2').textContent = planetStories['welcome']['desc'];
+    playBtn.classList.add('hidden');
+    accessBtn.classList.remove('hidden');
+    // Afficher les informations
+    infoBox.classList.remove('hidden');
+    isPaused = true;
+    // Au clic sur le bouton de lecture
+    playBtn.onclick = () => {
+      infoBox.classList.add('hidden');
+      isPaused = false;
+    }
+    return;
+  }
 
   // Si aucune planète n'est sélectionnée
   if (!planetName) {
     infoBox.classList.add('hidden');
     isPaused = false;
     return;
-
   } else {
     // Mettre à jour les informations de la planète
     document.getElementById('planet-name').textContent = planetName;
-    document.getElementById('planet-story').textContent = planetStories[planetName] || 'Histoire non disponible.';
+    document.getElementById('planet-story-1').textContent = planetStories[planetName]['intro'];
+    document.getElementById('planet-story-2').textContent = planetStories[planetName]['desc'];
+    playBtn.classList.remove('hidden');
+    accessBtn.classList.add('hidden');
 
-    playBtn.href = `/pages/${planetName}.php`;
+    playBtn.href = `/${storedLanguage}/${planetName}/`;
 
     // Afficher les informations
     infoBox.classList.remove('hidden');
@@ -314,7 +359,9 @@ const showPlanetInfo = (planetName) => {
   }
 };
 
-// Fonction pour récupérer la planète sélectionnée
+/**
+ * @description Fonction pour récupérer la planète sélectionnée
+ */
 const getPlaneteSelected = () => {
   let planetSelected; 
   raycaster.setFromCamera(mouse, camera);
@@ -335,24 +382,34 @@ const getPlaneteSelected = () => {
   }
 };
 
-// Fonction pour afficher le nom de la planète survolée
+/**
+ * @description Fonction pour afficher le nom de la planète survolée
+ */
 const showPlanetName = () => {
   let planetSelected;
+  let planetHovered = false;
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(scene.children);
 
   // Vérifier si la planète est survolée
   for (let i = 0; i < intersects.length; i++) {
     if (intersects[i].object.name?.length > 0) {
+      planetHovered = true;
+      document.body.style.cursor = 'url("/assets/img/cur1051.cur"), pointer';
       planetSelected = intersects[i].object.name;
       document.getElementById('planet-name-hover').textContent = planetSelected;
       return;
     }
   }
-  document.getElementById('planet-name-hover').textContent = '';
+  if (!planetHovered) {
+    document.getElementById('planet-name-hover').textContent = '';
+    document.body.style.cursor = 'url("/assets/img/cur1054.cur"), default';
+  }
 };
 
-// Fonction pour récupérer la position du clic de la souris
+/**
+ * @description Fonction pour récupérer la position du clic de la souris
+ */
 const onPointerClick = (e) => {
   mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -362,7 +419,9 @@ const onPointerClick = (e) => {
 // Écouter les clics de la souris
 window.addEventListener('click', onPointerClick, false);
 
-// Fonction pour gérer le survol de la souris
+/**
+ * @description Fonction pour récupérer la position du mouvement de la souris
+ */
 const onPointerMove = (e) => {
   mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -372,7 +431,9 @@ const onPointerMove = (e) => {
 // Écouter les mouvements de la souris
 window.addEventListener('mousemove', onPointerMove, false);
 
-// Fonction pour gérer le redimensionnement de la fenêtre
+/**
+ * @description Fonction pour gérer le redimensionnement de la fenêtre
+ */
 const handleResize = () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
   camera.aspect = window.innerWidth / window.innerHeight;
