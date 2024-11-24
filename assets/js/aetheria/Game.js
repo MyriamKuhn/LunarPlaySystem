@@ -577,7 +577,7 @@ export class Game {
       // Appeler immédiatement le code de l'intervalle
       if (this.enemyInterval > 0) {
         this.enemyInterval -= 100;
-        this.scoreMultiplier = 1.5;
+        this.scoreMultiplier += 0.5;
         this.sound.play('win');
       }
       // Appeler l'intervalle toutes les 60 secondes
