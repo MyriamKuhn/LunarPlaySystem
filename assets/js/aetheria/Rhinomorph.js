@@ -34,7 +34,7 @@ export class RhinomorphOne extends Enemy {
     this.lives = 2;
     this.maxlives = 2;
     this.lastFrame = 6;
-    this.sound = this.game.sound.boom2;
+    this.sound = 'boom2';
     this.frameY = 0;
   }
 
@@ -85,7 +85,7 @@ export class RhinomorphTwo extends Enemy {
     this.lives = 2;
     this.maxlives = 2;
     this.lastFrame = 6;
-    this.sound = this.game.sound.boom2;
+    this.sound = 'boom2';
     this.frameY = 1;
   }
 
@@ -136,7 +136,7 @@ export class RhinomorphThree extends Enemy {
     this.lives = 2;
     this.maxlives = 2;
     this.lastFrame = 6;
-    this.sound = this.game.sound.boom2;
+    this.sound = 'boom2';
     this.frameY = 2;
   }
 
@@ -187,7 +187,7 @@ export class RhinomorphFour extends Enemy {
     this.lives = 2;
     this.maxlives = 2;
     this.lastFrame = 6;
-    this.sound = this.game.sound.boom2;
+    this.sound = 'boom2';
     this.frameY = 3;
   }
 

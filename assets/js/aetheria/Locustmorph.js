@@ -37,7 +37,7 @@ export class LocustmorphOne extends Enemy {
     this.lives = 5;
     this.maxlives = 5;
     this.frameY = 0;
-    this.sound = this.game.sound.boom2;
+    this.sound = 'boom2';
   }
 
   update() {
@@ -118,7 +118,7 @@ export class LocustmorphTwo extends Enemy {
     this.lives = 5;
     this.maxlives = 5;
     this.frameY = 1;
-    this.sound = this.game.sound.boom2;
+    this.sound = 'boom2';
   }
 
   update() {
@@ -199,7 +199,7 @@ export class LocustmorphThree extends Enemy {
     this.lives = 5;
     this.maxlives = 5;
     this.frameY = 2;
-    this.sound = this.game.sound.boom2;
+    this.sound = 'boom2';
   }
 
   update() {
@@ -280,7 +280,7 @@ export class LocustmorphFour extends Enemy {
     this.lives = 5;
     this.maxlives = 5;
     this.frameY = 3;
-    this.sound = this.game.sound.boom2;
+    this.sound = 'boom2';
   }
 
   update() {
