@@ -118,7 +118,7 @@ class Boss {
             this.reset();
             if (!this.game.gameOver) {
               this.game.isBossDead = true;
-              this.game.score += this.maxlives;
+              this.game.score += this.maxlives * this.game.scoreMultiplier;
             }
           }
         }
