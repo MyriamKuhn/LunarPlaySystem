@@ -5,6 +5,7 @@
 }
 
 body{
+  background-color: black; 
   cursor: url('/assets/img/cur1054.cur'), default;
 }
 
@@ -16,6 +17,10 @@ body{
   background: url('/assets/img/aetheria/background1920x1080.png');
   background-size: cover;
   background-position: center;
+}
+
+#canvas1.hidden {
+  display: none;
 }
 
 .controls {
@@ -69,4 +74,38 @@ body{
     background-position: center;
   }
   
+}
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.936);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+#loading-progress {
+  width: 80%;
+  max-width: 400px;
+  margin-top: 20px;
+}
+
+#loading-text {
+  font-size: 2rem;
+  text-shadow: 0 2px 2px #000000;
+  text-transform: uppercase;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800;
+  text-align: center;
+  color: #dddbdb; 
+}
+
+.loading-screen.hidden {
+  display: none;
 }

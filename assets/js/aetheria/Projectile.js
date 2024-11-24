@@ -41,7 +41,7 @@ export class Projectile extends Enemy {
     this.lives = 1;
     this.maxlives = 1;
     this.lastFrame = 0;
-    this.sound = this.game.sound.boom3;
+    this.sound = 'boom3';
     this.frameY = Math.floor(Math.random() * 2);
     this.frameX = Math.floor(Math.random() * 4);;
     this.x = x - this.width * 0.5;  

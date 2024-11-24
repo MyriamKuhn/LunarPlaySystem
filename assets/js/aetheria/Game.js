@@ -148,7 +148,6 @@ export class Game {
     this.spriteUpdate = false;
 
     this.sound = new AudioControl();
-    this.sound.setVolume(0.3);
 
     this.mouse = {
       x: undefined,
@@ -270,7 +269,8 @@ export class Game {
     this.projectilePool.forEach(projectile => {
       projectile.reset();
     });
-    this.sound.play(this.sound.newgame);
+    
+    this.sound.play('newgame');
   }
 
   generateCrew() {
@@ -383,7 +383,7 @@ export class Game {
           });
           this.message1 = translations[lang].gameover;
           this.message2 = translations[lang].gameover2;
-          this.sound.play(this.sound.lose);
+          this.sound.play('lose');
           return;
         }
         // Envoyer la requête fetch pour ajouter le score
@@ -399,7 +399,7 @@ export class Game {
 
       this.message1 = translations[lang].gameover;
       this.message2 = translations[lang].gameover2;
-      this.sound.play(this.sound.lose);
+      this.sound.play('lose');
     }
   }
 
@@ -409,7 +409,7 @@ export class Game {
     if (this.level === 82) {
       this.level = 1;
       this.enemyInterval -= 100;
-      this.sound.play(this.sound.win);
+      this.sound.play('win');
     } 
       
     this.nextLevelScore = this.scoreToCheck + this.waveManager.getPointsRequired(this.level);

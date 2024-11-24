@@ -53,7 +53,7 @@ class Boss {
     this.free = false;
     this.minFrame = 0;
     this.maxFrame = 1;
-    this.sound = this.game.sound.boom4;
+    this.sound = 'boom4';
     this.lastFrame = 11;
   }
 
