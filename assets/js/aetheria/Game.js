@@ -27,6 +27,7 @@ const translations = {
     'press2': 'Appuyez sur "ESPACE" ou "F" pour le plein écran !',
     'press3': 'Appuyez sur "B" pour revenir au menu !',
     'press4': 'Appuyez sur "M" pour activer/désactiver le son !',
+    'press5': 'Sur mobile, utilisez les boutons en bas à gauche !',
     'score': 'Score : ',
   },
   'en': {
@@ -38,6 +39,7 @@ const translations = {
     'press2': 'Press "SPACE" or "F" for fullscreen!',
     'press3': 'Press "B" to go back to the menu!',
     'press4': 'Press "M" to toggle sound on/off!',
+    'press5': 'On mobile, use the buttons at the bottom left!',
     'score': 'Score: ',
   },
   'de': {
@@ -49,6 +51,7 @@ const translations = {
     'press2': 'Drück "LEERTASTE" oder "F" für Vollbild!',
     'press3': 'Drück "B", um zum Menü zurückzukehren!',
     'press4': 'Drück "M", um den Ton ein-/auszuschalten!',
+    'press5': 'Auf Mobilgeräten die Tasten unten links verwenden!',
     'score': 'Punkte: ',
   },
 };
@@ -82,15 +85,27 @@ export class Game {
    * @property {string} message1 - Le premier message
    * @property {string} message2 - Le deuxième message
    * @property {string} message3 - Le troisième message
+   * @property {string} message4 - Le quatrième message
+   * @property {string} message5 - Le cinquième message
    * @property {HTMLImageElement} crewImage - L'image du joueur
    * @property {Array} crewMember - Les membres de l'équipage
    * @property {boolean} gameOver - Le jeu est-il terminé ?
    * @property {boolean} debug - Le mode debug est-il activé ?
+   * @property {boolean} hasTriggeredWin - Le joueur a-t-il gagné ?
+   * @property {boolean} hasTriggeredGameOver - Le joueur a-t-il perdu ?
+   * @property {boolean} hasTriggeredNextLevel - Le joueur est-il passé au niveau suivant ?
    * @property {number} spriteTimer - Le timer pour les sprites
    * @property {number} spriteInterval - L'intervalle entre chaque sprite
    * @property {boolean} spriteUpdate - Le sprite a-t-il été mis à jour ?
    * @property {AudioControl} sound - Le contrôleur des sons
    * @property {Object} mouse - Les coordonnées de la souris
+   * @property {number} dynamicFontSize - La taille de la police dynamique
+   * @property {number} smallFontSize - La taille de la police petite
+   * @property {number} lineSpacing - L'espacement entre les lignes de texte
+   * @property {number} lineSpacingSmall - L'espacement entre les lignes de texte petites
+   * @property {number} w - La largeur de l'image
+   * @property {number} h - La hauteur de l'image
+   * @property {number} spacing - L'espacement entre les membres de l'équipage
    * 
    * @method start - Initialise le jeu
    * @method generateCrew - Génère l'équipage
@@ -138,10 +153,14 @@ export class Game {
     this.message4 = translations[lang].press2;
     this.message5 = translations[lang].press3;
     this.message6 = translations[lang].press4;
+    this.message7 = translations[lang].press5;
     this.crewImage = document.getElementById('crewSprite');
     this.crewMembers = [];
     this.gameOver = true;
     this.debug = false;
+    this.hasTriggeredWin = false;
+    this.hasTriggeredGameOver = false;
+    this.hasTriggeredNextLevel = false;
 
     this.spriteTimer = 0;
     this.spriteInterval = 120;
@@ -158,7 +177,16 @@ export class Game {
       fired: false,
     };
 
+    this.dynamicFontSize;
+    this.smallFontSize;
+    this.lineSpacing;
+    this.lineSpacingSmall;
+    this.w;
+    this.h;
+    this.spacing;
+
     this.resize(window.innerWidth, window.innerHeight);
+
     this.resetButton = document.getElementById('resetButton');
     this.resetButton.addEventListener('click', e => {
       this.start();
@@ -248,6 +276,9 @@ export class Game {
     const controls = document.querySelector('.controls');
     controls.style.pointerEvents = 'none';
     controls.classList.add('hidden');
+    this.hasTriggeredWin = false;
+    this.hasTriggeredGameOver = false;
+    this.hasTriggeredNextLevel = false;
     this.enemyPool = [];
     this.createEnemyPool();
     this.projectilePool = [];
@@ -299,6 +330,26 @@ export class Game {
     this.ctx.font = '30px Bangers';
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
+
+    // Calcul de la taille de la police en fonction de la largeur de l'écran
+    const referenceWidth = 1920;
+    const scalingFactor = Math.min(Math.max(referenceWidth / this.width, 0.8), 1.3);
+    const baseFontSize = Math.min(this.width, this.height) / 20;  
+    this.dynamicFontSize = baseFontSize * scalingFactor;
+
+    this.smallFontSize = this.dynamicFontSize / 1.5;
+
+    // Calcul de l'espacement entre les lignes de texte, relatif à la taille de la police
+    this.lineSpacing = this.dynamicFontSize * 1.2; 
+    this.lineSpacingSmall = this.smallFontSize * 1.2; 
+
+    // Appliquer le facteur de mise à l'échelle uniquement aux dimensions de l'image
+    const imageWidth = 20;
+    const imageHeight = 45;
+    const scalingFactorPics = Math.min(Math.max(this.width / referenceWidth, 0.5), 2.5);
+    this.w = imageWidth * scalingFactorPics;
+    this.h = imageHeight * scalingFactorPics;
+    this.spacing = 16 * scalingFactorPics;  // Ajuster l'espacement entre les coéquipiers
   }
 
   toggleFullScreen() {
@@ -406,13 +457,8 @@ export class Game {
 
   triggerNextLevel(level) {
     this.level++;
-    if (this.level === 82) {
-      this.level = 1;
-      this.enemyInterval -= 100;
-      this.sound.play('win');
-    } 
       
-    this.nextLevelScore = this.scoreToCheck + this.waveManager.getPointsRequired(this.level);
+    this.nextLevelScore = this.scoreToCheck + (this.waveManager.getPointsRequired(this.level) * 1.5);
     const currentWave = this.waveManager.getWaveEnemies(level);
       
     // Remplacement des ennemis dans le pool
@@ -438,6 +484,9 @@ export class Game {
     // Mise à jour du boss si c'est un boss
     this.isBossDead = false;
 
+    // Permet de déclencher le prochain niveau
+    this.hasTriggeredNextLevel = false;
+
     //console.log('Ennemis:', this.enemyPool);
     //console.log('Vague activée :', currentWave);
     //console.log('Niveau:', this.level);
@@ -461,33 +510,22 @@ export class Game {
   }
 
   drawStatusText() {
-    // Calcul de la taille de la police en fonction de la largeur de l'écran
-    const referenceWidth = 1920;
-    const scalingFactor = Math.min(Math.max(referenceWidth / this.width, 0.8), 1.3);
-    const baseFontSize = Math.min(this.width, this.height) / 20;  
-    const dynamicFontSize = baseFontSize * scalingFactor;
-
-    const smallFontSize = dynamicFontSize / 1.5;
-
-    // Calcul de l'espacement entre les lignes de texte, relatif à la taille de la police
-    const lineSpacing = dynamicFontSize * 1.2; 
-    const lineSpacingSmall = smallFontSize * 1.2; 
-
     if (this.gameOver) {
       this.ctx.save();
       this.ctx.textAlign = 'center';
 
       // Ajustement de la taille de la police pour les messages principaux
-      this.ctx.font = `${dynamicFontSize}px Bangers`;
-      this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.5 - lineSpacing);
+      this.ctx.font = `${this.dynamicFontSize}px Bangers`;
+      this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.5 - this.lineSpacing);
       this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.5);
 
       // Ajustement de la taille de la police pour les messages secondaires
-      this.ctx.font = `${smallFontSize}px Bangers`;
-      this.ctx.fillText(this.message3, this.width * 0.5, this.height * 0.5 + lineSpacingSmall * 2);
-      this.ctx.fillText(this.message4, this.width * 0.5, this.height * 0.5 + lineSpacingSmall * 3);
-      this.ctx.fillText(this.message5, this.width * 0.5, this.height * 0.5 + lineSpacingSmall * 4);
-      this.ctx.fillText(this.message6, this.width * 0.5, this.height * 0.5 + lineSpacingSmall * 5);
+      this.ctx.font = `${this.smallFontSize}px Bangers`;
+      this.ctx.fillText(this.message3, this.width * 0.5, this.height * 0.5 + this.lineSpacingSmall * 2);
+      this.ctx.fillText(this.message4, this.width * 0.5, this.height * 0.5 + this.lineSpacingSmall * 3);
+      this.ctx.fillText(this.message5, this.width * 0.5, this.height * 0.5 + this.lineSpacingSmall * 4);
+      this.ctx.fillText(this.message6, this.width * 0.5, this.height * 0.5 + this.lineSpacingSmall * 5);
+      this.ctx.fillText(this.message7, this.width * 0.5, this.height * 0.5 + this.lineSpacingSmall * 6);
 
       this.ctx.restore();
     }
@@ -495,35 +533,32 @@ export class Game {
     // Affichage du score et des vies, positionné en haut à gauche
     this.ctx.save();
     this.ctx.textAlign = 'left';
-    this.ctx.font = `${dynamicFontSize}px Bangers`;  // Petite taille pour le score et les vies
-    this.ctx.fillText(translations[lang].score + ' ' + this.score, 20, lineSpacing);
+    this.ctx.font = `${this.dynamicFontSize}px Bangers`;  // Petite taille pour le score et les vies
+    this.ctx.fillText(translations[lang].score + ' ' + this.score, 20, this.lineSpacing);
 
     // Affichage des vies restantes de l'équipage
     for (let i = 0; i < this.lives; i++) {
       const imageWidth = 20;
       const imageHeight = 45;
 
-      // Appliquer le facteur de mise à l'échelle uniquement aux dimensions de l'image
-      const scalingFactorPics = Math.min(Math.max(this.width / referenceWidth, 0.5), 2.5);
-      const w = imageWidth * scalingFactorPics;
-      const h = imageHeight * scalingFactorPics;
-
       // Dessiner l'image avec la taille ajustée, mais garder la position et les dimensions d'origine pour l'image source
-      const spacing = 16 * scalingFactorPics;  // Ajuster l'espacement entre les coéquipiers
       this.ctx.drawImage(this.crewImage, 
         this.crewMembers[i].frameX * imageWidth, 
         this.crewMembers[i].frameY * imageHeight, 
         imageWidth, 
         imageHeight, 
-        20 + i * spacing, 
-        lineSpacing + lineSpacingSmall, 
-        w, 
-        h
+        20 + i * this.spacing, 
+        this.lineSpacing + this.lineSpacingSmall, 
+        this.w, 
+        this.h
       );
     }
 
+    this.ctx.restore();
+
     // Affichage du message de fin de jeu si les vies sont épuisées
-    if (this.lives < 1) {
+    if (this.lives < 1 && !this.hasTriggeredGameOver) {
+      this.hasTriggeredGameOver = true;
       this.triggerGameOver();
     }
 
@@ -532,16 +567,37 @@ export class Game {
       return;
     }
 
-      // Passage au niveau suivant lorsque le score est suffisant
-      if (this.nextLevelScore <= this.score) {
+    // A partir du level 82, le joueur aura tout le temps les mêmes ennemis mais avec un intervalle de temps qui diminue progressivement jusqu'à 0
+    if (this.level >=82 && !this.hasTriggeredWin) {
+      this.hasTriggeredWin = true;
+
+      // Appeler immédiatement le code de l'intervalle
+      if (this.enemyInterval > 0) {
+        this.enemyInterval -= 100;
+        this.sound.play('win');
+      }
+      // Appeler l'intervalle toutes les 60 secondes
+      this.intervalId = setInterval(() => {
+        if (this.enemyInterval <= 0) {
+          clearInterval(this.intervalId); 
+        } else {
+          this.enemyInterval -= 100;
+          this.sound.play('win');
+        }
+      }, 60000);
+
+      return;
+    }
+
+    // Passage au niveau suivant lorsque le score est suffisant
+    if (this.nextLevelScore <= this.score && this.level < 82 && !this.hasTriggeredNextLevel) {
+      this.hasTriggeredNextLevel = true;
       this.triggerNextLevel(this.level); 
       this.scoreToCheck = this.score;
       //console.log('Score mémorisé:', this.scoreToCheck);
       //console.log('Points requis:', this.waveManager.getPointsRequired(this.level));
       //console.log('Score requis:', this.nextLevelScore);
     }
-
-    this.ctx.restore();
   }
 
   /**
