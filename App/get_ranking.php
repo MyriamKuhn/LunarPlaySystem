@@ -19,17 +19,17 @@ try {
     exit;
   }
 
-  // Récupérer les en-têtes
-  $headers = getallheaders();
-    
+  /// Récupérer le CSRF Token dans l'en-tête
+  $csrfToken = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
+	
   // Vérification si le token CSRF est présent dans les en-têtes
-  if (!isset($headers['X-CSRF-Token'])) {
-      Security::sendResponse(false, 'Token CSRF manquant.', 400);
-      exit;
+  if (empty($csrfToken)) {
+    Security::sendResponse(false, 'Token CSRF manquant.', 400);
+    exit;
   }
 
   // Vérification du token CSRF
-  Security::checkCSRF($headers['X-CSRF-Token']);
+  Security::checkCSRF($csrfToken);
 
   // Instanciation du repository général
   $generalRepository = new GeneralRepository();

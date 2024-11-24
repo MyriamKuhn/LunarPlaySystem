@@ -43,17 +43,27 @@ if (!isset($_SESSION['playername'])) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 	<!-- Stylesheet -->
 	<link rel="stylesheet" href="/assets/css/aetheria.css" />
 </head>
 
 <body>
-	<canvas id="canvas1"></canvas>
+
+	<!-- Écran de chargement -->
+	<div id="loading-screen" class="loading-screen">
+    <p id="loading-text"></p>
+    <progress id="loading-progress" value="0" max="100"></progress>
+  </div>
+
+	<!-- Écran de jeu -->
+	<canvas id="canvas1" class="hidden"></canvas>
 
   <div class="assets">
 		<img src="/assets/img/aetheria/crewSprite.png" id="crewSprite">
     <img src="/assets/img/aetheria/beetlemorph100x100.png" id="beetlemorph">
-		<img src="/assets/img/aetheria/rhinomorph100x100" id="rhinomorph">
+		<img src="/assets/img/aetheria/rhinomorph100x100.png" id="rhinomorph">
 		<img src="/assets/img/aetheria/lobstermorph100x100.png" id="lobstermorph">
 		<img src="/assets/img/aetheria/phantommorph100x100.png" id="phantommorph">
 		<img src="/assets/img/aetheria/mantismorph100x100.png" id="mantismorph">
@@ -63,15 +73,15 @@ if (!isset($_SESSION['playername'])) {
 		<img src="/assets/img/aetheria/squidmorph100x100.png" id="squidmorph">
 		<img src="/assets/img/aetheria/boss8.png" id="boss">
 
-		<audio src="/assets/audio/aetheria/newgame.mp3" id="newgame"></audio>
-		<audio src="/assets/audio/aetheria/boom1.mp3" id="boom1"></audio>
-		<audio src="/assets/audio/aetheria/boom2.mp3" id="boom2"></audio>
-		<audio src="/assets/audio/aetheria/boom3.mp3" id="boom3"></audio>
-		<audio src="/assets/audio/aetheria/boom4.mp3" id="boom4"></audio>
-		<audio src="/assets/audio/aetheria/slide.mp3" id="slide"></audio>
-		<audio src="/assets/audio/aetheria/lose.mp3" id="lose"></audio>
-		<audio src="/assets/audio/aetheria/scream.mp3" id="scream"></audio>
-		<audio src="/assets/audio/aetheria/win.mp3" id="win"></audio>
+		<audio src="/assets/audio/aetheria/newgame.mp3" id="newgame" preload="auto"></audio>
+		<audio src="/assets/audio/aetheria/boom1.mp3" id="boom1" preload="auto"></audio>
+		<audio src="/assets/audio/aetheria/boom2.mp3" id="boom2" preload="auto"></audio>
+		<audio src="/assets/audio/aetheria/boom3.mp3" id="boom3" preload="auto"></audio>
+		<audio src="/assets/audio/aetheria/boom4.mp3" id="boom4" preload="auto"></audio>
+		<audio src="/assets/audio/aetheria/slide.mp3" id="slide" preload="auto"></audio>
+		<audio src="/assets/audio/aetheria/lose.mp3" id="lose" preload="auto"></audio>
+		<audio src="/assets/audio/aetheria/scream.mp3" id="scream" preload="auto"></audio>
+		<audio src="/assets/audio/aetheria/win.mp3" id="win" preload="auto"></audio>
   </div>
 
 	<div class="controls">
@@ -80,20 +90,6 @@ if (!isset($_SESSION['playername'])) {
     <button id="backButton">👈</button>
 		<button id="volumeButton">🔊</button>
   </div>
-
-
-
-
-	<div class="btn-div">
-		<a href="/<?= Security::secureInput($lang) ?>/lunarplay/" class="button" id="start-button"><?= Security::secureInput($translations['return_lunar']) ?></a>
-	</div>
-
-
-	<!-- START : Footer -->
-	<footer class="footer">
-		<p><?= html_entity_decode(Security::secureInput($translations['footer'])) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
-	</footer>
-	<!-- END : Footer -->
 
 	<!-- Scripts -->
 	<script type="module" src="/assets/js/aetheria/main.js"></script>

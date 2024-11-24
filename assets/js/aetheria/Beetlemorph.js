@@ -34,7 +34,7 @@ export class BeetlemorphOne extends Enemy {
     this.lives = 1;
     this.maxlives = 1;
     this.lastFrame = 3;
-    this.sound = this.game.sound.boom1;
+    this.sound = 'boom1';
     this.frameY = 0;
   }
 
@@ -74,7 +74,7 @@ export class BeetlemorphTwo extends Enemy {
     this.lives = 1;
     this.maxlives = 1;
     this.lastFrame = 3;
-    this.sound = this.game.sound.boom1;
+    this.sound = 'boom1';
     this.frameY = 1;
   }
 
@@ -114,7 +114,7 @@ export class BeetlemorphThree extends Enemy {
     this.lives = 1;
     this.maxlives = 1;
     this.lastFrame = 3;
-    this.sound = this.game.sound.boom1;
+    this.sound = 'boom1';
     this.frameY = 2;
   }
 
@@ -154,7 +154,7 @@ export class BeetlemorphFour extends Enemy {
     this.lives = 1;
     this.maxlives = 1;
     this.lastFrame = 3;
-    this.sound = this.game.sound.boom1;
+    this.sound = 'boom1';
     this.frameY = 3;
   }
 

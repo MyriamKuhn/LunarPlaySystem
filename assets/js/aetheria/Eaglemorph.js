@@ -29,7 +29,7 @@ export class EaglemorphOne extends Enemy {
 
   hit() {
     if (this.game.checkCollision(this, this.game.mouse) && this.game.mouse.pressed && !this.game.mouse.fired) {
-      this.game.sound.play(this.game.sound.boom1);
+      this.game.sound.play('boom1');
       this.lives--;
       this.game.mouse.fired = true;
       this.frameX++;
@@ -71,7 +71,7 @@ export class EaglemorphTwo extends Enemy {
 
   hit() {
     if (this.game.checkCollision(this, this.game.mouse) && this.game.mouse.pressed && !this.game.mouse.fired) {
-      this.game.sound.play(this.game.sound.boom1);
+      this.game.sound.play('boom1');
       this.lives--;
       this.game.mouse.fired = true;
       this.frameX++;
@@ -113,7 +113,7 @@ export class EaglemorphThree extends Enemy {
 
   hit() {
     if (this.game.checkCollision(this, this.game.mouse) && this.game.mouse.pressed && !this.game.mouse.fired) {
-      this.game.sound.play(this.game.sound.boom1);
+      this.game.sound.play('boom1');
       this.lives--;
       this.game.mouse.fired = true;
       this.frameX++;
@@ -155,7 +155,7 @@ export class EaglemorphFour extends Enemy {
 
   hit() {
     if (this.game.checkCollision(this, this.game.mouse) && this.game.mouse.pressed && !this.game.mouse.fired) {
-      this.game.sound.play(this.game.sound.boom1);
+      this.game.sound.play('boom1');
       this.lives--;
       this.game.mouse.fired = true;
       this.frameX++;

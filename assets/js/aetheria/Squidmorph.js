@@ -37,7 +37,7 @@ export class SquidmorphOne extends Enemy {
     this.lives = 6;
     this.maxlives = 6;
     this.frameY = 0;
-    this.sound = this.game.sound.boom3;
+    this.sound = 'boom3';
   }
 
   update() {
@@ -117,7 +117,7 @@ export class SquidmorphTwo extends Enemy {
     this.lives = 6;
     this.maxlives = 6;
     this.frameY = 1;
-    this.sound = this.game.sound.boom3;
+    this.sound = 'boom3';
   }
 
   update() {
@@ -197,7 +197,7 @@ export class SquidmorphThree extends Enemy {
     this.lives = 6;
     this.maxlives = 6;
     this.frameY = 2;
-    this.sound = this.game.sound.boom3;
+    this.sound = 'boom3';
   }
 
   update() {
@@ -277,7 +277,7 @@ export class SquidmorphFour extends Enemy {
     this.lives = 6;
     this.maxlives = 6;
     this.frameY = 3;
-    this.sound = this.game.sound.boom3;
+    this.sound = 'boom3';
   }
 
   update() {

@@ -37,7 +37,7 @@ export class MantismorphOne extends Enemy {
     this.lives = 4;
     this.maxlives = 4;
     this.frameY = 0;
-    this.sound = this.game.sound.boom3;
+    this.sound = 'boom3';
     this.maxFrame = 0;
   }
 
@@ -108,7 +108,7 @@ export class MantismorphTwo extends Enemy {
     this.lives = 4;
     this.maxlives = 4;
     this.frameY = 1;
-    this.sound = this.game.sound.boom3;
+    this.sound = 'boom3';
     this.maxFrame = 0;
   }
 
@@ -179,7 +179,7 @@ export class MantismorphThree extends Enemy {
     this.lives = 4;
     this.maxlives = 4;
     this.frameY = 2;
-    this.sound = this.game.sound.boom3;
+    this.sound = 'boom3';
     this.maxFrame = 0;
   }
 
@@ -250,7 +250,7 @@ export class MantismorphFour extends Enemy {
     this.lives = 4;
     this.maxlives = 4;
     this.frameY = 3;
-    this.sound = this.game.sound.boom3;
+    this.sound = 'boom3';
     this.maxFrame = 0;
   }
 
