@@ -282,6 +282,7 @@ export class Game {
     this.hasTriggeredGameOver = false;
     this.hasTriggeredNextLevel = false;
     this.scoreMultiplier = 1;
+    this.enemyInterval = 1000;
     this.enemyPool = [];
     this.createEnemyPool();
     this.projectilePool = [];
@@ -463,6 +464,9 @@ export class Game {
       
     this.nextLevelScore = this.scoreToCheck + (this.waveManager.getPointsRequired(this.level) * 1.5);
     const currentWave = this.waveManager.getWaveEnemies(level);
+
+    // Liste pour les ennemis non libres
+    let notReplacedEnemies = [];
       
     // Remplacement des ennemis dans le pool
     currentWave.enemies.forEach(enemyConfig => {
@@ -470,29 +474,58 @@ export class Game {
       if (index !== -1) {
         this.enemyPool[index] = new enemyConfig.newType(this);
         this.enemyPool[index].reset();
+      } else {
+        notReplacedEnemies.push(enemyConfig);
       }
     });
 
-    // Mélanger le tableau des ennemis après avoir fait les changements
-    shuffleArray(this.enemyPool);
-  
-    // Activation des ennemis à activer
-    currentWave.toActivate.forEach(enemyType => {
-      const enemy = this.enemyPool.find(enemy => enemy instanceof enemyType);
-      if (enemy && enemy.free) {
-        enemy.start();
-      }
-    });
+    // Si certains ennemis n'ont pas été remplacés, les traiter plus tard
+    if (notReplacedEnemies.length > 0) {
+      // Attendre que les ennemis deviennent libres
+      const intervalId = setInterval(() => {
+        for (let ind = notReplacedEnemies.length - 1; ind >= 0; ind--) {
+          const enemyConfig = notReplacedEnemies[ind];
+          const index = this.enemyPool.findIndex(enemy => enemy instanceof enemyConfig.oldType && enemy.free);
+          if (index !== -1) {
+            this.enemyPool[index] = new enemyConfig.newType(this);
+            this.enemyPool[index].reset();
+            notReplacedEnemies.splice(ind, 1);
+          }
+        }
+        // Si tous les ennemis ont été remplacés, arrêter l'intervalle
+        if (notReplacedEnemies.length <= 0) {
+          clearInterval(intervalId);
+          shuffleArray(this.enemyPool);
+          currentWave.toActivate.forEach(enemyType => {
+            const enemy = this.enemyPool.find(enemy => enemy instanceof enemyType);
+            if (enemy && enemy.free) {
+              enemy.start();
+            }
+          });
+          this.hasTriggeredNextLevel = false;
+          this.isBossDead = false;
+        }
+      }, 500);
+    } else {
+      // Mélanger le tableau des ennemis après avoir fait les changements
+      shuffleArray(this.enemyPool);
+    
+      // Activation des ennemis à activer
+      currentWave.toActivate.forEach(enemyType => {
+        const enemy = this.enemyPool.find(enemy => enemy instanceof enemyType);
+        if (enemy && enemy.free) {
+          enemy.start();
+        }
+      });
+      // Mise à jour du boss si c'est un boss
+      this.isBossDead = false;
+      // Permet de déclencher le prochain niveau
+      this.hasTriggeredNextLevel = false;
 
-    // Mise à jour du boss si c'est un boss
-    this.isBossDead = false;
-
-    // Permet de déclencher le prochain niveau
-    this.hasTriggeredNextLevel = false;
-
-    //console.log('Ennemis:', this.enemyPool);
-    //console.log('Vague activée :', currentWave);
-    //console.log('Niveau:', this.level);
+      //console.log('Ennemis:', this.enemyPool);
+      //console.log('Vague activée :', currentWave);
+      //console.log('Niveau:', this.level);
+    }
   }
   
   
@@ -573,7 +606,6 @@ export class Game {
     // A partir du level 82, le joueur aura tout le temps les mêmes ennemis mais avec un intervalle de temps qui diminue progressivement jusqu'à 0
     if (this.level >=82 && !this.hasTriggeredWin) {
       this.hasTriggeredWin = true;
-
       // Appeler immédiatement le code de l'intervalle
       if (this.enemyInterval > 0) {
         this.enemyInterval -= 100;
@@ -590,7 +622,6 @@ export class Game {
           this.sound.play('win');
         }
       }, 60000);
-
       return;
     }
 
