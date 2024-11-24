@@ -282,6 +282,7 @@ export class Game {
     this.hasTriggeredGameOver = false;
     this.hasTriggeredNextLevel = false;
     this.scoreMultiplier = 1;
+    this.enemyInterval = 1000;
     this.enemyPool = [];
     this.createEnemyPool();
     this.projectilePool = [];
