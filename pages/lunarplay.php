@@ -48,6 +48,11 @@ if (!isset($_SESSION['playername'])) {
   <meta name="keywords" content="<?= Security::secureInput($translations['index_keywords']) ?>" />
   <title><?= Security::secureInput($translations['index_title']) ?></title>
   <link rel="shortcut icon" href="/assets/logo/logo_small.svg" type="image/svg+xml">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <!-- Stylesheet -->
   <link rel="stylesheet" href="/assets/css/lunarplay.css" /> 
 </head>

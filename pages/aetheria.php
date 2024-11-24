@@ -50,13 +50,6 @@ if (!isset($_SESSION['playername'])) {
 <body>
 	<canvas id="canvas1"></canvas>
 
-  <div class="controls">
-    <button id="fullScreenButton">💻</button>
-    <button id="resetButton">⚔️</button>
-    <button id="backButton">👈</button>
-		<button id="volumeButton">🔊</button>
-  </div>
-
   <div class="assets">
 		<img src="/assets/img/aetheria/crewSprite.png" id="crewSprite">
     <img src="/assets/img/aetheria/beetlemorph100x100.png" id="beetlemorph">
@@ -79,6 +72,13 @@ if (!isset($_SESSION['playername'])) {
 		<audio src="/assets/audio/aetheria/lose.mp3" id="lose"></audio>
 		<audio src="/assets/audio/aetheria/scream.mp3" id="scream"></audio>
 		<audio src="/assets/audio/aetheria/win.mp3" id="win"></audio>
+  </div>
+
+	<div class="controls">
+    <button id="fullScreenButton">💻</button>
+    <button id="resetButton">⚔️</button>
+    <button id="backButton">👈</button>
+		<button id="volumeButton">🔊</button>
   </div>
 
 

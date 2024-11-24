@@ -246,6 +246,9 @@ export class Game {
   }
 
   start() {
+    const controls = document.querySelector('.controls');
+    controls.style.pointerEvents = 'none';
+    controls.classList.add('hidden');
     this.enemyPool = [];
     this.createEnemyPool();
     this.projectilePool = [];
@@ -389,6 +392,11 @@ export class Game {
       this.enemyPool.forEach(enemy => {
         enemy.reset();
       });
+
+      const controls = document.querySelector('.controls');
+      controls.style.pointerEvents = 'auto';
+      controls.classList.remove('hidden');
+
       this.message1 = translations[lang].gameover;
       this.message2 = translations[lang].gameover2;
       this.sound.play(this.sound.lose);
@@ -401,6 +409,7 @@ export class Game {
     if (this.level === 82) {
       this.level = 1;
       this.enemyInterval -= 100;
+      this.sound.play(this.sound.win);
     } 
       
     this.nextLevelScore = this.scoreToCheck + this.waveManager.getPointsRequired(this.level);

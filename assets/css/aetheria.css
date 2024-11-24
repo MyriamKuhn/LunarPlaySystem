@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+body{
+  cursor: url('/assets/img/cur1054.cur'), default;
+}
+
 #canvas1 {
   position: absolute;
   top: 50%;
@@ -22,9 +26,14 @@
   flex-direction: column;
 }
 
+.controls.hidden {
+  display: none;
+}
+
 .controls > button {
   width: 3rem;
   height: 3rem;
+  cursor: url('/assets/img/cur1051.cur'), pointer;
   background: transparent;
   border: 1px solid white;
   font-size: 2rem;
