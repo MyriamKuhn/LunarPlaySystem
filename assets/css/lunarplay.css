@@ -1,6 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
-
 :root {
   --color-text: #dddbdb;
   --color-yellow: #EFE364;
@@ -24,6 +21,7 @@ body {
   color: var(--color-text);
   font-size: 1rem;
   font-family: "Exo 2", sans-serif;
+  cursor: url('/assets/img/cur1054.cur'), default;
 }
 
 .container-progress-bar {
@@ -39,6 +37,7 @@ body {
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.936);
 }
+
 .container-progress-bar label,
 .container-progress-bar #progress-bar-value {
   padding-bottom: 0.3rem;
@@ -48,9 +47,11 @@ body {
   font-family: 'Orbitron', sans-serif;
   font-weight: 800;
 }
+
 .container-progress-bar progress {
   width: 16rem;
 }
+
 .container-progress-bar #progress-bar-value {
   font-weight: 800;
   color: var(--color-red);
@@ -62,14 +63,16 @@ body {
   left: 0;
   right: 0;
   margin: 2rem auto; 
-  max-width: 50vw; 
-  background-color: rgba(0, 0, 0, 0.6);
+  max-width: 80vw; 
+  background-color: rgba(0, 0, 0, 0.5);
   color: var(--color-text);
   padding: 2rem;
   border-radius: 10px;
   text-align: center;
-  border: 1px solid rgb(239, 227, 100, 0.6);
+  border: 1px solid rgba(239, 227, 100, 0.6);
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+  max-height: 80%;
+  overflow: auto;
 }
 
 .planet-info.hidden {
@@ -98,9 +101,14 @@ body {
   border: none;
   position: relative;
   text-transform: uppercase;
-  cursor: pointer;
+  text-align: center;
+  cursor: url('/assets/img/cur1051.cur'), pointer;
   transition: background-color 0.3s ease-in-out;
   clip-path: polygon(75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%, 25% 0);
+}
+
+.button.hidden {
+  display: none;
 }
 
 .button:hover {
@@ -121,9 +129,14 @@ body {
   }
 }
 
-.description {
-  margin-bottom: 3rem;
+.description-1 {
   margin-top: 2rem;
+  margin-bottom: 1rem;
+  text-align: start;
+}
+
+.description-2 {
+  margin-bottom: 3rem;
   text-align: start;
 }
 
@@ -135,6 +148,10 @@ body {
   justify-content: center;
   align-items: center;
   padding: 1rem;
+}
+
+.footer p {
+  text-align: center;
 }
 
 .planet-hover {
@@ -150,8 +167,31 @@ body {
   text-transform: uppercase;
 }
 
+.link {
+  color: var(--color-yellow);
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: url('/assets/img/cur1051.cur'), pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.link:hover {
+  color: var(--color-orange);
+}
+
+/* Pour les appareils dont la largeur est inférieure ou égale à 1024px (laptop) */
+@media (max-width: 1024px) {
+  .planet-info {
+    max-width: 90vw;
+  }
+}
+
 /* Pour les appareils dont la largeur est inférieure ou égale à 768px (tablettes et mobiles) */
 @media (max-width: 768px) {
+  .planet-info {
+    max-width: 90vw;
+  }
+
   .footer {
     font-size: 0.8rem; 
   }
