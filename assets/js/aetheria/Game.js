@@ -23,11 +23,11 @@ const translations = {
     'gameover2' : 'Tout votre équipage a été mangé !',
     'run': 'Anéantissez les envahisseurs,',
     'eaten': 'avant qu\'ils ne vous dévorent !',
-    'press': 'Appuyez sur "ENTRÉE" ou "R" pour commencer !',
-    'press2': 'Appuyez sur "ESPACE" ou "F" pour le plein écran !',
-    'press3': 'Appuyez sur "B" pour revenir au menu !',
-    'press4': 'Appuyez sur "M" pour activer/désactiver le son !',
-    'press5': 'Sur mobile, utilisez les boutons en bas à gauche !',
+    'press': '⚔️ Appuyez sur "ENTRÉE" ou "R" pour commencer ! ⚔️',
+    'press2': '💻 Appuyez sur "ESPACE" ou "F" pour le plein écran ! 💻',
+    'press3': '👈 Appuyez sur "B" pour revenir au menu ! 👈',
+    'press4': '🔊 Appuyez sur "M" pour activer/désactiver le son ! 🔇',
+    'press5': '📱 Sur mobile, utilisez les boutons ci-dessous 👇',
     'score': 'Score : ',
   },
   'en': {
@@ -35,11 +35,11 @@ const translations = {
     'gameover2' : 'All your crew has been eaten!',
     'run': 'Destroy the invaders,',
     'eaten': 'before they eat you!',
-    'press': 'Press "ENTER" or "R" to start!',
-    'press2': 'Press "SPACE" or "F" for fullscreen!',
-    'press3': 'Press "B" to go back to the menu!',
-    'press4': 'Press "M" to toggle sound on/off!',
-    'press5': 'On mobile, use the buttons at the bottom left!',
+    'press': '⚔️ Press "ENTER" or "R" to start! ⚔️',
+    'press2': '💻 Press "SPACE" or "F" for fullscreen! 💻',
+    'press3': '👈 Press "B" to go back to the menu! 👈',
+    'press4': '🔊 Press "M" to toggle sound on/off! 🔇',
+    'press5': '📱 On mobile, use the buttons below 👇',
     'score': 'Score: ',
   },
   'de': {
@@ -47,11 +47,11 @@ const translations = {
     'gameover2' : 'Deine Crew wurde gefressen!',
     'run': 'Zerstöre die Eindringlinge,',
     'eaten': 'bevor sie dich fressen!',
-    'press': 'Drück "ENTER" oder "R", um zu beginnen!',
-    'press2': 'Drück "LEERTASTE" oder "F" für Vollbild!',
-    'press3': 'Drück "B", um zum Menü zurückzukehren!',
-    'press4': 'Drück "M", um den Ton ein-/auszuschalten!',
-    'press5': 'Auf Mobilgeräten die Tasten unten links verwenden!',
+    'press': '⚔️ Drück "ENTER" oder "R", um zu beginnen! ⚔️',
+    'press2': '💻 Drück "LEERTASTE" oder "F" für Vollbild! 💻',
+    'press3': '👈 Drück "B", um zum Menü zurückzukehren! 👈',
+    'press4': '🔊 Drück "M", um den Ton ein-/auszuschalten! 🔇',
+    'press5': '📱 Auf Mobilgeräten benutze die Schaltflächen hier unten 👇',
     'score': 'Punkte: ',
   },
 };
@@ -552,16 +552,16 @@ export class Game {
 
       // Ajustement de la taille de la police pour les messages principaux
       this.ctx.font = `${this.dynamicFontSize}px Bangers`;
-      this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.5 - this.lineSpacing);
-      this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.5);
+      this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.25 - this.lineSpacing);
+      this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.25);
 
       // Ajustement de la taille de la police pour les messages secondaires
       this.ctx.font = `${this.smallFontSize}px Bangers`;
-      this.ctx.fillText(this.message3, this.width * 0.5, this.height * 0.5 + this.lineSpacingSmall * 2);
-      this.ctx.fillText(this.message4, this.width * 0.5, this.height * 0.5 + this.lineSpacingSmall * 3);
-      this.ctx.fillText(this.message5, this.width * 0.5, this.height * 0.5 + this.lineSpacingSmall * 4);
-      this.ctx.fillText(this.message6, this.width * 0.5, this.height * 0.5 + this.lineSpacingSmall * 5);
-      this.ctx.fillText(this.message7, this.width * 0.5, this.height * 0.5 + this.lineSpacingSmall * 6);
+      this.ctx.fillText(this.message3, this.width * 0.5, this.height * 0.25 + this.lineSpacingSmall * 2);
+      this.ctx.fillText(this.message4, this.width * 0.5, this.height * 0.25 + this.lineSpacingSmall * 3);
+      this.ctx.fillText(this.message5, this.width * 0.5, this.height * 0.25 + this.lineSpacingSmall * 4);
+      this.ctx.fillText(this.message6, this.width * 0.5, this.height * 0.25 + this.lineSpacingSmall * 5);
+      this.ctx.fillText(this.message7, this.width * 0.5, this.height * 0.25 + this.lineSpacingSmall * 7);
 
       this.ctx.restore();
     }
