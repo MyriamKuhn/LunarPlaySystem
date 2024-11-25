@@ -122,10 +122,10 @@ export class AudioControl {
     const volumeButton = document.getElementById('volumeButton');
     if (this.volume === 0) {
       this.volume = 0.3;
-      volumeButton.innerHTML = '🔊';
+      volumeButton.textContent = '🔊';
     } else {
       this.volume = 0;
-      volumeButton.innerHTML = '🔇';
+      volumeButton.textContent = '🔇';
     }
   }
 }
