@@ -41,6 +41,9 @@ class GeneralRepository
 		$collectionName = 'MONGODB_COLLECTION_' . Security::secureInput(strtoupper($planet));
 		$collection = $this->database->selectCollection($_ENV[$collectionName]);
 
+		// Réparer le classement si nécessaire
+		$this->repairRanking($collection);
+		
 		// Récupérer les données de la collection
 		$cursor = $collection->find();
 		$rankings = iterator_to_array($cursor);
@@ -216,5 +219,19 @@ class GeneralRepository
 
 		// Exécuter toutes les opérations en une seule requête
 		$globalCollection->bulkWrite($bulkOperations);
+	}
+
+	private function repairRanking($collection): void
+	{
+    $entries = $collection->find([], ['sort' => ['score' => -1]]);
+    $currentPlace = 1;
+
+    foreach ($entries as $entry) {
+      $collection->updateOne(
+        ['_id' => $entry['_id']],
+        ['$set' => ['place' => $currentPlace]]
+      );
+      $currentPlace++;
+    }
 	}
 }
