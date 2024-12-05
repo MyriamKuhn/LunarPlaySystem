@@ -38,45 +38,31 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 	<!-- Stylesheet -->
-	<link rel="stylesheet" href="/assets/css/construction.css" />
+	<link rel="stylesheet" href="/assets/css/cryos.css" />
 </head>
 
 <body>
-	<!-- Background -->
-	<div class="background"></div>
-	<!-- START : Wrapper -->
-	<div class="wrapper">
-		<!-- START : Container -->
-		<div class="container">
-			<!-- START : Header -->
-			<header class="header">
-				<img src="/assets/logo/logo_small.svg" alt="Logo de LunarPlay System" width="100">
-				<h1 class="main-title"><?= Security::secureInput($translations['under_construction']) ?></h1>
-				<img src="/assets/logo/logo_small.svg" alt="Logo de LunarPlay System" width="100">
-			</header>
-			<!-- END : Header -->
-			<!-- START : Main -->
-			<main class="main">
-				<section class="section">
-					<p><?= Security::secureInput($translations['under_construction_description']) ?></p>
-					<div class="btn-div">
-						<a href="/<?= Security::secureInput($lang) ?>/lunarplay/" class="button" id="start-button"><?= Security::secureInput($translations['return_lunar']) ?></a>
-					</div>
-				</section>
-			</main>
-			<!-- END : Main -->
-		</div>
-		<!-- END : Container -->
-		<!-- START : Footer -->
-		<footer class="footer">
-      <p><?= html_entity_decode(Security::secureInput($translations['footer'])) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
-    </footer>
-		<!-- END : Footer -->
-	</div>
-	<!-- END : Wrapper -->
+<body>
 
-	<!-- Scripts -->
-	<script type="module" src="/assets/js/construction.js"></script>
+<!-- Écran de chargement -->
+<div id="loading-screen" class="loading-screen hidden">
+	<p id="loading-text"></p>
+	<progress id="loading-progress" value="0" max="100"></progress>
+</div>
+
+<!-- Écran de jeu -->
+<canvas id="canvas1" class=""></canvas>
+
+<div class="assets">
+	
+</div>
+
+<div class="controls">
+	
+</div>
+
+<!-- Scripts -->
+<script type="module" src="/assets/js/cryos/main.js"></script>
 </body>
 
 </html>
