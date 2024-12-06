@@ -37,6 +37,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
 	<!-- Stylesheet -->
 	<link rel="stylesheet" href="/assets/css/cryos.css" />
 </head>
@@ -45,16 +46,16 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 <body>
 
 <!-- Écran de chargement -->
-<div id="loading-screen" class="loading-screen hidden">
+<div id="loading-screen" class="loading-screen">
 	<p id="loading-text"></p>
 	<progress id="loading-progress" value="0" max="100"></progress>
 </div>
 
 <!-- Écran de jeu -->
-<canvas id="canvas1" class=""></canvas>
+<canvas id="canvas1" class="hidden"></canvas>
 
 <div class="assets">
-	
+	<img src="/assets/img/cryos/background_single.png" id="background">
 </div>
 
 <div class="controls">
