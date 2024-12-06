@@ -42,6 +42,16 @@ window.addEventListener('load', function() {
   
   const assets = [
     { id: 'background', src: '/assets/img/cryos/background_single.png', type: 'image' },
+    { id: 'player', src: '/assets/img/cryos/player_fish.png', type: 'image' },
+    { id: 'obstacle', src: '/assets/img/cryos/smallGears.png', type: 'image' },
+    { id: 'win', src: '/assets/audio/cryos/winflappy.mp3', type: 'audio' },
+    { id: 'lose', src: '/assets/audio/cryos/loseflappy.mp3', type: 'audio' },
+    { id: 'charge', src: '/assets/audio/cryos/charge.mp3', type: 'audio' },
+    { id: 'flap1', src: '/assets/audio/cryos/flap1.mp3', type: 'audio' },
+    { id: 'flap2', src: '/assets/audio/cryos/flap2.mp3', type: 'audio' },
+    { id: 'flap3', src: '/assets/audio/cryos/flap3.mp3', type: 'audio' },
+    { id: 'flap4', src: '/assets/audio/cryos/flap4.mp3', type: 'audio' },
+    { id: 'flap5', src: '/assets/audio/cryos/flap5.mp3', type: 'audio' },
   ];
 
   let loaded = 0;

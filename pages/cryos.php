@@ -56,10 +56,24 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
 <div class="assets">
 	<img src="/assets/img/cryos/background_single.png" id="background">
+	<img src="/assets/img/cryos/player_fish.png" id="player">
+	<img src="/assets/img/cryos/smallGears.png" id="obstacle">
+
+	<audio src="/assets/audio/cryos/winflappy.mp3" id="win" preload="auto"></audio>
+	<audio src="/assets/audio/cryos/loseflappy.mp3" id="lose" preload="auto"></audio>
+	<audio src="/assets/audio/cryos/charge.mp3" id="charge" preload="auto"></audio>
+	<audio src="/assets/audio/cryos/flap1.mp3" id="flap1" preload="auto"></audio>
+	<audio src="/assets/audio/cryos/flap2.mp3" id="flap2" preload="auto"></audio>
+	<audio src="/assets/audio/cryos/flap3.mp3" id="flap3" preload="auto"></audio>
+	<audio src="/assets/audio/cryos/flap4.mp3" id="flap4" preload="auto"></audio>
+	<audio src="/assets/audio/cryos/flap5.mp3" id="flap5" preload="auto"></audio>
 </div>
 
 <div class="controls">
-	
+	<button id="fullScreenButton">💻</button>
+  <button id="resetButton">⚔️</button>
+  <button id="backButton">👈</button>
+	<button id="volumeButton">🔊</button>
 </div>
 
 <!-- Scripts -->

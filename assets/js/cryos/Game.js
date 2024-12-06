@@ -51,9 +51,19 @@ export class Game {
     this.numberOfObstacles = 10;
     this.gravity;
     this.speed;
+    this.minSpeed;
+    this.maxSpeed;
     this.score;
     this.gameOver;
     this.timer;
+    this.message1;
+    this.message2;
+    this.eventTimer = 0;
+    this.eventInterval = 150;
+    this.eventUpdate = false;
+
+    this.touchStartX;
+    this.swipeDistance = 50;
 
     this.resize(window.innerWidth, window.innerHeight);
 
@@ -66,13 +76,18 @@ export class Game {
     });
 
     window.addEventListener('keydown', (e) => {
-      if(e.key === ' ' || e.key === 'Enter') {
-        this.player.flap();
-      }
+      if(e.key === ' ' || e.key === 'Enter') this.player.flap();
+      if(e.key === 'Shift' || e.key.toLowerCase() === 'c') this.player.startCharge();
     });
 
     this.canvas.addEventListener('touchstart', (e) => {
       this.player.flap();
+    });
+
+    this.canvas.addEventListener('touchmove', (e) => {
+      if (e.changedTouches[0].pageX - this.touchStartX > this.swipeDistance) {
+        this.player.startCharge();
+      }
     });
   }
 
@@ -80,10 +95,11 @@ export class Game {
     this.canvas.width = width;
     this.canvas.height = height;
 
-    this.ctx.fillStyle = 'blue';
     const fontSize = 30 * this.ratio;
     this.ctx.font = fontSize + 'px Bungee';
     this.ctx.textAlign = 'right';
+    this.ctx.lineWidth = 2;
+    this.ctx.strokeStyle = 'white';
 
     this.width = this.canvas.width;
     this.height = this.canvas.height;
@@ -92,6 +108,8 @@ export class Game {
 
     this.gravity = 0.15 * this.ratio;
     this.speed = 2 * this.ratio;
+    this.minSpeed = this.speed;
+    this.maxSpeed = this.speed * 5;
     this.background.resize();
     this.player.resize();
     this.createObstacles();
@@ -105,6 +123,7 @@ export class Game {
 
   render(deltaTime) {
     if (!this.gameOver) this.timer += deltaTime;
+    this.handlePeriodicEvents(deltaTime);
     this.background.update();
     this.background.draw();
     this.drawStatusText();
@@ -125,8 +144,26 @@ export class Game {
     }
   }
 
+  checkCollision(a, b) {
+    const dx = a.collisionX - b.collisionX;
+    const dy = a.collisionY - b.collisionY;
+    const distance = Math.hypot(dx, dy);
+    const sumOfRadii = a.collisionRadius + b.collisionRadius;
+    return distance <= sumOfRadii;
+  }
+
   formatTimer() {
     return (this.timer * 0.001).toFixed(1);
+  }
+
+  handlePeriodicEvents(deltaTime) {
+    if (this.eventTimer < this.eventInterval) {
+      this.eventTimer += deltaTime;
+      this.eventUpdate = false;
+    } else {
+      this.eventTimer = this.eventTimer % this.eventInterval;
+      this.eventUpdate = true;
+    }
   }
 
   drawStatusText() {
@@ -135,10 +172,25 @@ export class Game {
     this.ctx.textAlign = 'left';
     this.ctx.fillText(translations[lang].timer + ' ' + this.formatTimer(), 10, 30);
     if (this.gameOver) {
+      if (this.player.collided) {
+        this.message1 = 'Getting rusty?';
+        this.message2 = 'Press R to restart';
+      } else if (this.obstacles.length <= 0) {
+        this.message1 = 'Nailed it!';
+        this.message2 = 'Press R to restart';
+      }
       this.ctx.textAlign = 'center';
-      const fontSize = 60 * this.ratio;
-      this.ctx.font = fontSize + 'px Bungee';
-      this.ctx.fillText('Game Over', this.width * 0.5, this.height * 0.5);
+      const fontSize1 = 60 * this.ratio;
+      this.ctx.font = fontSize1 + 'px Bungee';
+      this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.5);
+      const fontSize2 = 30 * this.ratio;
+      this.ctx.font = fontSize2 + 'px Bungee';
+      this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.5 + fontSize1);
+    }
+    if (this.player.energy <= 20) this.ctx.fillStyle = 'red';
+    else if (this.player.energy >= this.player.maxEnergy) this.ctx.fillStyle = 'orangered';
+    for (let i = 0; i < this.player.energy; i++) {
+      this.ctx.fillRect(10, this.height - 10 - this.player.barSize * i, this.player.barSize * 5, this.player.barSize);
     }
     this.ctx.restore();
   }
