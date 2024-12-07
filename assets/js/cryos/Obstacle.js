@@ -15,7 +15,7 @@ export class Obstacle {
     this.y = Math.random() * (this.game.height - this.scaledHeight);
     this.collisionX;
     this.collisionY;
-    this.collisionRadius = this.scaledWidth * 0.5;
+    this.collisionRadius;
     this.speedY = Math.random() < 0.5 ? -1 * this.game.ratio : 1 * this.game.ratio;
     this.game.ratio;
     this.markedForDeletion = false;
@@ -40,12 +40,12 @@ export class Obstacle {
       this.markedForDeletion = true;
       this.game.obstacles = this.game.obstacles.filter(obstacle => !obstacle.markedForDeletion);
       this.game.score++;
-      if (this.game.obstacles.length <= 0) this.game.gameOver = true;
+      if (this.game.obstacles.length <= 0) this.game.triggerGameOver();
     }
     if (this.game.checkCollision(this, this.game.player)) {
-      this.game.gameOver = true;
       this.game.player.collided = true;
       this.game.player.stopCharge();
+      this.game.triggerGameOver();
     }
   }
 
@@ -61,6 +61,7 @@ export class Obstacle {
   resize() {
     this.scaledWidth = this.spriteWidth * this.game.ratio;
     this.scaledHeight = this.spriteHeight * this.game.ratio;
+    this.collisionRadius = this.scaledWidth * 0.4;
   }
 
   isOffScreen() {
