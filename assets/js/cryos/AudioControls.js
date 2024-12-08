@@ -4,7 +4,8 @@
 
 /*******************/
 export class AudioControl {
-  constructor() {
+  constructor(game) {
+    this.game = game;
     // Initialiser l'AudioContext à null
     this.audioContext = null;
     this.isAudioContextInitialized = false;
@@ -99,7 +100,8 @@ export class AudioControl {
   
     source.connect(gainNode);
     gainNode.connect(this.audioContext.destination);
-    source.start();
+
+    if (!this.game.paused) source.start();
   }
 
   /**

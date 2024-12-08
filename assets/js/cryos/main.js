@@ -120,10 +120,12 @@ window.addEventListener('load', function() {
     const game = new Game(canvas, ctx);
 
     let lastTime = 0;
+
     function animate(timeStamp) {
       const deltaTime = timeStamp - lastTime;
       lastTime = timeStamp;
       game.render(deltaTime);
+
       requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);

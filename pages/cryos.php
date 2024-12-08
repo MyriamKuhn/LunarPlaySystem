@@ -7,8 +7,12 @@ use Tools\Security;
 $requestScheme = Security::secureInput($_SERVER['REQUEST_SCHEME']);
 $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
-?>
+if (!isset($_SESSION['playername'])) {
+  header('Location: /' . $lang . '/player/');
+  exit();
+}
 
+?>
 
 <!DOCTYPE html>
 <html lang="<?= Security::secureInput($lang) ?>">
@@ -17,7 +21,9 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="author" content="LunarPlay System">
+	<!-- CSRF Token -->
+	<meta name="csrf-token" content="<?= $_SESSION['csrf_token']; ?>">
+	<meta name="language" content="<?= Security::secureInput($_SESSION['lang'] ?? 'en') ?>">
 	<!-- Meta pour les langues -->
 	<link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/fr/cryos/' ?>" hreflang="fr" />
 	<link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/en/cryos/' ?>" hreflang="en" />
@@ -25,6 +31,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<link rel="canonical" href="<?= $requestScheme . '://' . $serverName . '/' . Security::secureInput($lang) . '/cryos/' ?>" />
 	<link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/en/cryos/' ?>" hreflang="x-default" />
 	<!-- Meta pour le SEO -->
+	<meta name="author" content="LunarPlay System">
 	<meta name="description" content="<?= Security::secureInput($translations['under_construction_description']) ?>" />
 	<meta property="og:title" content="<?= Security::secureInput($translations['under_construction_title']) ?>">
 	<meta property="og:description" content="<?= Security::secureInput($translations['under_construction_description']) ?>">

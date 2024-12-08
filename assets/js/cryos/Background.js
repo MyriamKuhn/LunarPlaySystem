@@ -20,6 +20,7 @@ export class Background {
   }
 
   draw() {
+    this.game.ctx.imageSmoothingEnabled = true;
     this.game.ctx.drawImage(this.image, this.x, 0, this.scaledWidth, this.scaledHeight);
     this.game.ctx.drawImage(this.image, this.x + this.scaledWidth, 0, this.scaledWidth, this.scaledHeight);
     if (this.game.canvas.width > this.scaledWidth) {

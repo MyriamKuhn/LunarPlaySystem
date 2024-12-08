@@ -5,7 +5,7 @@ import { sendScore } from '/assets/js/utils.js';
 
 /*************/
 export class Obstacle {
-  constructor(game, x) {
+  constructor(game, x, speedIncrement) {
     this.game = game;
     this.spriteWidth = 120;
     this.spriteHeight = 120;
@@ -16,7 +16,8 @@ export class Obstacle {
     this.collisionX;
     this.collisionY;
     this.collisionRadius;
-    this.speedY = Math.random() < 0.5 ? -1 * this.game.ratio : 1 * this.game.ratio;
+    this.currentSpeedIncrement = speedIncrement;
+    this.speedY = (Math.random() < 0.5 ? -1 : 1) * (this.currentSpeedIncrement + Math.random() * 0.5) * this.game.ratio;
     this.game.ratio;
     this.markedForDeletion = false;
     this.image = document.getElementById('obstacle');
@@ -40,7 +41,10 @@ export class Obstacle {
       this.markedForDeletion = true;
       this.game.obstacles = this.game.obstacles.filter(obstacle => !obstacle.markedForDeletion);
       this.game.score++;
-      if (this.game.obstacles.length <= 0) this.game.triggerGameOver();
+      if (this.game.obstacles.length <= 3) {
+        const newSpeedIncrement = this.currentSpeedIncrement += 0.5;
+        this.game.addObstacles(newSpeedIncrement);
+      }
     }
     if (this.game.checkCollision(this, this.game.player)) {
       this.game.player.collided = true;

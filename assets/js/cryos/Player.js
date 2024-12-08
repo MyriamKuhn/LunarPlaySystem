@@ -6,7 +6,7 @@
 export class Player {
   constructor(game) {
     this.game = game;
-    this.x = 20;
+    this.x = 60;
     this.y = 0;
     this.spriteWidth = 200;
     this.spriteHeight = 200;

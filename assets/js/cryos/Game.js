@@ -20,14 +20,44 @@ const translations = {
   'fr': {
     'score': 'Score : ',
     'timer': 'Temps : ',
+    'begin': 'Evitez les obstacles !',
+    'flap': '🪽 Appuyez sur "Espace", sur "Entrée" ou "Tap" sur mobile pour voler 🪽',
+    'charge': '🚀 Appuyez sur "Shift", sur "C" ou "Swipe" sur mobile pour charger 🚀',
+    'press': '⚔️ Appuyez sur "R" pour commencer ! ⚔️',
+    'press2': '💻 Appuyez sur "F" pour le plein écran ! 💻',
+    'press3': '👈 Appuyez sur "B" pour revenir au menu ! 👈',
+    'press4': '🔊 Appuyez sur "M" pour activer/désactiver le son ! 🔇',
+    'press5': '📱 Sur mobile, utilisez les boutons ci-dessous 👇',
+    'gameover': '🎮 Perdu ! 🎮',
+    'gameover2': 'Votre score final : ',
   },
   'en': {
     'score': 'Score: ',
     'timer': 'Timer: ',
+    'begin': 'Avoid the obstacles!',
+    'flap': '🪽 Press "Space", "Enter" or "Tap" on mobile to fly 🪽',
+    'charge': '🚀 Press "Shift", "C" or "Swipe" on mobile to charge 🚀',
+    'press': '⚔️ Press "R" to start! ⚔️',
+    'press2': '💻 Press "F" for full screen! 💻',
+    'press3': '👈 Press "B" to go back to the menu! 👈',
+    'press4': '🔊 Press "M" to toggle sound on/off! 🔇',
+    'press5': '📱 On mobile, use the buttons below 👇',
+    'gameover': '🎮 Game over! 🎮',
+    'gameover2': 'Your final score: ',
   },
   'de': {
     'score': 'Punktzahl: ',
     'timer': 'Timer: ',
+    'begin': 'Vermeide die Hindernisse!',
+    'flap': '🪽 Drück die "Leertaste", "Enter" oder "Tippen" auf dem Handy, um zu fliegen 🪽',
+    'charge': '🚀 Drück "Shift", "C" oder "Wischen" auf dem Handy, um zu laden 🚀',
+    'press': '⚔️ Drück "R", um zu starten! ⚔️',
+    'press2': '💻 Drück "F" für den Vollbildmodus! 💻',
+    'press3': '👈 Drück "B", um zum Menü zurückzukehren! 👈',
+    'press4': '🔊 Drück "M", um den Ton ein-/auszuschalten! 🔇',
+    'press5': '📱 Auf dem Handy, benutze die untenstehenden Buttons 👇',
+    'gameover': '🎮 Spiel vorbei! 🎮',
+    'gameover2': 'Deine Endpunktzahl: ',
   },
 };
 
@@ -48,7 +78,7 @@ export class Game {
 
     this.background = new Background(this);
     this.player = new Player(this);
-    this.sound = new AudioControl();
+    this.sound = new AudioControl(this);
     this.obstacles = [];
     this.numberOfObstacles = 10;
     this.gravity;
@@ -72,7 +102,18 @@ export class Game {
     this.debug = false;
     this.isKeyDown = false;
 
-    //this.resize(window.innerWidth, window.innerHeight);
+    this.level;
+    this.paused;
+    this.message1 = translations[lang].begin;
+    this.message2 = translations[lang].flap;
+    this.message3 = translations[lang].charge;
+    this.message4 = translations[lang].press;
+    this.message5 = translations[lang].press2;
+    this.message6 = translations[lang].press3;
+    this.message7 = translations[lang].press4;
+    this.message8 = translations[lang].press5;
+
+    this.resize(window.innerWidth, window.innerHeight);
 
     this.resetButton = document.getElementById('resetButton');
     this.resetButton.addEventListener('click', e => {
@@ -111,7 +152,8 @@ export class Game {
     }, { passive: false });
 
     window.addEventListener('resize', e => {
-      this.resize(e.currentTarget.innerWidth, e.currentTarget.innerHeight);
+      this.resize(e.currentTarget.innerWidth, e.currentTarget.innerHeight, true);
+      this.paused = true;
     });
 
     this.canvas.addEventListener('mousedown', e => {
@@ -156,9 +198,14 @@ export class Game {
       }
     }, { passive: false });
 
+    this.paused = true;
   }
 
-  resize(width, height) {
+  resize(width, height, isResizing = false) {
+    const controls = document.querySelector('.controls');
+    controls.style.pointerEvents = 'none';
+    controls.classList.add('hidden');
+
     this.canvas.width = width;
     this.canvas.height = height;
 
@@ -167,8 +214,8 @@ export class Game {
 
     this.ratio = this.height / this.baseHeight;
 
-    this.smallFont = Math.ceil(20 * this.ratio);
-    this.largeFont = Math.ceil(40 * this.ratio);
+    this.smallFont = Math.ceil(15 * this.ratio);
+    this.largeFont = Math.ceil(30 * this.ratio);
 
     this.ctx.font = this.smallFont + 'px Bungee';
     this.ctx.textAlign = 'right';
@@ -182,18 +229,28 @@ export class Game {
     this.maxSpeed = this.speed * 5;
     this.background.resize();
     this.player.resize();
-    this.createObstacles();
+    this.obstacles = [];
+    this.createObstacles(0.5);
     this.obstacles.forEach(obstacle => {
       obstacle.resize();
     });
     this.score = 0;
     this.gameOver = false;
     this.timer = 0;
+    this.level = 1;
 
     this.debug = false;
+    if (!isResizing) {
+      this.paused = false;
+      this.sound.play('win');
+    } 
   }
 
   render(deltaTime) {
+    if (this.paused) {
+      this.drawPauseScreen();
+      return;
+    }
     if (!this.gameOver) this.timer += deltaTime;
     this.handlePeriodicEvents(deltaTime);
     this.background.update();
@@ -215,12 +272,35 @@ export class Game {
     }
   }
 
-  createObstacles() {
-    this.obstacles = [];
+  createObstacles(speedIncrement) {
     const firstX = this.baseHeight * this.ratio;
-    const obstacleSpacing = 600 * this.ratio;
+    const minSpacing = 400;
+    const maxSpacing = 800;
+
+    // Si un obstacle existe déjà, démarrer après le dernier
+    const lastObstacle = this.obstacles[this.obstacles.length - 1];
+    let startX = lastObstacle ? lastObstacle.x : firstX;
+
     for (let i = 0; i < this.numberOfObstacles; i++) {
-      this.obstacles.push(new Obstacle(this, firstX + i * obstacleSpacing));
+      const randomSpacing = Math.random() * (maxSpacing - minSpacing) + minSpacing;
+      const obstacleSpacing = randomSpacing * this.ratio;
+      startX += obstacleSpacing;
+      this.obstacles.push(new Obstacle(this, startX, speedIncrement));
+    }
+  }
+
+  addObstacles(speedIncrement) {
+    this.createObstacles(speedIncrement);
+    this.obstacles.forEach(obstacle => {
+      obstacle.resize();
+    });
+    this.level++;
+    if (this.level % 4 === 0) {
+      this.sound.play('win');
+      this.player.stopCharge();
+      this.speed += 1;
+      this.minSpeed = this.speed;
+      this.maxSpeed = this.speed * 5;
     }
   }
 
@@ -249,16 +329,38 @@ export class Game {
   triggerGameOver() {
     if (!this.gameOver) {
       this.gameOver = true;
-      if (this.obstacles.length <= 0) {
-        this.sound.play('win');
-        this.message1 = 'Nailed it!';
-        this.message2 = 'Press R to restart';
-      } else {
+      if (this.player.collided) {
+        const finalscore = this.calculateFinalScore(this.formatTimer(), this.score);
         this.sound.play('lose');
-        this.message1 = 'Getting rusty?';
-        this.message2 = 'Press R to restart';
+        this.message1 = translations[lang].gameover;
+        this.message2 = '';
+        this.message3 = translations[lang].gameover2 + ' ' + finalscore;
       }
+      this.paused = true;
     }
+  }
+
+  calculateFinalScore(totalTimeInSeconds, totalObstaclesCleared) {
+    const timeWeight = 2; 
+    const obstacleWeight = 3; 
+
+    // Calcul du score de base
+    const baseTimeScore = totalTimeInSeconds * timeWeight;
+    const baseObstacleScore = totalObstaclesCleared * obstacleWeight;
+
+    // Calcul de la vitesse (obstacles par seconde)
+    const obstaclesPerSecond = totalObstaclesCleared / totalTimeInSeconds;
+
+    // Multiplier la vitesse pour récompenser un meilleur temps
+    const speedBonus = Math.max(1, obstaclesPerSecond * 15); 
+
+    // Facteur de difficulté basé sur les paliers d'obstacles franchis
+    const difficultyMultiplier = 1 + (totalObstaclesCleared / 10) ** 1.1;
+
+    // Score final ajusté
+    const finalScore = (baseTimeScore + baseObstacleScore) * difficultyMultiplier * speedBonus;
+
+    return Math.floor(finalScore);
   }
 
   drawStatusText() {
@@ -266,13 +368,7 @@ export class Game {
     this.ctx.fillText(translations[lang].score + ' ' + this.score, this.width - this.smallFont, this.largeFont);
     this.ctx.textAlign = 'left';
     this.ctx.fillText(translations[lang].timer + ' ' + this.formatTimer(), this.smallFont, this.largeFont);
-    if (this.gameOver) {
-      this.ctx.textAlign = 'center';
-      this.ctx.font = this.largeFont + 'px Bungee';
-      this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.5, this.width);
-      this.ctx.font = this.smallFont + 'px Bungee';
-      this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.5 + this.largeFont, this.width);
-    }
+    
     if (this.player.energy <= this.player.minEnergy) this.ctx.fillStyle = 'red';
     else if (this.player.energy >= this.player.maxEnergy) this.ctx.fillStyle = 'orangered';
     for (let i = 0; i < this.player.energy; i++) {
@@ -280,5 +376,31 @@ export class Game {
     }
     this.ctx.restore();
   }
+
+  drawPauseScreen() {
+    const pauseScreen = new Background(this);
+    pauseScreen.resize();
+    pauseScreen.draw();
+    this.ctx.save();
+    this.ctx.fillStyle = 'white';
+    this.ctx.shadowColor = 'black';
+    this.ctx.shadowBlur = 10;
+    this.ctx.textAlign = 'center';
+    this.ctx.font = this.largeFont + 'px Bungee';
+    this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.2, this.width);
+    this.ctx.font = this.smallFont + 'px Bungee';
+    this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.2 + this.largeFont, this.width);
+    this.ctx.fillText(this.message3, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont + 10, this.width);
+    this.ctx.fillText(this.message4, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 3 + 20, this.width);
+    this.ctx.fillText(this.message5, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 4 + 30, this.width);
+    this.ctx.fillText(this.message6, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 5 + 40, this.width);
+    this.ctx.fillText(this.message7, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 6 + 50, this.width);
+    this.ctx.fillText(this.message8, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 7 + 60, this.width);
+    this.ctx.restore();
+    const controls = document.querySelector('.controls');
+    controls.style.pointerEvents = 'auto';
+    controls.classList.remove('hidden');
+  }
+
 
 }
