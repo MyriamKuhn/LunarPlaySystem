@@ -436,6 +436,10 @@ export class Game {
           this.enemyPool.forEach(enemy => {
             enemy.reset();
           });
+          const controls = document.querySelector('.controls');
+          controls.style.pointerEvents = 'auto';
+          controls.classList.remove('hidden');
+          
           this.message1 = translations[lang].gameover;
           this.message2 = translations[lang].gameover2;
           this.sound.play('lose');

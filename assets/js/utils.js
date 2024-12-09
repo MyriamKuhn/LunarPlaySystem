@@ -72,7 +72,13 @@ export function sendScore(data) {
     },
     body: JSON.stringify(data)
   })
-  .then(response => response.json())
+  .then(response => {
+    if (response.ok) {
+      console.log('Score envoyé avec succès.');
+    } else {
+      response.json()
+    }
+  })
   .catch(error => {
     console.error('Erreur:', error);
   });
