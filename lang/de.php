@@ -98,4 +98,7 @@ return [
   'under_construction_keywords' => "im Aufbau, Minispiele, interstellare Abenteuer, LunarPlay System, Online-Spiel, Weltraum-Arcade, galaktische Spiele, Sternenabenteuer, interstellare Herausforderungen, Planetenerkundung",
   'under_construction_title' => 'LunarPlay System - Im Aufbau',
   'cryos_mode' => 'Um das Spiel optimal zu genießen und Hindernisse rechtzeitig zu erkennen, dreh dein Gerät bitte in den Querformatmodus.',
+  'cryos_title' => 'LunarPlay System - Cryos Gearglide',
+  'cryos_description' => "Cryos, der Steampunk-Planet für mechanische Herausforderungen! Erkunde eine einzigartige Industriewelt und stelle in Cryos Gearglide deine Reflexe auf die Probe. Steuere ein mechanisches Vogelschiff, weiche Zahnrädern aus, verwende strategische Boosts und führe die Rangliste an. Ein spannendes Abenteuer in einer Welt aus Dampf und Stahl wartet auf Dich!",
+  'cryos_keywords' => "Cryos Gearglide, Reflexspiel, Planet Cryos, Steampunk-Universum, mechanische Herausforderungen, Industriewelt, mechanisches Vogelschiff, Zahnräder, strategische Boosts, Gesamtwertung, mechanische Herausforderungen, Industriewelt",
 ];

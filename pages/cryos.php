@@ -32,12 +32,12 @@ if (!isset($_SESSION['playername'])) {
 	<link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/en/cryos/' ?>" hreflang="x-default" />
 	<!-- Meta pour le SEO -->
 	<meta name="author" content="LunarPlay System">
-	<meta name="description" content="<?= Security::secureInput($translations['under_construction_description']) ?>" />
-	<meta property="og:title" content="<?= Security::secureInput($translations['under_construction_title']) ?>">
-	<meta property="og:description" content="<?= Security::secureInput($translations['under_construction_description']) ?>">
+	<meta name="description" content="<?= Security::secureInput($translations['cryos_description']) ?>" />
+	<meta property="og:title" content="<?= Security::secureInput($translations['cryos_title']) ?>">
+	<meta property="og:description" content="<?= Security::secureInput($translations['cryos_description']) ?>">
 	<meta property="og:image" content="/assets/logo/logo_big.svg">
-	<meta name="keywords" content="<?= Security::secureInput($translations['under_construction_keywords']) ?>" />
-	<title><?= Security::secureInput($translations['under_construction_title']) ?></title>
+	<meta name="keywords" content="<?= Security::secureInput($translations['cryos_keywords']) ?>" />
+	<title><?= Security::secureInput($translations['cryos_title']) ?></title>
 	<link rel="shortcut icon" href="/assets/logo/logo_small.svg" type="image/svg+xml">
 	<!-- Google Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
