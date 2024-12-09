@@ -42,11 +42,13 @@ try {
   }
   $planet = Security::secureInput($data['planet']);
   $playername = Security::secureInput($data['playername']);
-  $score = Security::secureInput($data['score']);
+  $score = intval($data['score']);
+  if ($data['timeSpent']) $timeSpent = floatval($data['timeSpent']);
+  if ($data['obstaclesCrossed']) $obstaclesCrossed = intval($data['obstaclesCrossed']);
 
   // Ajouter le score
-  if ($generalRepository->addScore($planet, $playername, $score)) {
-    Security::sendResponse(true, 'Score ajouté avec succès.', 200);
+  if ($generalRepository->addScore($planet, $playername, $score, $timeSpent ?? null, $obstaclesCrossed ?? null)) {
+    http_response_code(200);
   } else {
     Security::sendResponse(false, 'Le score n\'a pas été mis à jour.', 400);
   }

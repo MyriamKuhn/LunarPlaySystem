@@ -69,6 +69,8 @@ export const descriptions = {
       rank: "Rang",
       playername: "Pseudo",
       score: "Score",
+      timeSpent: "Temps mis",
+      obstaclesCrossed: 'Obstacles franchis',
     },
   },
   en: {
@@ -141,6 +143,8 @@ export const descriptions = {
       rank: "Rank",
       playername: "Nickname",
       score: "Score",
+      timeSpent: "Time spent",
+      obstaclesCrossed: 'Obstacles crossed',
     },
   },
   de: {
@@ -213,6 +217,8 @@ export const descriptions = {
       rank: "Rang",
       playername: "Spielername",
       score: "Punkte",
+      timeSpent: "Verbrachte Zeit",
+      obstaclesCrossed: 'Überwundene Hindernisse',
     },
   },
 };

@@ -7,7 +7,7 @@ import { Player } from '/assets/js/cryos/Player.js';
 import { Background } from '/assets/js/cryos/Background.js';
 import { Obstacle } from '/assets/js/cryos/Obstacle.js';
 import { AudioControl } from '/assets/js/cryos/AudioControls.js';
-import { securePlayername } from '/assets/js/utils.js';
+import { securePlayername, sendScore } from '/assets/js/utils.js';
 
 
 /*************/
@@ -202,8 +202,8 @@ export class Game {
     this.paused = true;
   }
 
-  checkOrientation() {
-    const isPortrait = window.innerHeight > window.innerWidth;
+  checkOrientation(width, height) {
+    const isPortrait = height > width;
     const overlay = document.getElementById('orientation-overlay');
     const controls = document.querySelector('.controls');
     
@@ -223,7 +223,7 @@ export class Game {
     controls.style.pointerEvents = 'none';
     controls.classList.add('hidden');
     
-    this.checkOrientation();
+    this.checkOrientation(width, height);
 
     this.canvas.width = width;
     this.canvas.height = height;
@@ -365,10 +365,10 @@ export class Game {
             planet: planet,
             playername: playerName,
             score: score,
-            time: time,
-            obstacles: obstacles,
+            timeSpent: time,
+            obstaclesCrossed: obstacles,
           };
-          if (!data.planet || !data.playername || !data.score || !data.time || !data.obstacles) {
+          if (!data.planet || !data.playername || !data.score || !data.timeSpent || !data.obstaclesCrossed) {
             this.sound.play('lose');
             this.message1 = translations[lang].gameover;
             this.message2 = '';
@@ -378,7 +378,7 @@ export class Game {
             return;
           }
           // Envoyer la requête fetch pour ajouter le score
-          this.sendScore(data);
+          sendScore(data);
         } 
         this.sound.play('lose');
         this.message1 = translations[lang].gameover;
@@ -388,9 +388,6 @@ export class Game {
         this.paused = true;
       }
     }
-  }
-
-  sendScore(data) {
   }
 
   calculateFinalScore(totalTimeInSeconds, totalObstaclesCleared) {
