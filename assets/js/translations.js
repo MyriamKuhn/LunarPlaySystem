@@ -15,9 +15,9 @@ export const descriptions = {
       game: "Aventure sur Aqualis",
     },
     cryos: {
-      intro: "Aux confins du système, Cryos est une planète de glace et de silence, où la beauté austère des paysages émerveille les explorateurs les plus intrépides. Montagnes de glace scintillantes, vastes plaines gelées et cavernes cristallines font de cette planète un lieu énigmatique, baigné dans un froid éternel. Dans ces régions reculées, des formes de vie surprenantes ont évolué pour résister au froid extrême, et les cristaux d'énergie, rare ressource naturelle, se nichent dans les profondeurs gelées. Parfois, le ciel de Cryos est traversé par des comètes spectaculaires, illuminant cette étendue glaciale d'une lueur mystérieuse.",
-      desc: "Dans Exploration de Cryos Exploration, mettez votre mémoire à l'épreuve en explorant les mystérieuses cavernes de cristaux et les étendues glacées de Cryos. Associez les cartes représentant les formes de vie étranges, les formations cristallines et autres éléments uniques de cette planète froide. Avec chaque paire trouvée, un peu plus du mystère de Cryos se dévoile, rendant votre progression aussi stimulante que fascinante dans ce monde glacial.",
-      game: "Exploration de Cryos",
+      intro: "Cryos est une planète ardente où le métal et le feu dominent. Ses vastes étendues désertiques sont parsemées de dunes rouges et de chaînes d'engrenages titanesques, animés par des mécanismes anciens. Des nuages de vapeur et de fumée montent des profondeurs de la planète, évoquant un monde en perpétuelle effervescence industrielle. Dans ce paysage infernal, des citadelles steampunk s'élèvent, grouillant de vie et de bruit. Cryos est un défi permanent, un terrain où seuls les plus habiles peuvent s'élever au-dessus de la chaleur et des dangers omniprésents.",
+      desc: "Prenez les commandes d'un vaisseau steampunk en forme d'oiseau mécanique et affrontez les périls des engrenages mouvants de Cryos. Évitez les obstacles qui montent et descendent, tout en utilisant stratégiquement votre boost de vitesse pour franchir des zones complexes. Chaque obstacle passé renforce votre score, mais attention, la difficulté augmente au fil de votre progression. Dans ce monde industriel impitoyable, seuls les pilotes les plus ingénieux pourront atteindre les sommets du classement. Cryos Gearglide promet une aventure palpitante dans un univers où la mécanique est reine.",
+      game: "Cryos Gearglide",
     },
     elythium: {
       intro: "Avec ses forêts flottantes et sa flore lumineuse, Elythium est un véritable paradis naturel, rappelant la Terre mais baigné d'une touche de magie et d'exotisme. Ce monde est riche en biodiversité, abritant des écosystèmes variés allant des océans scintillants aux montagnes imposantes, peuplés de créatures étranges et de végétation bioluminescente. La vie y prospère dans un cadre où chaque plante et chaque créature semble émettre sa propre lumière, rendant Elythium aussi accueillante que mystérieuse. C'est une planète qui évoque la beauté de la Terre, mais dans un décor enchanté et futuriste.",
@@ -69,6 +69,8 @@ export const descriptions = {
       rank: "Rang",
       playername: "Pseudo",
       score: "Score",
+      timeSpent: "Temps mis",
+      obstaclesCrossed: 'Obstacles franchis',
     },
   },
   en: {
@@ -87,9 +89,9 @@ export const descriptions = {
       game: "Aqualis Adventure",
     },
     cryos: {
-      intro: "At the very edge of the system, Cryos is a planet of ice and silence, where the austere beauty of the landscape is awe-inspiring for even the most intrepid explorers. Glistening ice mountains, vast frozen plains and crystalline caverns make this planet an enigmatic place, bathed in eternal cold. In these remote regions, surprising life forms have evolved to withstand the extreme cold, and energy crystals, a rare natural resource, nestle in the frozen depths. Occasionally, the skies over Cryos are crossed by spectacular comets, illuminating this icy expanse with a mysterious glow.",
-      desc: "In Cryos Exploration, put your memory to the test as you explore the mysterious crystal caves and icy expanses of Cryos. Match cards representing the strange life forms, crystal formations and other unique features of this cold planet. With each pair found, a little more of Cryos' mystery is revealed, making your progress through this icy world as challenging as it is fascinating.",
-      game: "Cryos Exploration",
+      intro: "Cryos is a fiery planet, dominated by metal and fire. Its vast stretches of desert are dotted with red dunes and titanic chains of gears, powered by ancient mechanisms. Clouds of steam and smoke rise from the depths of the planet, evoking a world in perpetual industrial effervescence. In this infernal landscape, steampunk citadels rise up, teeming with life and noise. Cryos is a permanent challenge, a terrain where only the most skilful can rise above the omnipresent heat and dangers.",
+      desc: "Take control of a steampunk ship in the shape of a mechanical bird and face the perils of Cryos' shifting gears. Avoid obstacles that rise and fall, while strategically using your speed boost to clear complex zones. Each obstacle you clear boosts your score, but beware: difficulty increases as you progress. In this unforgiving industrial world, only the most ingenious drivers will be able to reach the top of the leaderboard. Cryos Gearglide promises a thrilling adventure in a world where mechanics reign supreme.",
+      game: "Cryos Gearglide",
     },
     elythium: {
       intro: "With its floating forests and luminous flora, Elythium is a veritable natural paradise, reminiscent of Earth but bathed in a touch of magic and exoticism. This world is rich in biodiversity, home to a variety of ecosystems ranging from sparkling oceans to towering mountains, populated by strange creatures and bioluminescent vegetation. Life thrives in a setting where every plant and creature seems to emit its own light, making Elythium as welcoming as it is mysterious. It's a planet that evokes the beauty of Earth, but in an enchanted, futuristic setting.",
@@ -141,6 +143,8 @@ export const descriptions = {
       rank: "Rank",
       playername: "Nickname",
       score: "Score",
+      timeSpent: "Time spent",
+      obstaclesCrossed: 'Obstacles crossed',
     },
   },
   de: {
@@ -159,9 +163,9 @@ export const descriptions = {
       game: "Aqualis Abenteuer",
     },
     cryos: {
-      intro: "Am Rande des Systems liegt Cryos, ein Planet aus Eis und Stille, dessen karge landschaftliche Schönheit selbst die kühnsten Entdecker in Staunen versetzt. Glitzernde Eisberge, weite gefrorene Ebenen und kristallklare Höhlen machen diesen Planeten zu einem rätselhaften Ort, der in ewige Kälte getaucht ist. In diesen abgelegenen Regionen haben sich erstaunliche Lebensformen entwickelt, um der extremen Kälte zu widerstehen, und Energiekristalle, eine seltene natürliche Ressource, nisten sich in den gefrorenen Tiefen ein. Manchmal wird der Himmel über Cryos von spektakulären Kometen durchzogen, die diese eisige Weite mit einem geheimnisvollen Leuchten erhellen.",
-      desc: "In Cryos Exploration stellst du dein Gedächtnis auf die Probe, indem du die geheimnisvollen Kristallhöhlen und die eisigen Weiten von Cryos erkundest. Kombiniere die Karten, die seltsame Lebensformen, Kristallformationen und andere einzigartige Elemente dieses kalten Planeten darstellen. Mit jedem gefundenen Paar wird ein Stückchen mehr vom Geheimnis von Cryos enthüllt, was dein Vorankommen in dieser eisigen Welt ebenso herausfordernd wie faszinierend macht.",
-      game: "Cryos Exploration",
+      intro: "Cryos ist ein feuriger Planet, auf dem Metall und Feuer vorherrschen. Seine weiten Wüstenlandschaften sind übersät mit roten Dünen und titanischen Zahnradketten, die von uralten Mechanismen angetrieben werden. Dampf- und Rauchwolken steigen aus den Tiefen des Planeten auf und erinnern an eine Welt, die sich in einem ständigen industriellen Aufruhr befindet. In dieser Höllenlandschaft erheben sich Steampunk-Zitadellen, die von Leben und Lärm wimmeln. Cryos ist eine ständige Herausforderung, ein Terrain, auf dem sich nur die Geschicktesten über die Hitze und die allgegenwärtigen Gefahren erheben können.",
+      desc: "Übernimm die Kontrolle über ein Steampunk-Raumschiff in Form eines mechanischen Vogels und stelle dich den Gefahren der sich bewegenden Zahnräder von Cryos. Weiche auf- und absteigenden Hindernissen aus, während du deinen Geschwindigkeitsboost strategisch einsetzt, um komplexe Bereiche zu überwinden. Mit jedem überwundenen Hindernis steigt deine Punktzahl, aber Vorsicht, der Schwierigkeitsgrad nimmt mit dem Fortschritt zu. In dieser erbarmungslosen Industriewelt können nur die einfallsreichsten Piloten die Spitze der Rangliste erreichen. Cryos Gearglide verspricht ein spannendes Abenteuer in einer Welt, in der die Mechanik regiert.",
+      game: "Cryos Gearglide",
     },
     elythium: {
       intro: "Mit seinen schwimmenden Wäldern und seiner leuchtenden Flora ist Elythium ein wahres Naturparadies, das an die Erde erinnert, aber in einen Hauch von Magie und Exotik getaucht ist. Diese Welt ist reich an Biodiversität und beherbergt vielfältige Ökosysteme, die von glitzernden Ozeanen bis hin zu imposanten Bergen reichen und von seltsamen Kreaturen und biolumineszierender Vegetation bewohnt werden. Das Leben gedeiht in einer Umgebung, in der jede Pflanze und jede Kreatur ihr eigenes Licht auszustrahlen scheint, was Elythium ebenso einladend wie geheimnisvoll macht. Es ist ein Planet, der an die Schönheit der Erde erinnert, jedoch in einer verzauberten und futuristischen Umgebung.",
@@ -213,6 +217,8 @@ export const descriptions = {
       rank: "Rang",
       playername: "Spielername",
       score: "Punkte",
+      timeSpent: "Verbrachte Zeit",
+      obstaclesCrossed: 'Überwundene Hindernisse',
     },
   },
 };

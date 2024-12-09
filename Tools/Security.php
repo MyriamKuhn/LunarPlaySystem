@@ -16,10 +16,18 @@ class Security
   {
     http_response_code($statusCode);
     header('Content-Type: application/json; charset=utf-8');
-    echo json_encode([
+
+    $response = [
       'success' => $success,
       'datas' => $datas
-    ]);
+    ];
+
+    if (!$success) {
+      // Ajouter un message d'erreur détaillé en cas d'échec
+      $response['errorMessage'] = 'Une erreur est survenue, veuillez réessayer plus tard.';
+    }
+
+    echo json_encode($response);
   }
 
   // Vérification du token CSRF
