@@ -7,6 +7,7 @@ import { Player } from '/assets/js/cryos/Player.js';
 import { Background } from '/assets/js/cryos/Background.js';
 import { Obstacle } from '/assets/js/cryos/Obstacle.js';
 import { AudioControl } from '/assets/js/cryos/AudioControls.js';
+import { securePlayername } from '/assets/js/utils.js';
 
 
 /*************/
@@ -55,7 +56,7 @@ const translations = {
     'press2': '💻 Drück "F" für den Vollbildmodus! 💻',
     'press3': '👈 Drück "B", um zum Menü zurückzukehren! 👈',
     'press4': '🔊 Drück "M", um den Ton ein-/auszuschalten! 🔇',
-    'press5': '📱 Auf dem Handy, benutze die untenstehenden Buttons 👇',
+    'press5': '📱 Auf Mobilgeräten, benutze die Schaltflächen hier unten 👇',
     'gameover': '🎮 Spiel vorbei! 🎮',
     'gameover2': 'Deine Endpunktzahl: ',
   },
@@ -201,10 +202,28 @@ export class Game {
     this.paused = true;
   }
 
+  checkOrientation() {
+    const isPortrait = window.innerHeight > window.innerWidth;
+    const overlay = document.getElementById('orientation-overlay');
+    const controls = document.querySelector('.controls');
+    
+    if (isPortrait) {
+      overlay.style.display = 'flex'; 
+      controls.style.pointerEvents = 'auto';
+      controls.classList.remove('hidden');
+    } else {
+      overlay.style.display = 'none'; 
+      controls.style.pointerEvents = 'none';
+      controls.classList.add('hidden');
+    }
+  }
+
   resize(width, height, isResizing = false) {
     const controls = document.querySelector('.controls');
     controls.style.pointerEvents = 'none';
     controls.classList.add('hidden');
+    
+    this.checkOrientation();
 
     this.canvas.width = width;
     this.canvas.height = height;
@@ -214,8 +233,8 @@ export class Game {
 
     this.ratio = this.height / this.baseHeight;
 
-    this.smallFont = Math.ceil(15 * this.ratio);
-    this.largeFont = Math.ceil(30 * this.ratio);
+    this.smallFont = Math.ceil(20 * this.ratio);
+    this.largeFont = Math.ceil(40 * this.ratio);
 
     this.ctx.font = this.smallFont + 'px Bungee';
     this.ctx.textAlign = 'right';
@@ -331,13 +350,47 @@ export class Game {
       this.gameOver = true;
       if (this.player.collided) {
         const finalscore = this.calculateFinalScore(this.formatTimer(), this.score);
+
+        // Récupérer le nom du joueur depuis la session
+        const playerName = securePlayername(sessionStorage.getItem('playername')); 
+        const planet = 'cryos';
+        const score = parseInt(finalscore, 10);
+        const time = parseFloat(this.formatTimer());
+        const obstacles = parseInt(this.score, 10);
+
+        // Vérifier si le nom du joueur est disponible
+        if (playerName) {
+          // Préparer les données à envoyer
+          const data = {
+            planet: planet,
+            playername: playerName,
+            score: score,
+            time: time,
+            obstacles: obstacles,
+          };
+          if (!data.planet || !data.playername || !data.score || !data.time || !data.obstacles) {
+            this.sound.play('lose');
+            this.message1 = translations[lang].gameover;
+            this.message2 = '';
+            this.message3 = translations[lang].gameover2 + ' ' + finalscore;
+
+            this.paused = true;
+            return;
+          }
+          // Envoyer la requête fetch pour ajouter le score
+          this.sendScore(data);
+        } 
         this.sound.play('lose');
         this.message1 = translations[lang].gameover;
         this.message2 = '';
         this.message3 = translations[lang].gameover2 + ' ' + finalscore;
+
+        this.paused = true;
       }
-      this.paused = true;
     }
+  }
+
+  sendScore(data) {
   }
 
   calculateFinalScore(totalTimeInSeconds, totalObstaclesCleared) {
@@ -390,12 +443,12 @@ export class Game {
     this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.2, this.width);
     this.ctx.font = this.smallFont + 'px Bungee';
     this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.2 + this.largeFont, this.width);
-    this.ctx.fillText(this.message3, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont + 10, this.width);
-    this.ctx.fillText(this.message4, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 3 + 20, this.width);
-    this.ctx.fillText(this.message5, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 4 + 30, this.width);
-    this.ctx.fillText(this.message6, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 5 + 40, this.width);
-    this.ctx.fillText(this.message7, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 6 + 50, this.width);
-    this.ctx.fillText(this.message8, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 7 + 60, this.width);
+    this.ctx.fillText(this.message3, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont + 5, this.width);
+    this.ctx.fillText(this.message4, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 3 + 10, this.width);
+    this.ctx.fillText(this.message5, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 4 + 15, this.width);
+    this.ctx.fillText(this.message6, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 5 + 20, this.width);
+    this.ctx.fillText(this.message7, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 6 + 25, this.width);
+    this.ctx.fillText(this.message8, this.width * 0.5, this.height * 0.2 + this.largeFont + this.smallFont * 7 + 30, this.width);
     this.ctx.restore();
     const controls = document.querySelector('.controls');
     controls.style.pointerEvents = 'auto';

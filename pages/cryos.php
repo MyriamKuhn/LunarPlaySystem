@@ -83,6 +83,10 @@ if (!isset($_SESSION['playername'])) {
 	<button id="volumeButton">🔊</button>
 </div>
 
+<div id="orientation-overlay">
+  <p><?= Security::secureInput($translations['cryos_mode']) ?></p>
+</div>
+
 <!-- Scripts -->
 <script type="module" src="/assets/js/cryos/main.js"></script>
 </body>

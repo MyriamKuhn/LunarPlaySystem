@@ -96,4 +96,5 @@ return [
   'under_construction_description' => 'Cette planète est actuellement en construction. Revenez bientôt pour découvrir de nouveaux mini-jeux et aventures interstellaires !',
   'under_construction_keywords' => "en construction, mini-jeux, aventures interstellaires, LunarPlay System, jeu en ligne, arcade spatiale, jeux galactiques, aventure stellaire, défis interstellaires, exploration de planètes",
   'under_construction_title' => 'LunarPlay System - En construction',
+  'cryos_mode' => 'Pour une expérience optimale et anticiper les obstacles, veuillez tourner votre appareil en mode paysage.',
 ];
