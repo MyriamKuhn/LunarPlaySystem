@@ -56,5 +56,4 @@ class MongoDb
     }
     return $this->client;
   }
-
 }

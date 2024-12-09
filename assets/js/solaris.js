@@ -109,7 +109,7 @@ const showPlanetData = (planet) => {
         return;
       }
     } else {
-      displayRankingTable(data.datas);
+      displayRankingTable(data.datas, planet);
     }
   })
   .catch(error => console.error('Erreur lors de la récupération des données:', error));
@@ -122,33 +122,63 @@ const showPlanetData = (planet) => {
  * @returns {void}
  */
 // Fonction pour afficher le tableau de classement
-function displayRankingTable(data) {
-  // Initialiser DataTables avec les données récupérées
-  const table = $('#ranking-table').DataTable({
-    data: data,  // Les données récupérées
-    columns: [
+function displayRankingTable(data, planet) {
+  // Détruire le tableau DataTable s'il existe déjà
+  if ($.fn.dataTable.isDataTable('#ranking-table')) {
+    $('#ranking-table').DataTable().clear().destroy();
+  }
+  // Vider le contenu du tableau avant de le remplir
+  $('#ranking-table').empty();
+
+  // Définir les colonnes du tableau
+  const columns = [
+    { 
+      data: "place", 
+      title: planetTitles['info']['rank'].toUpperCase(), 
+      render: function(data, type, row) {
+        return parseInt(data, 10);  
+      }
+    },
+    { 
+      data: "playername", 
+      title: planetTitles['info']['playername'].toUpperCase(), 
+      render: function(data, type, row) {
+        return secureInput(data).trim();  
+      }
+    },
+    { 
+      data: "score", 
+      title: planetTitles['info']['score'].toUpperCase(), 
+      render: function(data, type, row) {
+        return parseInt(data, 10);  
+      }
+    }
+  ];
+
+  // Ajouter les colonnes spécifiques à Cryos
+  if (planet.toLowerCase() === 'cryos') {
+    columns.push(
       { 
-        data: "place", 
-        title: planetTitles['info']['rank'], 
+        data: "timeSpent", 
+        title: planetTitles['info']['timeSpent'].toUpperCase(), 
         render: function(data, type, row) {
-          return parseInt(data, 10);  
+          return parseFloat(data).toFixed(2) + " s";  
         }
       },
       { 
-        data: "playername", 
-        title: planetTitles['info']['playername'], 
-        render: function(data, type, row) {
-          return secureInput(data).trim();  
-        }
-      },
-      { 
-        data: "score", 
-        title: planetTitles['info']['score'], 
+        data: "obstaclesCrossed", 
+        title: planetTitles['info']['obstaclesCrossed'].toUpperCase(), 
         render: function(data, type, row) {
           return parseInt(data, 10);  
         }
       }
-    ],
+    );
+  }
+
+  // Initialiser DataTables avec les données récupérées
+  const table = $('#ranking-table').DataTable({
+    data: data,  
+    columns: columns,  
     "responsive": true,
     "buttons": [],
     "paging": true,

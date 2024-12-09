@@ -96,4 +96,8 @@ return [
   'under_construction_description' => 'This planet is currently under construction. Come back soon to discover new mini-games and interstellar adventures!',
   'under_construction_keywords' => "under construction, mini-games, interstellar adventures, LunarPlay System, online game, space arcade, galactic games, stellar adventure, interstellar challenges, planet exploration",
   'under_construction_title' => 'LunarPlay System - Under construction',
+  'cryos_mode' => 'To enjoy the game fully and anticipate obstacles in time, please rotate your device to landscape mode.',
+  'cryos_title' => 'LunarPlay System - Cryos Gearglide',
+  'cryos_description' => 'Cryos, the steampunk planet of mechanical challenges! Explore a unique industrial world and test your reflexes in Cryos Gearglide. Control a mechanical bird ship, avoid gears, use strategic boosts and dominate the leaderboards. A thrilling adventure in a world of steam and steel awaits you!',
+  'cryos_keywords' => "Cryos Gearglide, reflex game, planet Cryos, steampunk universe, mechanical challenges, industrial world, mechanical bird ship, gears, strategic boosts, global ranking, mechanical challenges, industrial world",
 ];
