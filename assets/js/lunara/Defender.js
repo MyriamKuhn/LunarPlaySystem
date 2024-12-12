@@ -30,15 +30,21 @@ export class Defender {
     this.minFrame = 6;
     this.maxFrame = 7;
     this.updateFrame = 50;
+    this.chosenDefender = this.game.chosenDefender;
+
   }
 
   draw() {
-    //this.game.ctx.fillStyle = 'blue';
-    //this.game.ctx.fillRect(this.x, this.y, this.width, this.height);
-    this.game.ctx.fillStyle = 'gold';
-    this.game.ctx.font = '20px Orbitron';
-    this.game.ctx.fillText(Math.floor(this.health), this.x + 15, this.y + 30);
-    this.game.ctx.drawImage(this.game.defender1, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
+    if (this.game.debug) {
+      this.game.ctx.fillStyle = 'gold';
+      this.game.ctx.font = '20px Orbitron';
+      this.game.ctx.fillText(Math.floor(this.health), this.x + 15, this.y + 30);
+    }
+    if (this.chosenDefender === 1) {
+      this.game.ctx.drawImage(this.game.defender1, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
+    } else if (this.chosenDefender === 2) {
+      this.game.ctx.drawImage(this.game.defender2, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
+    }
   }
 
   update() {

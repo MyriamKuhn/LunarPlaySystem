@@ -22,7 +22,7 @@ export class Game {
     this.width = this.canvas.width;
     this.height = this.canvas.height;
 
-    this.cellSize = 100;
+    this.cellSize = 150;
     this.cellGap = 3;
     this.gameGrid = [];
 
@@ -37,7 +37,8 @@ export class Game {
       x: undefined,
       y: undefined,
       width: 0.1,
-      height: 0.1
+      height: 0.1, 
+      clicked: false
     };
 
     this.defenders = [];
@@ -46,6 +47,7 @@ export class Game {
     this.resources = [];
     this.defender1 = document.getElementById('defender1');
     this.defender2 = document.getElementById('defender2');
+    this.chosenDefender = 1;
 
     this.enemies = [];
     this.enemyPositions = [];
@@ -65,7 +67,27 @@ export class Game {
 
     this.floatingMessages = [];
 
+    this.card1 = {
+      x: 10,
+      y: 10,
+      width: 70,
+      height: 85,
+      stroke: 'black',
+    };
+
+    this.card2 = {
+      x: 90,
+      y: 10,
+      width: 70,
+      height: 85,
+      stroke: 'black',
+    };
+
+    this.paused = false;
+    this.debug = false;
+
     this.canvasPosition = this.canvas.getBoundingClientRect();
+
     this.canvas.addEventListener('mousemove', (e) => {
       this.mouse.x = e.x - this.canvasPosition.left;
       this.mouse.y = e.y - this.canvasPosition.top;
@@ -73,6 +95,12 @@ export class Game {
     this.canvas.addEventListener('mouseleave', () => {
       this.mouse.x = undefined;
       this.mouse.y = undefined;
+    });
+    this.canvas.addEventListener('mousedown', () => {
+      this.mouse.clicked = true;
+    });
+    this.canvas.addEventListener('mouseup', () => {
+      this.mouse.clicked = false;
     });
     this.canvas.addEventListener('click', () => {
       const gridPositionX = this.mouse.x - (this.mouse.x % this.cellSize) + this.cellGap;
@@ -89,14 +117,12 @@ export class Game {
         this.floatingMessages.push(new FloatingMessage('Need more resources', this.mouse.x, this.mouse.y, 20, 'blue', this));
       }
     });
-
-    window.addEventListener('resize', () => {
+    window.addEventListener('resize', (e) => {
       this.canvasPosition = this.canvas.getBoundingClientRect();
+      this.checkOrientation(e.currentTarget.innerWidth, e.currentTarget.innerHeight);
     });
 
-    this.paused = false;
-
-    this.checkOrientation(this.width, this.height);
+    this.checkOrientation(window.innerWidth, window.innerHeight);
   }
 
   checkOrientation(width, height) {
@@ -126,20 +152,21 @@ export class Game {
     this.handleResources();
     this.handleProjectiles();
     this.handleEnemies();
+    this.chooseDefender();
     this.handleFloatingMessages();
     this.frame++;
   }
 
   drawStatusText() {
     this.ctx.clearRect(0, 0, this.width, this.height);
-    this.ctx.fillStyle = 'blue';
-    this.ctx.fillRect(0, 0, this.controlsBar.width, this.controlsBar.height);
+    //this.ctx.fillStyle = 'transparent';
+    //this.ctx.fillRect(0, 0, this.controlsBar.width, this.controlsBar.height);
 
     this.ctx.fillStyle = 'gold';
-    this.ctx.font = '20px Orbitron';
+    this.ctx.font = '30px Orbitron';
     this.ctx.fontweight = 'bold';
-    this.ctx.fillText('Score: ' + this.score, 20, 30);
-    this.ctx.fillText('Resources: ' + this.numberOfResources, 20, 50);
+    this.ctx.fillText('Score: ' + this.score, 180, 40);
+    this.ctx.fillText('Resources: ' + this.numberOfResources, 180, 80);
 
     if (this.score >= this.winningScore && this.enemies.length === 0) {
       this.ctx.fillStyle = 'black';
@@ -213,7 +240,7 @@ export class Game {
       if (this.enemies[i].health <= 0) {
         let gainedResources = this.enemies[i].maxHealth / 10;
         this.floatingMessages.push(new FloatingMessage('+' + gainedResources, this.enemies[i].x + 20, this.enemies[i].y + 20, 20, 'black', this));
-        this.floatingMessages.push(new FloatingMessage('+' + gainedResources, 180, 40, 20, 'gold', this));
+        this.floatingMessages.push(new FloatingMessage('+' + gainedResources, 450, 50, 20, 'gold', this));
         this.numberOfResources += gainedResources;
         this.score += gainedResources;
         const findThisIndex = this.enemyPositions.indexOf(this.enemies[i].y);
@@ -259,7 +286,7 @@ export class Game {
       if (this.resources[i] && this.mouse.x && this.mouse.y && this.collision(this.resources[i], this.mouse)) {
         this.numberOfResources += this.resources[i].amount;
         this.floatingMessages.push(new FloatingMessage('+' + this.resources[i].amount, this.resources[i].x, this.resources[i].y, 20, 'black', this));
-        this.floatingMessages.push(new FloatingMessage('+' + this.resources[i].amount, 180, 40, 20, 'gold', this));
+        this.floatingMessages.push(new FloatingMessage('+' + this.resources[i].amount, 450, 50, 20, 'gold', this));
         this.resources.splice(i, 1);
         i--;
       }
@@ -275,6 +302,36 @@ export class Game {
         i--;
       }
     }
+  }
+
+  chooseDefender() {
+    if (this.collision(this.card1, this.mouse) && this.mouse.clicked) {
+      this.chosenDefender = 1;
+    } else if (this.collision(this.card2, this.mouse) && this.mouse.clicked) {
+      this.chosenDefender = 2;
+    }
+
+    if (this.chosenDefender === 1) {
+      this.card1.stroke = 'white';
+      this.card2.stroke = 'black';
+    } else if (this.chosenDefender === 2) {
+      this.card2.stroke = 'white';
+      this.card1.stroke = 'black';
+    } else {
+      this.card1.stroke = 'black';
+      this.card2.stroke = 'black';
+    }
+
+    this.ctx.lineWidth = 1;
+    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    this.ctx.fillRect(this.card1.x, this.card1.y, this.card1.width, this.card1.height);
+    this.ctx.strokeStyle = this.card1.stroke;
+    this.ctx.strokeRect(this.card1.x, this.card1.y, this.card1.width, this.card1.height);
+    this.ctx.drawImage(this.defender1, 0, 0, 225, 225, 5, 15, 80, 80);
+    this.ctx.fillRect(this.card2.x, this.card2.y, this.card2.width, this.card2.height);
+    this.ctx.strokeStyle = this.card2.stroke;
+    this.ctx.strokeRect(this.card2.x, this.card2.y, this.card2.width, this.card2.height);
+    this.ctx.drawImage(this.defender2, 0, 0, 225, 225, 85, 15, 80, 80);
   }
 
   collision(first, second) {

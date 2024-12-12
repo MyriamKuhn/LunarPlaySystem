@@ -6,7 +6,7 @@
 export class Resource {
   constructor (game) {
     this.game = game;
-    this.x = Math.random() * this.game.width - this.game.cellSize;
+    this.x = this.game.cellSize + Math.random() * (this.game.width - this.game.cellSize * 2);
     this.y = (Math.floor(Math.random() * 5) + 1) * this.game.cellSize + 25;
     this.width = this.game.cellSize * 0.6;
     this.height = this.game.cellSize * 0.6;
@@ -16,9 +16,11 @@ export class Resource {
   draw() {
     this.game.ctx.fillStyle = 'yellow';
     this.game.ctx.fillRect(this.x, this.y, this.width, this.height);
-    this.game.ctx.fillStyle = 'black';
-    this.game.ctx.font = '20px Orbitron';
-    this.game.ctx.fillText(this.amount, this.x + 15, this.y + 25);
+    if (this.game.debug) {
+      this.game.ctx.fillStyle = 'black';
+      this.game.ctx.font = '20px Orbitron';
+      this.game.ctx.fillText(this.amount, this.x + 15, this.y + 25);
+    }
   }
 
   

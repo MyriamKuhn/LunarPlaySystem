@@ -32,11 +32,11 @@ export class Enemy {
   }
 
   draw() {
-    //this.game.ctx.fillStyle = 'red';
-    //this.game.ctx.fillRect(this.x, this.y, this.width, this.height);
-    this.game.ctx.fillStyle = 'black';
-    this.game.ctx.font = '20px Orbitron';
-    this.game.ctx.fillText(Math.floor(this.health), this.x + 15, this.y + 30);
+    if (this.game.debug) {
+      this.game.ctx.fillStyle = 'black';
+      this.game.ctx.font = '20px Orbitron';
+      this.game.ctx.fillText(Math.floor(this.health), this.x + 15, this.y + 30);
+    }
     this.game.ctx.drawImage(this.enemyType, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
   }
 }
