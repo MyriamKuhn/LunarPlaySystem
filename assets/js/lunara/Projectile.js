@@ -17,7 +17,55 @@ export class Projectile {
   }
 
   update(deltaTime) {
-    this.x += this.speed / deltaTime * 1.5;
+    this.x += this.speed * (deltaTime / 1000);
+
+    const enemy = this.game.enemies.find(enemy => {
+      return this.game.checkCollision(this, enemy);
+    });
+
+    if (enemy) {
+      if (this.defender === 5 && !enemy.slowed) {
+        enemy.slowed = true;
+        setTimeout(() => {
+          if (this.game.enemies.includes(enemy)) enemy.slowed = false;
+        }, 5000);
+      }
+
+      if (this.defender === 6) {
+        enemy.health -= this.power; 
+        return;
+      }
+
+      if (this.defender === 7 && !enemy.inFire && !enemy.slower) {
+        enemy.inFire = true;
+        enemy.slower = true;
+        const power = this.power;
+        const interval = setInterval(() => {
+          if (this.game.enemies.includes(enemy)) {
+            enemy.health -= power;
+          } else {
+            clearInterval(interval);
+          }
+        }, 1000);
+
+        setTimeout(() => {
+          if (this.game.enemies.includes(enemy)) {
+            enemy.inFire = false;
+            enemy.slower = false;
+          }
+        }, 5000);
+
+        this.removeProjectile();
+        return;
+      }
+
+      enemy.health -= this.power;
+      this.removeProjectile();
+    }
+
+    if (this.x > this.game.width - (this.game.cellSize / 10)) {
+      this.removeProjectile();
+    }
   }
 
   draw() {
@@ -27,6 +75,13 @@ export class Projectile {
       this.game.ctx.beginPath();
       this.game.ctx.arc(this.x, this.y, this.width, 0, Math.PI * 2);
       this.game.ctx.fill();
+    }
+  }
+
+  removeProjectile() {
+    const positionIndex = this.game.projectiles.indexOf(this);
+    if (positionIndex !== -1) {
+      this.game.projectiles.splice(positionIndex, 1);
     }
   }
 }

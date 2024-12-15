@@ -31,6 +31,7 @@ export class Defender {
     this.chosenDefender = this.game.chosenDefender;
     this.image = this.game.defendersTypes[this.chosenDefender].element;
     this.health = this.game.defendersTypes[this.chosenDefender].health;
+    this.active = true;
   }
 
   draw() {
@@ -43,21 +44,13 @@ export class Defender {
   }
 
   update() {
-    if (this.chosenDefender === 0) {
-      this.minFrame = 0;
-      this.maxFrame = 14;
-    } else if (this.chosenDefender === 3) {
-      this.minFrame = 0;
-      this.maxFrame = 0;
-    } else {
-      if (this.shooting) {
-        this.minFrame = 8;
-        this.maxFrame = 14;
-      } else {
-        this.minFrame = 0;
-        this.maxFrame = 7;
-      }
+    if (!this.active) return;
+
+    if (this.health <= 0) {
+      this.removeDefender();
     }
+
+    this.handleAnimation();
 
     if (this.chosenDefender === 0) {
       if (this.game.spriteUpdate) {
@@ -79,16 +72,58 @@ export class Defender {
         if (this.frameX === 11) this.shootNow = true;
       }
 
-      if (this.shooting && this.shootNow) {
-        this.game.projectiles.push(new Projectile(this.x + (80 * this.game.width / 1350), this.y + (60 * this.game.width / 1350), this.game, this.chosenDefender));
-        if (this.chosenDefender === 4) {
-          setTimeout(() => {
-            this.game.projectiles.push(new Projectile(this.x + (80 * this.game.width / 1350), this.y + (30 * this.game.width / 1350), this.game, this.chosenDefender));
-          }, 500);
-        }
-        this.shootNow = false;
-        
+      if (this.game.enemies.find(enemy => enemy.y === this.y && !enemy.free)) {
+        this.shooting = true;
+      } else {
+        this.shooting = false;
       }
+
+      if (this.shooting && this.shootNow) {
+        this.shootProjectiles();
+        this.shootNow = false;
+      }
+    }
+  }
+
+  removeDefender() {
+    this.game.enemies.forEach(enemy => {
+      enemy.removeStopper(this);
+    });
+
+    const positionIndex = this.game.defenders.indexOf(this);
+    if (positionIndex !== -1) {
+      this.game.defenders.splice(positionIndex, 1);
+    }
+
+    this.active = false;
+  }
+
+  handleAnimation() {
+    if (this.chosenDefender === 0) {
+      this.minFrame = 0;
+      this.maxFrame = 14;
+    } else if (this.chosenDefender === 3) {
+      this.minFrame = 0;
+      this.maxFrame = 0;
+    } else {
+      if (this.shooting) {
+        this.minFrame = 8;
+        this.maxFrame = 14;
+      } else {
+        this.minFrame = 0;
+        this.maxFrame = 7;
+      }
+    }
+  }
+
+  shootProjectiles() {
+    const baseProjectile = new Projectile(this.x + (80 * this.game.width / 1350), this.y + (60 * this.game.width / 1350), this.game, this.chosenDefender);
+    this.game.projectiles.push(baseProjectile);
+    if (this.chosenDefender === 4) {
+      setTimeout(() => {
+        const secondaryProjectile = new Projectile(this.x + (80 * this.game.width / 1350), this.y + (30 * this.game.width / 1350), this.game, this.chosenDefender);
+        this.game.projectiles.push(secondaryProjectile);
+      }, 500);
     }
   }
 }

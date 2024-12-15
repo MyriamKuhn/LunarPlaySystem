@@ -8,7 +8,7 @@ import { Defender } from '/assets/js/lunara/Defender.js';
 import { Enemy } from '/assets/js/lunara/Enemy.js';
 import { Resource } from '/assets/js/lunara/Resource.js';
 import { FloatingMessage } from '/assets/js/lunara/FloatingMessage.js';
-import { securePlayername, sendScore } from '/assets/js/utils.js';
+import { securePlayername, sendScore, shuffleArray } from '/assets/js/utils.js';
 
 
 /*************/
@@ -23,7 +23,7 @@ const translations = {
     'score': 'Score : ',
     'ressources': 'Larves : ',
     'begin': "Contrez l'invasion !", 
-    'begin2': "Les envihisseurs tentent d'entrer sur votre territoire !",
+    'begin2': "Les envahisseurs tentent d'entrer sur votre territoire !",
     'begin3': "Faites le nécessaire afin qu'ils n'y parviennent pas !",
     'press': '⚔️ Appuyez sur "R" pour commencer ! ⚔️',
     'press2': '👈 Appuyez sur "B" pour revenir au menu ! 👈',
@@ -88,7 +88,6 @@ export class Game {
 
     this.gameOver;
     this.score;
-    this.winningScore;
     this.playerResources;
     this.floatingMessages;
     this.debug = false;
@@ -142,7 +141,7 @@ export class Game {
       { element: document.getElementById("larva2"), power: 30 },
       { element: document.getElementById("larva3"), power: 40 }
     ];
-    this.resourcesPool = [];
+    this.resourcesPool;
     this.resourcesInterval;
     this.resourcesTimer = 0;
     this.amountOfResources;
@@ -161,27 +160,40 @@ export class Game {
     this.projectiles;
     this.projectilesTypes = [
       { element: document.getElementById("projectile0"), power: 0, size: 0, speed: 0 },
-      { element: document.getElementById("projectile1"), power: 10, size: 10, speed: 20 },
-      { element: document.getElementById("projectile2"), power: 40, size: 8, speed: 15 },
+      { element: document.getElementById("projectile1"), power: 10, size: 10, speed: 300 },
+      { element: document.getElementById("projectile2"), power: 40, size: 8, speed: 250 },
       { element: document.getElementById("projectile3"), power: 0, size: 0, speed: 0 },
-      { element: document.getElementById("projectile4"), power: 25, size: 10, speed: 25 },
-      { element: document.getElementById("projectile5"), power: 5, size: 5, speed: 15 },
-      { element: document.getElementById("projectile6"), power: 1, size: 5, speed: 20 },
-      { element: document.getElementById("projectile7"), power: 25, size: 5, speed: 15 }
+      { element: document.getElementById("projectile4"), power: 25, size: 10, speed: 400 },
+      { element: document.getElementById("projectile5"), power: 5, size: 5, speed: 250 },
+      { element: document.getElementById("projectile6"), power: 1, size: 5, speed: 300 },
+      { element: document.getElementById("projectile7"), power: 25, size: 5, speed: 250 }
     ];
     this.chosenDefender = 0;
 
-    this.enemies = [];
-    this.enemyPositions = [];
-    this.enemyTypes = [];
-    this.enemy1 = document.getElementById('enemy1');
-    this.enemy2 = document.getElementById('enemy2');
-    this.enemyTypes.push(this.enemy1);
-    this.enemyTypes.push(this.enemy2);
-    this.enemiesInterval = 1500;
-    this.frame = 0;
-
-    
+    this.enemiesTypes = [
+      { element: document.getElementById("enemy1"), power: 0.5, speed: 15, health: 100 },
+      { element: document.getElementById("enemy2"), power: 0.5, speed: 15, health: 150 },
+    ];
+    this.enemiesForLevel = [
+      { level: 1, 
+        enemies: [
+          { type: 0, amount: 10 },
+        ], 
+        ressources: { min: 10000, max: 15000 },
+        interval: { min: 8000, max: 10000 },
+      },
+      { level: 2,
+        enemies: [
+          { type: 0, amount: 10 },
+          { type: 1, amount: 10 },
+        ],
+        ressources: { min: 10000, max: 15000 },
+        interval: { min: 5000, max: 8000 }
+      }
+    ];
+    this.enemies;
+    this.enemyInterval;
+    this.enemyTimer = 0;
 
     this.canvasPosition = this.canvas.getBoundingClientRect();
 
@@ -265,7 +277,6 @@ export class Game {
     this.gameOver = false;
     this.score = 0;
     this.level = 1;
-    this.winningScore = 50;
     this.floatingMessages = [];
 
     this.smallSize = 30 * this.width / 1350;
@@ -376,7 +387,6 @@ export class Game {
     this.playerResources = 300;
     this.resourcesPool = [];
     this.resourcesInterval = 10000;
-    this.resourcesTimer = 0;
     this.amountOfResources = 20;
     this.createResourcesPool();
 
@@ -385,7 +395,8 @@ export class Game {
     this.projectiles = [];
 
     this.enemies = [];
-
+    this.createEnemiesPool();
+    this.enemyInterval = 1000;
 
     if (!isResizing) {
       this.paused = false;
@@ -465,6 +476,7 @@ export class Game {
   }
 
   getResource() {
+    shuffleArray(this.resourcesPool);
     for (let i = 0; i < this.resourcesPool.length; i++) {
       if (this.resourcesPool[i].free) return this.resourcesPool[i];
     }
@@ -503,6 +515,8 @@ export class Game {
       this.resourcesTimer += deltaTime;
     } else {
       this.resourcesTimer = 0;
+      const levelData = this.enemiesForLevel[this.level - 1];
+      this.resourcesInterval = Math.floor(Math.random() * (levelData.ressources.max - levelData.ressources.min + 1) + levelData.ressources.min);
       const resource = this.getResource();        
       if (resource) {
         resource.start();
@@ -530,29 +544,6 @@ export class Game {
     }
   }
 
-  handleDefenders() {
-    for (let i = 0; i < this.defenders.length; i++) {
-      this.defenders[i].draw();
-      this.defenders[i].update();
-      if (this.enemyPositions.indexOf(this.defenders[i].y) !== -1) {
-        this.defenders[i].shooting = true;
-      } else {
-        this.defenders[i].shooting = false;
-      }
-      for (let j = 0; j < this.enemies.length; j++) {
-        if (this.defenders[i] && this.checkCollision(this.defenders[i], this.enemies[j])) {
-          this.enemies[j].movement = 0;
-          this.defenders[i].health -= 1;
-        }
-        if (this.defenders[i] && this.defenders[i].health <= 0) {
-          this.defenders.splice(i, 1);
-          i--;
-          this.enemies[j].movement = this.enemies[j].speed;
-        }
-      }
-    }
-  }
-
   handleFloatingMessages() {
     for (let i = 0; i < this.floatingMessages.length; i++) {
       this.floatingMessages[i].update();
@@ -569,142 +560,41 @@ export class Game {
   }
 
   chooseDefender() {
-    if (this.checkCollision(this.card0, this.mouse) && this.mouse.clicked) {
-      this.chosenDefender = 0;
-    } else if (this.checkCollision(this.card1, this.mouse) && this.mouse.clicked) {
-      this.chosenDefender = 1;
-    } else if (this.checkCollision(this.card2, this.mouse) && this.mouse.clicked) {
-      this.chosenDefender = 2;
-    } else if (this.checkCollision(this.card3, this.mouse) && this.mouse.clicked) {
-      this.chosenDefender = 3;
-    } else if (this.checkCollision(this.card4, this.mouse) && this.mouse.clicked) {
-      this.chosenDefender = 4;
-    } else if (this.checkCollision(this.card5, this.mouse) && this.mouse.clicked) {
-      this.chosenDefender = 5;
-    } else if (this.checkCollision(this.card6, this.mouse) && this.mouse.clicked) {
-      this.chosenDefender = 6;
-    } else if (this.checkCollision(this.card7, this.mouse) && this.mouse.clicked) {
-      this.chosenDefender = 7;
+    const cards = [this.card0, this.card1, this.card2, this.card3, this.card4, this.card5, this.card6, this.card7];
+    const costs = this.defendersTypes.map(defender => defender.costs);
+
+    // Détecter si l'utilisateur a cliqué sur une carte
+    if (this.mouse.clicked) {
+      // Chercher l'index de la carte sur laquelle l'utilisateur a cliqué
+      const clickedCardIndex = cards.findIndex((card, index) => this.checkCollision(card, this.mouse));
+
+      // Si une carte a été cliquée, la sélectionner, sinon ne rien faire
+      if (clickedCardIndex !== -1) {
+        this.chosenDefender = clickedCardIndex; // Sélectionner la nouvelle carte
+      }
     }
 
-    switch (this.chosenDefender) {
-      case 0:
-        this.card0.fillStyle = 'rgba(0, 255, 13, 0.5)';
-        this.card1.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card2.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card3.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card4.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card5.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card6.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card7.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        break;
-      case 1:
-        this.card0.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card1.fillStyle = 'rgba(0, 255, 13, 0.5)';
-        this.card2.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card3.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card4.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card5.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card6.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card7.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        break;
-      case 2:
-        this.card0.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card1.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card2.fillStyle = 'rgba(0, 255, 13, 0.5)';
-        this.card3.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card4.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card5.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card6.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card7.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        break;
-      case 3:
-        this.card0.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card1.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card2.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card3.fillStyle = 'rgba(0, 255, 13, 0.5)';
-        this.card4.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card5.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card6.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card7.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        break;
-      case 4:
-        this.card0.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card1.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card2.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card3.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card4.fillStyle = 'rgba(0, 255, 13, 0.5)';
-        this.card5.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card6.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card7.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        break;
-      case 5:
-        this.card0.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card1.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card2.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card3.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card4.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card5.fillStyle = 'rgba(0, 255, 13, 0.5)';
-        this.card6.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card7.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        break;
-      case 6:
-        this.card0.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card1.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card2.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card3.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card4.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card5.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card6.fillStyle = 'rgba(0, 255, 13, 0.5)';
-        this.card7.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        break;
-      case 7:
-        this.card0.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card1.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card2.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card3.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card4.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card5.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card6.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        this.card7.fillStyle = 'rgba(0, 255, 13, 0.5)';
-        break;
-    }
+    // Mettre à jour les couleurs des cartes
+    cards.forEach((card, index) => {
+      card.fillStyle = (index === this.chosenDefender) ? 'rgba(0, 255, 13, 0.5)' : 'rgba(255, 255, 255, 0.5)';
+    });
 
-    this.ctx.fillStyle = this.card0.fillStyle;
-    this.ctx.fillRect(this.card0.x, this.card0.y, this.card0.width, this.card0.height);
-    this.ctx.drawImage(this.defendersTypes[0].element, 5, 0, 225, 225, this.card0.imageSpaceX, this.card0.imageSpaceY, this.card0.imageSize, this.card0.imageSize);
-    this.ctx.fillStyle = this.card1.fillStyle;
-    this.ctx.fillRect(this.card1.x, this.card1.y, this.card1.width, this.card1.height);
-    this.ctx.drawImage(this.defendersTypes[1].element, 0, 0, 225, 225, this.card1.imageSpaceX, this.card1.imageSpaceY, this.card1.imageSize, this.card1.imageSize);
-    this.ctx.fillStyle = this.card2.fillStyle;
-    this.ctx.fillRect(this.card2.x, this.card2.y, this.card2.width, this.card2.height);
-    this.ctx.drawImage(this.defendersTypes[2].element, 0, 0, 225, 225, this.card2.imageSpaceX, this.card2.imageSpaceY, this.card2.imageSize, this.card2.imageSize);
-    this.ctx.fillStyle = this.card3.fillStyle;
-    this.ctx.fillRect(this.card3.x, this.card3.y, this.card3.width, this.card3.height);
-    this.ctx.drawImage(this.defendersTypes[3].element, 0, 0, 225, 225, this.card3.imageSpaceX, this.card3.imageSpaceY, this.card3.imageSize, this.card3.imageSize);
-    this.ctx.fillStyle = this.card4.fillStyle;
-    this.ctx.fillRect(this.card4.x, this.card4.y, this.card4.width, this.card4.height);
-    this.ctx.drawImage(this.defendersTypes[4].element, 0, 0, 225, 225, this.card4.imageSpaceX, this.card4.imageSpaceY, this.card4.imageSize, this.card4.imageSize);
-    this.ctx.fillStyle = this.card5.fillStyle;
-    this.ctx.fillRect(this.card5.x, this.card5.y, this.card5.width, this.card5.height);
-    this.ctx.drawImage(this.defendersTypes[5].element, 0, 0, 225, 225, this.card5.imageSpaceX, this.card5.imageSpaceY, this.card5.imageSize, this.card5.imageSize);
-    this.ctx.fillStyle = this.card6.fillStyle;
-    this.ctx.fillRect(this.card6.x, this.card6.y, this.card6.width, this.card6.height);
-    this.ctx.drawImage(this.defendersTypes[6].element, 0, 0, 225, 225, this.card6.imageSpaceX, this.card6.imageSpaceY, this.card6.imageSize, this.card6.imageSize);
-    this.ctx.fillStyle = this.card7.fillStyle;
-    this.ctx.fillRect(this.card7.x, this.card7.y, this.card7.width, this.card7.height);
-    this.ctx.drawImage(this.defendersTypes[7].element, 0, 0, 225, 225, this.card7.imageSpaceX, this.card7.imageSpaceY, this.card7.imageSize, this.card7.imageSize);
-    this.ctx.font = this.normalSize + 'px Rubik Moonrocks';
-    this.ctx.fillStyle = 'black';
-    this.ctx.textAlign = 'center';
-    this.ctx.fillText(this.defendersTypes[0].costs, this.spaceText, this.textHeight);
-    this.ctx.fillText(this.defendersTypes[1].costs, 2 * this.spaceText + this.cardWidth / 2, this.textHeight);
-    this.ctx.fillText(this.defendersTypes[2].costs, 3 * this.spaceText + this.cardWidth, this.textHeight);
-    this.ctx.fillText(this.defendersTypes[3].costs, 4 * this.spaceText + 3 * this.cardWidth / 2, this.textHeight);
-    this.ctx.fillText(this.defendersTypes[4].costs, 5 * this.spaceText + 2 * this.cardWidth, this.textHeight);
-    this.ctx.fillText(this.defendersTypes[5].costs, 6 * this.spaceText + 5 * this.cardWidth / 2, this.textHeight);
-    this.ctx.fillText(this.defendersTypes[6].costs, 7 * this.spaceText + 3 * this.cardWidth, this.textHeight);
-    this.ctx.fillText(this.defendersTypes[7].costs, 8 * this.spaceText + 7 * this.cardWidth / 2, this.textHeight);
+    // Dessiner les cartes
+    cards.forEach((card, index) => {
+      this.ctx.fillStyle = card.fillStyle;
+      this.ctx.fillRect(card.x, card.y, card.width, card.height);
+      this.ctx.drawImage(this.defendersTypes[index].element, 0, 0, 225, 225, card.imageSpaceX, card.imageSpaceY, card.imageSize, card.imageSize);
+    });
+
+    // Dessiner les coûts
+    cards.forEach((_, index) => {
+      this.ctx.font = this.normalSize + 'px Rubik Moonrocks';
+      this.ctx.fillStyle = 'black';
+      this.ctx.textAlign = 'center';
+      const xPosition = this.spaceText * (index + 1) + (index * this.cardWidth / 2);
+      this.ctx.fillText(costs[index], xPosition, this.textHeight);
+    });
+    console.log("Chosen defender: " + this.chosenDefender);
   }
 
   checkCollision(a, b) {
@@ -714,86 +604,39 @@ export class Game {
       a.y + a.height > b.y;
   }
 
-  handleProjectiles(deltaTime) {
-    for (let i = 0; i < this.projectiles.length; i++) {
-      this.projectiles[i].update(deltaTime);
-      this.projectiles[i].draw();
-
-      for (let j = 0; j < this.enemies.length; j++) {
-        const enemy = this.enemies[j];
-        if (this.enemies[j] && this.projectiles[i] && this.checkCollision(this.projectiles[i], this.enemies[j])) {
-          if (this.projectiles[i].defender === 5 && !enemy.slowed) {
-            enemy.slowed = true;
-            setTimeout(() => {
-              if (this.enemies.includes(enemy)) enemy.slowed = false;
-            }, 5000);
-          }
-
-          if (this.projectiles[i].defender === 6) {
-            this.enemies[j].health -= this.projectiles[i].power; 
-            continue; 
-          }
-
-          if (this.projectiles[i].defender === 7 && !enemy.inFire && !enemy.slower) {
-            enemy.inFire = true;
-            enemy.slower = true;
-            const power = this.projectiles[i].power;
-            setInterval(() => {
-              if (this.enemies.includes(enemy)) enemy.health -= power;
-            }, 1000);
-
-            setTimeout(() => {
-              if (this.enemies.includes(enemy)) {
-                enemy.inFire = false;
-                enemy.slower = false;
-              }
-            }, 5000);
-
-            this.projectiles.splice(i, 1);
-            i--;
-            continue;
-          }
-
-          this.enemies[j].health -= this.projectiles[i].power;
-          this.projectiles.splice(i, 1);
-          i--;
-        }
+  createEnemiesPool() {
+    const levelData = this.enemiesForLevel[this.level - 1];
+    levelData.enemies.forEach(enemy => {
+      for (let i = 0; i < enemy.amount; i++) {
+        const verticalPosition = Math.floor(Math.random() * 5 + 1) * this.cellSize + this.cellGap;
+        this.enemies.push(new Enemy(verticalPosition, this, enemy.type));
       }
-      
-      if (this.projectiles[i] && this.projectiles[i].x > this.width - this.cellSize) {
-        this.projectiles.splice(i, 1);
-        i--;
-      }
+    });
+  }
+
+  getEnemy() {
+    shuffleArray(this.enemies);
+    for (let i = 0; i < this.enemies.length; i++) {
+      if (this.enemies[i].free) return this.enemies[i];
     }
   }
 
+  handleEnemies(deltaTime) {
+    this.enemyTimer += deltaTime;
 
+    while (this.enemyTimer > this.enemyInterval) {
+      const levelData = this.enemiesForLevel[this.level - 1];
 
+      this.enemyInterval = Math.floor(
+        Math.random() * (levelData.interval.max - levelData.interval.min + 1) + levelData.interval.min
+      );
+      const enemy = this.getEnemy();
+      if (enemy) {
+        enemy.start();
+      }
 
-
-
-
-
-  render(deltaTime) {
-    if (this.paused) {
-      this.drawPauseScreen();
-      return;
+      this.enemyTimer -= this.enemyInterval;
     }
-    if (this.debug) this.handleGameGrid();
-    this.drawStatusText();
-    this.handlePeriodicEvents(deltaTime);
-    this.handleSpriteTimer(deltaTime);
-    this.handleDefenders();
-    this.handleResources(deltaTime);
-    this.resourcesPool.forEach(resource => {
-      resource.update();
-      resource.draw();
-    });
-    this.handleProjectiles(deltaTime);
-    this.handleEnemies(deltaTime);
-    this.chooseDefender();
-    this.handleFloatingMessages();
-    this.frame++;
   }
 
   drawStatusText() {
@@ -803,21 +646,24 @@ export class Game {
     this.ctx.font = this.largerSize + 'px Rubik Moonrocks';
     this.ctx.textAlign = 'left';
 
-    this.ctx.fillText('Score: ' + this.score, this.textSpaceX, this.textSpaceY);
-    this.ctx.fillText('Resources: ' + this.playerResources, this.textSpaceX, this.textSpaceY + this.largerSize);
+    this.ctx.fillText(translations[lang].score + this.score, this.textSpaceX, this.textSpaceY);
+    this.ctx.fillText(translations[lang].ressources + this.playerResources, this.textSpaceX, this.textSpaceY + this.largerSize);
 
-    if (!this.gameOver && this.score >= this.winningScore && this.enemies.length === 0) {
+    if (!this.gameOver && this.enemies.length === 0) {
       this.levelUp();
     }
   }
 
   drawPauseScreen() {
     this.ctx.save();
+
     this.ctx.fillStyle = 'black';
     this.ctx.fillRect(0, 0, this.width, this.height);
+
     this.ctx.fillStyle = 'white';
     this.ctx.textAlign = 'center';
     this.ctx.font = this.largeSize + 'px Rubik Moonrocks';
+
     this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.2, this.width);
     this.ctx.font = this.largerSize + 'px Rubik Moonrocks';
     this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.2 + this.largeSize, this.width);
@@ -826,10 +672,61 @@ export class Game {
     this.ctx.fillText(this.message5, this.width * 0.5, this.height * 0.2 + this.largeSize + this.largerSize * 4 + 15, this.width);
     this.ctx.fillText(this.message6, this.width * 0.5, this.height * 0.2 + this.largeSize + this.largerSize * 5 + 20, this.width);
     this.ctx.fillText(this.message7, this.width * 0.5, this.height * 0.2 + this.largeSize + this.largerSize * 6 + 25, this.width);
+
     this.ctx.restore();
+    
     const controls = document.querySelector('.controls');
     controls.style.pointerEvents = 'auto';
     controls.classList.remove('hidden');
+  }
+
+  render(deltaTime) {
+    if (this.paused) {
+      this.drawPauseScreen();
+      return;
+    }
+
+    if (this.debug) this.handleGameGrid();
+
+    this.drawStatusText();
+
+    this.handlePeriodicEvents(deltaTime);
+    this.handleSpriteTimer(deltaTime);
+
+    for (let i = this.defenders.length - 1; i >= 0; i--) {
+      const defender = this.defenders[i];
+      if (defender) {
+        defender.update();
+        defender.draw();
+      }
+    }
+
+    this.handleResources(deltaTime);
+    this.resourcesPool.forEach(resource => {
+      resource.update();
+      resource.draw();
+    });
+
+    for (let i = this.projectiles.length - 1; i >= 0; i--) {
+      const projectile = this.projectiles[i];
+      if (projectile) {
+        projectile.update(deltaTime);
+        projectile.draw();
+      }
+    }
+
+    for (let i = this.enemies.length - 1; i >= 0; i--) {
+      const enemy = this.enemies[i];
+      if (enemy) {
+        enemy.update(deltaTime);
+        enemy.draw();
+      }
+    }
+    this.handleEnemies(deltaTime);
+
+    this.chooseDefender();
+
+    this.handleFloatingMessages();
   }
 
   handleGameOver() {
@@ -851,42 +748,5 @@ export class Game {
     this.level++;
     console.log("Level Up! Powers updated to level " + this.level);
   }
-
-  
-
-  
-
-  handleEnemies(deltaTime) {
-    for (let i = 0; i < this.enemies.length; i++) {
-      this.enemies[i].update(deltaTime);
-      this.enemies[i].draw();
-      if (this.enemies[i].x < 0) {
-        this.handleGameOver();
-      }
-      if (this.enemies[i].health <= 0) {
-        let gainedResources = this.enemies[i].maxHealth / 10;
-        this.floatingMessages.push(new FloatingMessage('+' + gainedResources, this.enemies[i].x + 20, this.enemies[i].y + 20, this.smallSize, 'green', this));
-        this.floatingMessages.push(new FloatingMessage('+' + gainedResources, this.textSpaceX + (370 * (this.width / 1350)), this.textSpaceY + this.largerSize - (20 * (this.width / 1350)), this.smallSize, 'white', this));
-        this.playerResources += gainedResources;
-        this.score += gainedResources;
-        const findThisIndex = this.enemyPositions.indexOf(this.enemies[i].y);
-        this.enemyPositions.splice(findThisIndex, 1);
-        this.enemies.splice(i, 1);
-        i--;
-      }
-    }
-    if (this.frame % this.enemiesInterval === 0 && this.score < this.winningScore) {
-      let verticalPosition = Math.floor(Math.random() * 5 + 1) * this.cellSize + this.cellGap;
-      this.enemies.push(new Enemy(verticalPosition, this));
-      this.enemyPositions.push(verticalPosition);
-      if (this.enemiesInterval > 120) this.enemiesInterval -= 50;
-    }
-  }
-
-  
-  
-
-  
-
   
 }
