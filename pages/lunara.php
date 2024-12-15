@@ -45,6 +45,7 @@ if (!isset($_SESSION['playername'])) {
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Rubik+Moonrocks&display=swap" rel="stylesheet">
 	<!-- Stylesheet -->
 	<link rel="stylesheet" href="/assets/css/lunara.css" />
 </head>
@@ -64,9 +65,23 @@ if (!isset($_SESSION['playername'])) {
 	<img src="/assets/img/cryos/background_single.png" id="background">
 	<img src="/assets/img/lunara/enemy1.png" id="enemy1">
 	<img src="/assets/img/lunara/enemy2.png" id="enemy2">
+	<img src="/assets/img/lunara/defender0.png" id="defender0">
 	<img src="/assets/img/lunara/defender1.png" id="defender1">
 	<img src="/assets/img/lunara/defender2.png" id="defender2">
-	<img src="/assets/img/cryos/smallGears.png" id="obstacle">
+	<img src="/assets/img/lunara/defender3.png" id="defender3">
+	<img src="/assets/img/lunara/defender4.png" id="defender4">
+	<img src="/assets/img/lunara/defender5.png" id="defender5">
+	<img src="/assets/img/lunara/defender6.png" id="defender6">
+	<img src="/assets/img/lunara/defender7.png" id="defender7">
+	<img src="/assets/img/lunara/larva1.png" id="larva1">
+	<img src="/assets/img/lunara/larva2.png" id="larva2">
+	<img src="/assets/img/lunara/larva3.png" id="larva3">
+	<img src="/assets/img/lunara/projectile1.png" id="projectile1">
+	<img src="/assets/img/lunara/projectile2.png" id="projectile2">
+	<img src="/assets/img/lunara/projectile4.png" id="projectile4">
+	<img src="/assets/img/lunara/projectile5.png" id="projectile5">
+	<img src="/assets/img/lunara/projectile6.png" id="projectile6">
+	<img src="/assets/img/lunara/projectile7.png" id="projectile7">
 
 	<audio src="/assets/audio/cryos/winflappy.mp3" id="win" preload="auto"></audio>
 	<audio src="/assets/audio/cryos/loseflappy.mp3" id="lose" preload="auto"></audio>
@@ -79,7 +94,6 @@ if (!isset($_SESSION['playername'])) {
 </div>
 
 <div class="controls">
-	<button id="fullScreenButton">💻</button>
   <button id="resetButton">⚔️</button>
   <button id="backButton">👈</button>
 	<button id="volumeButton">🔊</button>

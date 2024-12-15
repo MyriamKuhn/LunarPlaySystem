@@ -44,8 +44,23 @@ window.addEventListener('load', function() {
     { id: 'background', src: '/assets/img/cryos/background_single.png', type: 'image' },
     { id: 'enemy1', src: '/assets/img/lunara/enemy1.png', type: 'image' },
     { id: 'enemy2', src: '/assets/img/lunara/enemy2.png', type: 'image' },
+    { id: 'defender0', src: '/assets/img/lunara/defender0.png', type: 'image' },
     { id: 'defender1', src: '/assets/img/lunara/defender1.png', type: 'image' },
     { id: 'defender2', src: '/assets/img/lunara/defender2.png', type: 'image' },
+    { id: 'defender3', src: '/assets/img/lunara/defender3.png', type: 'image' },
+    { id: 'defender4', src: '/assets/img/lunara/defender4.png', type: 'image' },
+    { id: 'defender5', src: '/assets/img/lunara/defender5.png', type: 'image' },
+    { id: 'defender6', src: '/assets/img/lunara/defender6.png', type: 'image' },
+    { id: 'defender7', src: '/assets/img/lunara/defender7.png', type: 'image' },
+    { id: 'larva1', src: '/assets/img/lunara/larva1.png', type: 'image' },
+    { id: 'larva2', src: '/assets/img/lunara/larva2.png', type: 'image' },
+    { id: 'larva3', src: '/assets/img/lunara/larva3.png', type: 'image' },
+    { id: 'projectile1', src: '/assets/img/lunara/projectile1.png', type: 'image' },
+    { id: 'projectile2', src: '/assets/img/lunara/projectile2.png', type: 'image' },
+    { id: 'projectile4', src: '/assets/img/lunara/projectile4.png', type: 'image' },
+    { id: 'projectile5', src: '/assets/img/lunara/projectile5.png', type: 'image' },
+    { id: 'projectile6', src: '/assets/img/lunara/projectile6.png', type: 'image' },
+    { id: 'projectile7', src: '/assets/img/lunara/projectile7.png', type: 'image' },
     { id: 'win', src: '/assets/audio/cryos/winflappy.mp3', type: 'audio' },
     { id: 'lose', src: '/assets/audio/cryos/loseflappy.mp3', type: 'audio' },
     { id: 'charge', src: '/assets/audio/cryos/charge.mp3', type: 'audio' },
@@ -121,8 +136,11 @@ window.addEventListener('load', function() {
 
     const game = new Game(canvas, ctx);
 
-    function animate() {
-      game.render();
+    let lastTime = 0;
+    function animate(timestamp) {
+      const deltaTime = timestamp - lastTime;
+      lastTime = timestamp;
+      game.render(deltaTime);
       requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);

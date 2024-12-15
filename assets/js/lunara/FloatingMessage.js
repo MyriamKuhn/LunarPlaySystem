@@ -16,16 +16,18 @@ export class FloatingMessage {
   }
 
   update() {
-    this.y -= 0.3;
-    this.lifeSpan += 1;
-    if (this.opacity > 0.03) this.opacity -= 0.03;
+    if (this.game.eventUpdate) {
+      this.y -= 0.3;
+      this.lifeSpan += 1;
+      if (this.opacity > 0.03) this.opacity -= 0.03
+    }
   }
 
   draw() {
     this.game.ctx.save();
     this.game.ctx.globalAlpha = this.opacity;
     this.game.ctx.fillStyle = this.color;
-    this.game.ctx.font = this.size + 'px Orbitron';
+    this.game.ctx.font = this.size + 'px Rubik Moonrocks';
     this.game.ctx.fillText(this.value, this.x, this.y);
     this.game.ctx.restore();
   }
