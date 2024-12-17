@@ -65,6 +65,13 @@ if (!isset($_SESSION['playername'])) {
 	<img src="/assets/img/cryos/background_single.png" id="background">
 	<img src="/assets/img/lunara/enemy1.png" id="enemy1">
 	<img src="/assets/img/lunara/enemy2.png" id="enemy2">
+	<img src="/assets/img/lunara/enemy3.png" id="enemy3">
+	<img src="/assets/img/lunara/enemy4.png" id="enemy4">
+	<img src="/assets/img/lunara/enemy5.png" id="enemy5">
+	<img src="/assets/img/lunara/enemy6.png" id="enemy6">
+	<img src="/assets/img/lunara/enemy7.png" id="enemy7">
+	<img src="/assets/img/lunara/enemy8.png" id="enemy8">
+	<img src="/assets/img/lunara/enemy9.png" id="enemy9">
 	<img src="/assets/img/lunara/defender0.png" id="defender0">
 	<img src="/assets/img/lunara/defender1.png" id="defender1">
 	<img src="/assets/img/lunara/defender2.png" id="defender2">

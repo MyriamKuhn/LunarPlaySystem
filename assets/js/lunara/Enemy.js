@@ -17,8 +17,13 @@ export class Enemy {
     this.enemyType = this.game.enemiesTypes[enemyType];
     this.x = this.game.width;
     this.y = verticalPosition;
-    this.width = this.game.cellSize - this.game.cellGap * 2;
-    this.height = this.game.cellSize - this.game.cellGap * 2;
+    if (enemyType === 8) {
+      this.width = 2 * this.game.cellSize - this.game.cellGap * 2;
+      this.height = 2 * this.game.cellSize - this.game.cellGap * 2;
+    } else {
+      this.width = this.game.cellSize - this.game.cellGap * 2;
+      this.height = this.game.cellSize - this.game.cellGap * 2;
+    }
     this.speed = 15;
     this.movement = this.speed;
     this.health = this.enemyType.health;

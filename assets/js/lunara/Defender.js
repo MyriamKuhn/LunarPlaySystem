@@ -32,6 +32,7 @@ export class Defender {
     this.image = this.game.defendersTypes[this.chosenDefender].element;
     this.health = this.game.defendersTypes[this.chosenDefender].health;
     this.active = true;
+    this.lifeSpan = this.game.defendersTypes[this.chosenDefender].lifeSpan;
   }
 
   draw() {
@@ -117,6 +118,7 @@ export class Defender {
   }
 
   shootProjectiles() {
+    this.health -= this.lifeSpan;
     const baseProjectile = new Projectile(this.x + (80 * this.game.width / 1350), this.y + (60 * this.game.width / 1350), this.game, this.chosenDefender);
     this.game.projectiles.push(baseProjectile);
     if (this.chosenDefender === 4) {

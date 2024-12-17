@@ -112,6 +112,7 @@ export class Game {
     this.textSpaceX;
     this.textSpaceY;
 
+    this.unlockedCards;
     this.card0;
     this.card1;
     this.card2;
@@ -148,14 +149,14 @@ export class Game {
 
     this.defenders;
     this.defendersTypes = [
-      { element: document.getElementById("defender0"), costs: 50, health: 200 },
-      { element: document.getElementById("defender1"), costs: 100, health: 100 },
-      { element: document.getElementById("defender2"), costs: 200, health: 200 },
-      { element: document.getElementById("defender3"), costs: 300, health: 600 },
-      { element: document.getElementById("defender4"), costs: 300, health: 300 },
-      { element: document.getElementById("defender5"), costs: 200, health: 200 },
-      { element: document.getElementById("defender6"), costs: 350, health: 200 },
-      { element: document.getElementById("defender7"), costs: 400, health: 200 }
+      { element: document.getElementById("defender0"), costs: 50, health: 200, lifeSpan: 4 },
+      { element: document.getElementById("defender1"), costs: 100, health: 100, lifeSpan: 2 },
+      { element: document.getElementById("defender2"), costs: 200, health: 200, lifeSpan: 4 },
+      { element: document.getElementById("defender3"), costs: 300, health: 600, lifeSpan: 12 },
+      { element: document.getElementById("defender4"), costs: 300, health: 300, lifeSpan: 6 },
+      { element: document.getElementById("defender5"), costs: 200, health: 200, lifeSpan: 4 },
+      { element: document.getElementById("defender6"), costs: 350, health: 200, lifeSpan: 4 },
+      { element: document.getElementById("defender7"), costs: 400, health: 200, lifeSpan: 4 }
     ];
     this.projectiles;
     this.projectilesTypes = [
@@ -173,6 +174,13 @@ export class Game {
     this.enemiesTypes = [
       { element: document.getElementById("enemy1"), power: 0.5, speed: 15, health: 100 },
       { element: document.getElementById("enemy2"), power: 0.5, speed: 15, health: 150 },
+      { element: document.getElementById("enemy3"), power: 0.5, speed: 15, health: 200 },
+      { element: document.getElementById("enemy4"), power: 0.5, speed: 15, health: 250 },
+      { element: document.getElementById("enemy5"), power: 0.5, speed: 15, health: 300 },
+      { element: document.getElementById("enemy6"), power: 0.5, speed: 15, health: 350 },
+      { element: document.getElementById("enemy7"), power: 0.5, speed: 15, health: 400 },
+      { element: document.getElementById("enemy8"), power: 0.5, speed: 15, health: 450 },
+      { element: document.getElementById("enemy9"), power: 0.5, speed: 15, health: 500 }
     ];
     this.enemiesForLevel = [
       { level: 1, 
@@ -180,12 +188,36 @@ export class Game {
           { type: 0, amount: 10 },
         ], 
         ressources: { min: 10000, max: 15000 },
-        interval: { min: 8000, max: 10000 },
+        interval: { min: 5000, max: 8000 },
       },
       { level: 2,
         enemies: [
-          { type: 0, amount: 10 },
-          { type: 1, amount: 10 },
+          { type: 0, amount: 5 },
+          { type: 1, amount: 5},
+        ],
+        ressources: { min: 10000, max: 15000 },
+        interval: { min: 5000, max: 8000 }
+      },
+      { level: 3,
+        enemies: [
+          { type: 2, amount: 5 },
+          { type: 3, amount: 5 },
+        ],
+        ressources: { min: 10000, max: 15000 },
+        interval: { min: 5000, max: 8000 }
+      },
+      { level: 4,
+        enemies: [
+          { type: 4, amount: 5 },
+          { type: 5, amount: 5 },
+        ],
+        ressources: { min: 10000, max: 15000 },
+        interval: { min: 5000, max: 8000 }
+      },
+      { level: 5,
+        enemies: [
+          { type: 6, amount: 5 },
+          { type: 7, amount: 5 },
         ],
         ressources: { min: 10000, max: 15000 },
         interval: { min: 5000, max: 8000 }
@@ -383,6 +415,7 @@ export class Game {
       imageSpaceY: this.imageSpace,
       fillStyle: 'rgba(255, 255, 255, 0.5)',
     };
+    this.unlockedCards = 2;
 
     this.playerResources = 300;
     this.resourcesPool = [];
@@ -563,6 +596,8 @@ export class Game {
     const cards = [this.card0, this.card1, this.card2, this.card3, this.card4, this.card5, this.card6, this.card7];
     const costs = this.defendersTypes.map(defender => defender.costs);
 
+    const availableCards = cards.slice(0, this.unlockedCards);
+
     // Détecter si l'utilisateur a cliqué sur une carte
     if (this.mouse.clicked) {
       // Chercher l'index de la carte sur laquelle l'utilisateur a cliqué
@@ -575,26 +610,29 @@ export class Game {
     }
 
     // Mettre à jour les couleurs des cartes
-    cards.forEach((card, index) => {
+    availableCards.forEach((card, index) => {
       card.fillStyle = (index === this.chosenDefender) ? 'rgba(0, 255, 13, 0.5)' : 'rgba(255, 255, 255, 0.5)';
     });
 
     // Dessiner les cartes
-    cards.forEach((card, index) => {
+    availableCards.forEach((card, index) => {
       this.ctx.fillStyle = card.fillStyle;
       this.ctx.fillRect(card.x, card.y, card.width, card.height);
       this.ctx.drawImage(this.defendersTypes[index].element, 0, 0, 225, 225, card.imageSpaceX, card.imageSpaceY, card.imageSize, card.imageSize);
     });
 
     // Dessiner les coûts
-    cards.forEach((_, index) => {
+    availableCards.forEach((_, index) => {
       this.ctx.font = this.normalSize + 'px Rubik Moonrocks';
       this.ctx.fillStyle = 'black';
       this.ctx.textAlign = 'center';
       const xPosition = this.spaceText * (index + 1) + (index * this.cardWidth / 2);
       this.ctx.fillText(costs[index], xPosition, this.textHeight);
     });
-    console.log("Chosen defender: " + this.chosenDefender);
+  }
+
+  unlockNewCard() {
+    this.unlockedCards = Math.min(this.unlockedCards + 1, this.defendersTypes.length);
   }
 
   checkCollision(a, b) {
@@ -746,7 +784,10 @@ export class Game {
 
   levelUp() {
     this.level++;
-    console.log("Level Up! Powers updated to level " + this.level);
+    if (this.level % 3 === 0) {
+      this.unlockNewCard();
+    }
+    this.createEnemiesPool();
   }
   
 }
