@@ -30,6 +30,7 @@ const translations = {
     'press3': '🔊 Appuyez sur "M" pour activer/désactiver le son ! 🔇',
     'press4': '📱 Sur mobile, utilisez les boutons ci-dessous 👇',
     'gameover': "L'un des envahisseurs a réussi à passer !",
+    'win': "Vous avez repoussé l'invasion !",
     'gameover2': 'Votre score final : ',
   },
   'en': {
@@ -43,6 +44,7 @@ const translations = {
     'press3': '🔊 Press "M" to toggle sound on/off! 🔇',
     'press4': '📱 On mobile, use the buttons below 👇',
     'gameover': 'One of the invaders managed to get through!',
+    'win': 'You repelled the invasion!',
     'gameover2': 'Your final score: ',
   },
   'de': {
@@ -56,6 +58,7 @@ const translations = {
     'press3': '🔊 Drück "M", um den Ton ein-/auszuschalten! 🔇',
     'press4': '📱 Auf Mobilgeräten, benutze die Schaltflächen hier unten 👇',
     'gameover': 'Einer der Eindringlinge hat es geschafft durchzukommen!',
+    'win': 'Du hast die Invasion zurückgeschlagen!',
     'gameover2': 'Deine Endpunktzahl: ',
   },
 };
@@ -91,6 +94,7 @@ export class Game {
     this.playerResources;
     this.floatingMessages;
     this.debug = false;
+    this.timer;
 
     this.level;
     this.message1 = translations[lang].begin;
@@ -149,79 +153,463 @@ export class Game {
 
     this.defenders;
     this.defendersTypes = [
-      { element: document.getElementById("defender0"), costs: 50, health: 200, lifeSpan: 4 },
-      { element: document.getElementById("defender1"), costs: 100, health: 100, lifeSpan: 2 },
-      { element: document.getElementById("defender2"), costs: 200, health: 200, lifeSpan: 4 },
-      { element: document.getElementById("defender3"), costs: 300, health: 600, lifeSpan: 12 },
-      { element: document.getElementById("defender4"), costs: 300, health: 300, lifeSpan: 6 },
-      { element: document.getElementById("defender5"), costs: 200, health: 200, lifeSpan: 4 },
-      { element: document.getElementById("defender6"), costs: 350, health: 200, lifeSpan: 4 },
-      { element: document.getElementById("defender7"), costs: 400, health: 200, lifeSpan: 4 }
+      { element: document.getElementById("defender0"), costs: 50, health: 200, lifeSpan: 8 },
+      { element: document.getElementById("defender1"), costs: 100, health: 100, lifeSpan: 4 },
+      { element: document.getElementById("defender2"), costs: 200, health: 200, lifeSpan: 8 },
+      { element: document.getElementById("defender3"), costs: 250, health: 1000, lifeSpan: 12 },
+      { element: document.getElementById("defender4"), costs: 300, health: 300, lifeSpan: 12 },
+      { element: document.getElementById("defender5"), costs: 250, health: 200, lifeSpan: 8 },
+      { element: document.getElementById("defender6"), costs: 500, health: 200, lifeSpan: 8 },
+      { element: document.getElementById("defender7"), costs: 400, health: 300, lifeSpan: 12 }
     ];
     this.projectiles;
     this.projectilesTypes = [
       { element: document.getElementById("projectile0"), power: 0, size: 0, speed: 0 },
       { element: document.getElementById("projectile1"), power: 10, size: 10, speed: 300 },
-      { element: document.getElementById("projectile2"), power: 40, size: 8, speed: 250 },
+      { element: document.getElementById("projectile2"), power: 30, size: 8, speed: 250 },
       { element: document.getElementById("projectile3"), power: 0, size: 0, speed: 0 },
-      { element: document.getElementById("projectile4"), power: 25, size: 10, speed: 400 },
-      { element: document.getElementById("projectile5"), power: 5, size: 5, speed: 250 },
-      { element: document.getElementById("projectile6"), power: 1, size: 5, speed: 300 },
-      { element: document.getElementById("projectile7"), power: 25, size: 5, speed: 250 }
+      { element: document.getElementById("projectile4"), power: 40, size: 10, speed: 400 },
+      { element: document.getElementById("projectile5"), power: 40, size: 5, speed: 250 },
+      { element: document.getElementById("projectile6"), power: 2, size: 5, speed: 300 },
+      { element: document.getElementById("projectile7"), power: 60, size: 5, speed: 250 }
     ];
     this.chosenDefender = 0;
 
     this.enemiesTypes = [
-      { element: document.getElementById("enemy1"), power: 0.5, speed: 15, health: 100 },
-      { element: document.getElementById("enemy2"), power: 0.5, speed: 15, health: 150 },
-      { element: document.getElementById("enemy3"), power: 0.5, speed: 15, health: 200 },
-      { element: document.getElementById("enemy4"), power: 0.5, speed: 15, health: 250 },
-      { element: document.getElementById("enemy5"), power: 0.5, speed: 15, health: 300 },
-      { element: document.getElementById("enemy6"), power: 0.5, speed: 15, health: 350 },
-      { element: document.getElementById("enemy7"), power: 0.5, speed: 15, health: 400 },
-      { element: document.getElementById("enemy8"), power: 0.5, speed: 15, health: 450 },
-      { element: document.getElementById("enemy9"), power: 0.5, speed: 15, health: 500 }
+      { element: document.getElementById("enemy1"), power: 0.5, speed: 25, health: 100 },
+      { element: document.getElementById("enemy1"), power: 0.5, speed: 35, health: 100 },
+      { element: document.getElementById("enemy2"), power: 1.0, speed: 30, health: 150 },
+      { element: document.getElementById("enemy2"), power: 1.0, speed: 40, health: 150 },
+      { element: document.getElementById("enemy3"), power: 1.5, speed: 35, health: 200 },
+      { element: document.getElementById("enemy3"), power: 1.5, speed: 45, health: 200 },
+      { element: document.getElementById("enemy4"), power: 2.0, speed: 40, health: 250 },
+      { element: document.getElementById("enemy4"), power: 2.0, speed: 50, health: 250 },
+      { element: document.getElementById("enemy5"), power: 2.5, speed: 45, health: 300 },
+      { element: document.getElementById("enemy5"), power: 2.5, speed: 55, health: 300 },
+      { element: document.getElementById("enemy6"), power: 3.0, speed: 50, health: 350 },
+      { element: document.getElementById("enemy6"), power: 3.0, speed: 60, health: 350 },
+      { element: document.getElementById("enemy7"), power: 3.5, speed: 55, health: 400 },
+      { element: document.getElementById("enemy7"), power: 3.5, speed: 65, health: 400 },
+      { element: document.getElementById("enemy8"), power: 4.0, speed: 60, health: 450 },
+      { element: document.getElementById("enemy8"), power: 4.0, speed: 70, health: 450 },
+      { element: document.getElementById("enemy9"), power: 5, speed: 20, health: 1000 },
+      { element: document.getElementById("enemy9"), power: 5.5, speed: 40, health: 2000 },
+      { element: document.getElementById("enemy9"), power: 6, speed: 50, health: 4000 },
+      { element: document.getElementById("enemy9"), power: 6.5, speed: 55, health: 5000 },
+      { element: document.getElementById("enemy9"), power: 7, speed: 60, health: 6000 },
+      { element: document.getElementById("enemy9"), power: 7.5, speed: 65, health: 7000 },
+      { element: document.getElementById("enemy9"), power: 8, speed: 70, health: 8000 },
     ];
     this.enemiesForLevel = [
       { level: 1, 
         enemies: [
-          { type: 0, amount: 10 },
+          { type: 0, amount: 5 },
+          { type: 1, amount: 5 },
         ], 
         ressources: { min: 10000, max: 15000 },
-        interval: { min: 5000, max: 8000 },
+        interval: { min: 3000, max: 5000 },
       },
       { level: 2,
         enemies: [
-          { type: 0, amount: 5 },
-          { type: 1, amount: 5},
+          { type: 0, amount: 10 },
+          { type: 1, amount: 10 },
         ],
-        ressources: { min: 10000, max: 15000 },
-        interval: { min: 5000, max: 8000 }
+        ressources: { min: 9800, max: 14800 },
+        interval: { min: 2900, max: 4900 }
       },
       { level: 3,
         enemies: [
-          { type: 2, amount: 5 },
-          { type: 3, amount: 5 },
+          { type: 0, amount: 2 },
+          { type: 1, amount: 1 },
+          { type: 2, amount: 2 },
+          { type: 3, amount: 1 },
+          { type: 16, amount: 1 },
         ],
-        ressources: { min: 10000, max: 15000 },
-        interval: { min: 5000, max: 8000 }
+        ressources: { min: 9600, max: 14600 },
+        interval: { min: 2800, max: 4800 }
       },
       { level: 4,
         enemies: [
-          { type: 4, amount: 5 },
-          { type: 5, amount: 5 },
+          { type: 0, amount: 3 },
+          { type: 1, amount: 2 },
+          { type: 2, amount: 3 },
+          { type: 3, amount: 2 },
         ],
-        ressources: { min: 10000, max: 15000 },
-        interval: { min: 5000, max: 8000 }
+        ressources: { min: 9400, max: 14400 },
+        interval: { min: 2700, max: 4700 }
       },
       { level: 5,
         enemies: [
+          { type: 0, amount: 5 },
+          { type: 1, amount: 5 },
+          { type: 2, amount: 5 },
+          { type: 3, amount: 5 },
+        ],
+        ressources: { min: 9200, max: 14200 },
+        interval: { min: 2600, max: 4600 }
+      },
+      { level: 6,
+        enemies: [
+          { type: 0, amount: 2 },
+          { type: 1, amount: 1 },
+          { type: 2, amount: 2 },
+          { type: 3, amount: 1 },
+          { type: 4, amount: 2 },
+          { type: 5, amount: 1 },
+          { type: 17, amount: 1 },
+        ],
+        ressources: { min: 9000, max: 14000 },
+        interval: { min: 2500, max: 4500 }
+      },
+      { level: 7,
+        enemies: [
+          { type: 0, amount: 3 },
+          { type: 1, amount: 2 },
+          { type: 2, amount: 3 },
+          { type: 3, amount: 2 },
+          { type: 4, amount: 3 },
+          { type: 5, amount: 2 },
+        ],
+        ressources: { min: 8800, max: 13800 },
+        interval: { min: 2400, max: 4400 }
+      },
+      { level: 8,
+        enemies: [
+          { type: 0, amount: 5 },
+          { type: 1, amount: 5 },
+          { type: 2, amount: 5 },
+          { type: 3, amount: 5 },
+          { type: 4, amount: 5 },
+          { type: 5, amount: 5 },
+        ],
+        ressources: { min: 8600, max: 13600 },
+        interval: { min: 2300, max: 4300 }
+      },
+      { level: 9,
+        enemies: [
+          { type: 0, amount: 2 },
+          { type: 1, amount: 1 },
+          { type: 2, amount: 2 },
+          { type: 3, amount: 1 },
+          { type: 4, amount: 2 },
+          { type: 5, amount: 1 },
+          { type: 6, amount: 2 },
+          { type: 7, amount: 1 },
+          { type: 18, amount: 1 },
+        ],
+        ressources: { min: 8400, max: 13400 },
+        interval: { min: 2200, max: 4200 }
+      },
+      { level: 10,
+        enemies: [
+          { type: 0, amount: 3 },
+          { type: 1, amount: 2 },
+          { type: 2, amount: 3 },
+          { type: 3, amount: 2 },
+          { type: 4, amount: 3 },
+          { type: 5, amount: 2 },
+          { type: 6, amount: 3 },
+          { type: 7, amount: 2 },
+        ],
+        ressources: { min: 8200, max: 13200 },
+        interval: { min: 2100, max: 4100 }
+      },
+      { level: 11,
+        enemies: [
+          { type: 0, amount: 5 },
+          { type: 1, amount: 5 },
+          { type: 2, amount: 5 },
+          { type: 3, amount: 5 },
+          { type: 4, amount: 5 },
+          { type: 5, amount: 5 },
           { type: 6, amount: 5 },
           { type: 7, amount: 5 },
         ],
-        ressources: { min: 10000, max: 15000 },
-        interval: { min: 5000, max: 8000 }
-      }
+        ressources: { min: 8000, max: 13000 },
+        interval: { min: 2000, max: 4000 }
+      },
+      { level: 12,
+        enemies: [
+          { type: 0, amount: 2 },
+          { type: 1, amount: 1 },
+          { type: 2, amount: 2 },
+          { type: 3, amount: 1 },
+          { type: 4, amount: 2 },
+          { type: 5, amount: 1 },
+          { type: 6, amount: 2 },
+          { type: 7, amount: 1 },
+          { type: 8, amount: 2 },
+          { type: 9, amount: 1 },
+          { type: 19, amount: 1 },
+        ],
+        ressources: { min: 7800, max: 12800 },
+        interval: { min: 1900, max: 3900 }
+      },
+      { level: 13,
+        enemies: [
+          { type: 0, amount: 3 },
+          { type: 1, amount: 2 },
+          { type: 2, amount: 3 },
+          { type: 3, amount: 2 },
+          { type: 4, amount: 3 },
+          { type: 5, amount: 2 },
+          { type: 6, amount: 3 },
+          { type: 7, amount: 2 },
+          { type: 8, amount: 3 },
+          { type: 9, amount: 2 },
+        ],
+        ressources: { min: 7600, max: 12600 },
+        interval: { min: 1800, max: 3800 }
+      },
+      { level: 14,
+        enemies: [
+          { type: 0, amount: 5 },
+          { type: 1, amount: 5 },
+          { type: 2, amount: 5 },
+          { type: 3, amount: 5 },
+          { type: 4, amount: 5 },
+          { type: 5, amount: 5 },
+          { type: 6, amount: 5 },
+          { type: 7, amount: 5 },
+          { type: 8, amount: 5 },
+          { type: 9, amount: 5 },
+        ],
+        ressources: { min: 7400, max: 12400 },
+        interval: { min: 1700, max: 3700 }
+      },
+      { level: 15,
+        enemies: [
+          { type: 0, amount: 2 },
+          { type: 1, amount: 1 },
+          { type: 2, amount: 2 },
+          { type: 3, amount: 1 },
+          { type: 4, amount: 2 },
+          { type: 5, amount: 1 },
+          { type: 6, amount: 2 },
+          { type: 7, amount: 1 },
+          { type: 8, amount: 2 },
+          { type: 9, amount: 1 },
+          { type: 10, amount: 2 },
+          { type: 11, amount: 1 },
+          { type: 20, amount: 1 },
+        ],
+        ressources: { min: 7200, max: 12200 },
+        interval: { min: 1600, max: 3600 }
+      },
+      { level: 16,
+        enemies: [
+          { type: 0, amount: 3 },
+          { type: 1, amount: 2 },
+          { type: 2, amount: 3 },
+          { type: 3, amount: 2 },
+          { type: 4, amount: 3 },
+          { type: 5, amount: 2 },
+          { type: 6, amount: 3 },
+          { type: 7, amount: 2 },
+          { type: 8, amount: 3 },
+          { type: 9, amount: 2 },
+          { type: 10, amount: 3 },
+          { type: 11, amount: 2 },
+        ],
+        ressources: { min: 7000, max: 12000 },
+        interval: { min: 1500, max: 3500 }
+      },
+      { level: 17,
+        enemies: [
+          { type: 0, amount: 5 },
+          { type: 1, amount: 5 },
+          { type: 2, amount: 5 },
+          { type: 3, amount: 5 },
+          { type: 4, amount: 5 },
+          { type: 5, amount: 5 },
+          { type: 6, amount: 5 },
+          { type: 7, amount: 5 },
+          { type: 8, amount: 5 },
+          { type: 9, amount: 5 },
+          { type: 10, amount: 5 },
+          { type: 11, amount: 5 },
+        ],
+        ressources: { min: 6800, max: 11800 },
+        interval: { min: 1400, max: 3400 }
+      },
+      { level: 18,
+        enemies: [
+          { type: 0, amount: 2 },
+          { type: 1, amount: 1 },
+          { type: 2, amount: 2 },
+          { type: 3, amount: 1 },
+          { type: 4, amount: 2 },
+          { type: 5, amount: 1 },
+          { type: 6, amount: 2 },
+          { type: 7, amount: 1 },
+          { type: 8, amount: 2 },
+          { type: 9, amount: 1 },
+          { type: 10, amount: 2 },
+          { type: 11, amount: 1 },
+          { type: 12, amount: 2 },
+          { type: 13, amount: 1 },
+          { type: 21, amount: 1 },
+        ],
+        ressources: { min: 6600, max: 11600 },
+        interval: { min: 1300, max: 3300 }
+      },
+      { level: 19,
+        enemies: [
+          { type: 0, amount: 3 },
+          { type: 1, amount: 2 },
+          { type: 2, amount: 3 },
+          { type: 3, amount: 2 },
+          { type: 4, amount: 3 },
+          { type: 5, amount: 2 },
+          { type: 6, amount: 3 },
+          { type: 7, amount: 2 },
+          { type: 8, amount: 3 },
+          { type: 9, amount: 2 },
+          { type: 10, amount: 3 },
+          { type: 11, amount: 2 },
+          { type: 12, amount: 3 },
+          { type: 13, amount: 2 },
+          { type: 12, amount: 3 },
+          { type: 13, amount: 2 },
+        ],
+        ressources: { min: 6400, max: 11400 },
+        interval: { min: 1200, max: 3200 }
+      },
+      { level: 20,
+        enemies: [
+          { type: 0, amount: 5 },
+          { type: 1, amount: 5 },
+          { type: 2, amount: 5 },
+          { type: 3, amount: 5 },
+          { type: 4, amount: 5 },
+          { type: 5, amount: 5 },
+          { type: 6, amount: 5 },
+          { type: 7, amount: 5 },
+          { type: 8, amount: 5 },
+          { type: 9, amount: 5 },
+          { type: 10, amount: 5 },
+          { type: 11, amount: 5 },
+          { type: 12, amount: 5 },
+          { type: 13, amount: 5 },
+        ],
+        ressources: { min: 6200, max: 11200 },
+        interval: { min: 1100, max: 3100 }
+      },
+      { level: 21,
+        enemies: [
+          { type: 0, amount: 2 },
+          { type: 1, amount: 1 },
+          { type: 2, amount: 2 },
+          { type: 3, amount: 1 },
+          { type: 4, amount: 2 },
+          { type: 5, amount: 1 },
+          { type: 6, amount: 2 },
+          { type: 7, amount: 1 },
+          { type: 8, amount: 2 },
+          { type: 9, amount: 1 },
+          { type: 10, amount: 2 },
+          { type: 11, amount: 1 },
+          { type: 12, amount: 2 },
+          { type: 13, amount: 1 },
+          { type: 14, amount: 2 },
+          { type: 15, amount: 1 },
+          { type: 22, amount: 1 },
+        ],
+        ressources: { min: 6000, max: 11000 },
+        interval: { min: 1000, max: 3000 }
+      },
+      { level: 22,
+        enemies: [
+          { type: 0, amount: 3 },
+          { type: 1, amount: 2 },
+          { type: 2, amount: 3 },
+          { type: 3, amount: 2 },
+          { type: 4, amount: 3 },
+          { type: 5, amount: 2 },
+          { type: 6, amount: 3 },
+          { type: 7, amount: 2 },
+          { type: 8, amount: 3 },
+          { type: 9, amount: 2 },
+          { type: 10, amount: 3 },
+          { type: 11, amount: 2 },
+          { type: 12, amount: 3 },
+          { type: 13, amount: 2 },
+          { type: 12, amount: 3 },
+          { type: 13, amount: 2 },
+          { type: 14, amount: 3 },
+          { type: 15, amount: 2 },
+        ],
+        ressources: { min: 5800, max: 10800 },
+        interval: { min: 900, max: 2900 }
+      },
+      { level: 23,
+        enemies: [
+          { type: 0, amount: 5 },
+          { type: 1, amount: 5 },
+          { type: 2, amount: 5 },
+          { type: 3, amount: 5 },
+          { type: 4, amount: 5 },
+          { type: 5, amount: 5 },
+          { type: 6, amount: 5 },
+          { type: 7, amount: 5 },
+          { type: 8, amount: 5 },
+          { type: 9, amount: 5 },
+          { type: 10, amount: 5 },
+          { type: 11, amount: 5 },
+          { type: 12, amount: 5 },
+          { type: 13, amount: 5 },
+          { type: 12, amount: 5 },
+          { type: 13, amount: 5 },
+          { type: 14, amount: 5 },
+          { type: 15, amount: 5 },
+        ],
+        ressources: { min: 5600, max: 10600 },
+        interval: { min: 800, max: 2800 }
+      },
+      { level: 24,
+        enemies: [
+          { type: 16, amount: 1 },
+          { type: 17, amount: 1 },
+          { type: 18, amount: 1 },
+          { type: 19, amount: 1 },
+          { type: 20, amount: 1 },
+          { type: 21, amount: 1 },
+          { type: 22, amount: 1 },
+        ],
+        ressources: { min: 5400, max: 10400 },
+        interval: { min: 700, max: 2700 }
+      },
+      { level: 25,
+        enemies: [
+          { type: 0, amount: 5 },
+          { type: 1, amount: 5 },
+          { type: 2, amount: 5 },
+          { type: 3, amount: 5 },
+          { type: 4, amount: 5 },
+          { type: 5, amount: 5 },
+          { type: 6, amount: 5 },
+          { type: 7, amount: 5 },
+          { type: 8, amount: 5 },
+          { type: 9, amount: 5 },
+          { type: 10, amount: 5 },
+          { type: 11, amount: 5 },
+          { type: 12, amount: 5 },
+          { type: 13, amount: 5 },
+          { type: 12, amount: 5 },
+          { type: 13, amount: 5 },
+          { type: 14, amount: 5 },
+          { type: 15, amount: 5 },
+          { type: 16, amount: 2 },
+          { type: 17, amount: 2 },
+          { type: 18, amount: 2 },
+          { type: 19, amount: 2 },
+          { type: 20, amount: 2 },
+          { type: 21, amount: 2 },
+          { type: 22, amount: 2 },
+        ],
+        ressources: { min: 5200, max: 10200 },
+        interval: { min: 600, max: 2600 }
+      },
     ];
     this.enemies;
     this.enemyInterval;
@@ -310,6 +698,7 @@ export class Game {
     this.score = 0;
     this.level = 1;
     this.floatingMessages = [];
+    this.timer = 0;
 
     this.smallSize = 30 * this.width / 1350;
     this.normalSize = 30 * this.width / 1350;
@@ -724,6 +1113,8 @@ export class Game {
       return;
     }
 
+    if (!this.gameOver) this.timer += deltaTime;
+
     if (this.debug) this.handleGameGrid();
 
     this.drawStatusText();
@@ -782,12 +1173,32 @@ export class Game {
     }
   }
 
+  handleGameWin() {
+    if (!this.gameOver) {
+      this.gameOver = true;
+
+      const finalscore = this.score * 2 + this.playerResources + Math.floor(this.timer);
+
+      //this.sound.play('win');
+      this.message1 = translations[lang].win;
+      this.message2 = '';
+      this.message3 = translations[lang].gameover2 + ' ' + finalscore;
+
+      this.paused = true;
+    }
+  }
+
   levelUp() {
     this.level++;
     if (this.level % 3 === 0) {
       this.unlockNewCard();
     }
-    this.createEnemiesPool();
+    if (this.level > this.enemiesForLevel.length) {
+      this.handleGameWin();
+    } else {
+      this.createEnemiesPool();
+      console.log('Level ' + this.level);
+    }
   }
   
 }

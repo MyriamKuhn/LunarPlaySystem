@@ -17,14 +17,9 @@ export class Enemy {
     this.enemyType = this.game.enemiesTypes[enemyType];
     this.x = this.game.width;
     this.y = verticalPosition;
-    if (enemyType === 8) {
-      this.width = 2 * this.game.cellSize - this.game.cellGap * 2;
-      this.height = 2 * this.game.cellSize - this.game.cellGap * 2;
-    } else {
-      this.width = this.game.cellSize - this.game.cellGap * 2;
-      this.height = this.game.cellSize - this.game.cellGap * 2;
-    }
-    this.speed = 15;
+    this.width = this.game.cellSize - this.game.cellGap * 2;
+    this.height = this.game.cellSize - this.game.cellGap * 2;
+    this.speed = this.enemyType.speed;
     this.movement = this.speed;
     this.health = this.enemyType.health;
     this.maxHealth = this.health;
@@ -74,6 +69,8 @@ export class Enemy {
         this.movement = this.speed * 0.5;
       } else if (this.slower) {
         this.movement = this.speed * 0.75;
+      } else if (this.slowed && this.slower) {
+        this.movement = this.speed * 0.25;
       } else {
         this.movement = this.speed;
       }
@@ -117,6 +114,12 @@ export class Enemy {
       this.game.ctx.save();
       this.game.ctx.shadowBlur = 20;
       this.game.ctx.shadowColor = 'orangered';
+      this.game.ctx.drawImage(this.image, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
+      this.game.ctx.restore();
+    } else if (this.slowed && this.inFire) {
+      this.game.ctx.save();
+      this.game.ctx.shadowBlur = 20;
+      this.game.ctx.shadowColor = 'purple';
       this.game.ctx.drawImage(this.image, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
       this.game.ctx.restore();
     } else {

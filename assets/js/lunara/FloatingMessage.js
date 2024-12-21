@@ -17,8 +17,8 @@ export class FloatingMessage {
 
   update() {
     if (this.game.eventUpdate) {
-      this.y -= 0.3;
-      this.lifeSpan += 1;
+      this.y -= 0.6;
+      this.lifeSpan += 2;
       if (this.opacity > 0.03) this.opacity -= 0.03
     }
   }
