@@ -159,7 +159,7 @@ export class Game {
       { element: document.getElementById("defender3"), costs: 250, health: 1000, lifeSpan: 12 },
       { element: document.getElementById("defender4"), costs: 300, health: 300, lifeSpan: 12 },
       { element: document.getElementById("defender5"), costs: 250, health: 200, lifeSpan: 8 },
-      { element: document.getElementById("defender6"), costs: 500, health: 200, lifeSpan: 8 },
+      { element: document.getElementById("defender6"), costs: 350, health: 200, lifeSpan: 8 },
       { element: document.getElementById("defender7"), costs: 400, health: 300, lifeSpan: 12 }
     ];
     this.projectiles;
@@ -193,12 +193,12 @@ export class Game {
       { element: document.getElementById("enemy8"), power: 4.0, speed: 60, health: 450 },
       { element: document.getElementById("enemy8"), power: 4.0, speed: 70, health: 450 },
       { element: document.getElementById("enemy9"), power: 5, speed: 20, health: 1000 },
-      { element: document.getElementById("enemy9"), power: 5.5, speed: 40, health: 2000 },
-      { element: document.getElementById("enemy9"), power: 6, speed: 50, health: 4000 },
-      { element: document.getElementById("enemy9"), power: 6.5, speed: 55, health: 5000 },
-      { element: document.getElementById("enemy9"), power: 7, speed: 60, health: 6000 },
-      { element: document.getElementById("enemy9"), power: 7.5, speed: 65, health: 7000 },
-      { element: document.getElementById("enemy9"), power: 8, speed: 70, health: 8000 },
+      { element: document.getElementById("enemy9"), power: 5.5, speed: 25, health: 2000 },
+      { element: document.getElementById("enemy9"), power: 6, speed: 30, health: 3000 },
+      { element: document.getElementById("enemy9"), power: 6.5, speed: 35, health: 4000 },
+      { element: document.getElementById("enemy9"), power: 7, speed: 40, health: 5000 },
+      { element: document.getElementById("enemy9"), power: 7.5, speed: 50, health: 6000 },
+      { element: document.getElementById("enemy9"), power: 8, speed: 60, health: 7000 },
     ];
     this.enemiesForLevel = [
       { level: 1, 
@@ -1162,7 +1162,7 @@ export class Game {
     if (!this.gameOver) {
       this.gameOver = true;
 
-      const finalscore = this.score * 2 + this.playerResources;
+      const finalscore = this.score + this.playerResources;
 
       //this.sound.play('lose');
       this.message1 = translations[lang].gameover;
@@ -1177,7 +1177,7 @@ export class Game {
     if (!this.gameOver) {
       this.gameOver = true;
 
-      const finalscore = this.score * 2 + this.playerResources + Math.floor(this.timer);
+      const finalscore = this.score + this.playerResources + Math.floor(300000000 / (this.timer + 1));
 
       //this.sound.play('win');
       this.message1 = translations[lang].win;
