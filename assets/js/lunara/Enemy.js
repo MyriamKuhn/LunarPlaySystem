@@ -104,10 +104,10 @@ export class Enemy {
       this.game.ctx.font = '20px Rubik Moonrocks';
       this.game.ctx.fillText(Math.floor(this.health), this.x + 15, this.y + 30);
     }
-    if (this.slowed) {
+    if (this.slowed && this.inFire) {
       this.game.ctx.save();
       this.game.ctx.shadowBlur = 20;
-      this.game.ctx.shadowColor = 'blue';
+      this.game.ctx.shadowColor = 'purple';
       this.game.ctx.drawImage(this.image, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
       this.game.ctx.restore();
     } else if (this.inFire) {
@@ -116,10 +116,10 @@ export class Enemy {
       this.game.ctx.shadowColor = 'orangered';
       this.game.ctx.drawImage(this.image, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
       this.game.ctx.restore();
-    } else if (this.slowed && this.inFire) {
+    } else if (this.slowed) {
       this.game.ctx.save();
       this.game.ctx.shadowBlur = 20;
-      this.game.ctx.shadowColor = 'purple';
+      this.game.ctx.shadowColor = 'blue';
       this.game.ctx.drawImage(this.image, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
       this.game.ctx.restore();
     } else {
