@@ -82,6 +82,8 @@ const showPlanetData = (planet) => {
   document.getElementById('planet-title').textContent = planetTitles[planet]['game'];
   // Afficher le sous-titre de la planète
   document.getElementById('planet-intro').textContent = planetTitles[planet]['desc'];
+  // Mettre à jour le lien du bouton de jeu
+  document.getElementById('play-button').href = planetTitles[planet]['link'];
 
   // Appeler le script PHP pour obtenir les données
   fetch('/App/get_ranking.php', {

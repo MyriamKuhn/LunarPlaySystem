@@ -1316,7 +1316,6 @@ export class Game {
       this.handleGameWin();
     } else {
       this.createEnemiesPool();
-      console.log('Level ' + this.level);
     }
   }
   
