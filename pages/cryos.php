@@ -50,7 +50,6 @@ if (!isset($_SESSION['playername'])) {
 </head>
 
 <body>
-<body>
 
 <!-- Écran de chargement -->
 <div id="loading-screen" class="loading-screen">
