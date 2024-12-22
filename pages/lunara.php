@@ -102,6 +102,7 @@ if (!isset($_SESSION['playername'])) {
 </div>
 
 <div class="controls">
+	<button id="fullScreenButton">💻</button>
   <button id="resetButton">⚔️</button>
   <button id="backButton">👈</button>
 	<button id="volumeButton">🔊</button>
