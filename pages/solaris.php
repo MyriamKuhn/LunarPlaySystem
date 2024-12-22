@@ -86,6 +86,9 @@ if (!isset($_SESSION['playername'])) {
         <section class="ranking">
           <h2 id="planet-title"></h2>
           <p id="planet-intro" class="intro"></p>
+          <div class="btn-div">
+            <a href="" class="button" id="play-button"><?= Security::secureInput($translations['player_button']) ?></a>
+          </div>
           <p id="no-datas" class="nodatas"><?= Security::secureInput($translations['solaris_nodatas']) ?></p>
         </section>
 
