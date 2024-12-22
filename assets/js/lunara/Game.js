@@ -629,32 +629,36 @@ export class Game {
     this.enemyInterval;
     this.enemyTimer = 0;
 
-    this.canvasPosition = this.canvas.getBoundingClientRect();
+    this.canvasPosition;
 
     this.canvas.addEventListener('mousedown', (e) => {
       e.preventDefault();
-      this.mouse.x = e.x - this.canvasPosition.left;
-      this.mouse.y = e.y - this.canvasPosition.top;
+      this.canvasPosition = this.canvas.getBoundingClientRect();
+      this.mouse.x = (e.x - this.canvasPosition.left) * (this.canvas.width / this.canvasPosition.width);
+      this.mouse.y = (e.y - this.canvasPosition.top) * (this.canvas.height / this.canvasPosition.height);
       this.handleCanvasClick();
       this.mouse.clicked = true;
     });
     this.canvas.addEventListener('mouseup', (e) => {
       e.preventDefault();
-      this.mouse.x = e.x - this.canvasPosition.left;
-      this.mouse.y = e.y - this.canvasPosition.top;
+      this.canvasPosition = this.canvas.getBoundingClientRect();
+      this.mouse.x = (e.x - this.canvasPosition.left) * (this.canvas.width / this.canvasPosition.width);
+      this.mouse.y = (e.y - this.canvasPosition.top) * (this.canvas.height / this.canvasPosition.height);
       this.mouse.clicked = false;
     });
     this.canvas.addEventListener('touchstart', (e) => {
       e.preventDefault();
-      this.mouse.x = e.changedTouches[0].pageX - this.canvasPosition.left;
-      this.mouse.y = e.changedTouches[0].pageY - this.canvasPosition.top;
+      this.canvasPosition = this.canvas.getBoundingClientRect();
+      this.mouse.x = (e.changedTouches[0].pageX - this.canvasPosition.left) * (this.canvas.width / this.canvasPosition.width);;
+      this.mouse.y = (e.changedTouches[0].pageY - this.canvasPosition.top) * (this.canvas.height / this.canvasPosition.height);
       this.mouse.clicked = true;
       this.handleCanvasClick();
     }, { passive: false });
     this.canvas.addEventListener('touchend', (e) => {
       this.mouse.clicked = false;
-      this.mouse.x = e.changedTouches[0].pageX - this.canvasPosition.left;
-      this.mouse.y = e.changedTouches[0].pageY - this.canvasPosition.top;
+      this.canvasPosition = this.canvas.getBoundingClientRect();
+      this.mouse.x = (e.changedTouches[0].pageX - this.canvasPosition.left) * (this.canvas.width / this.canvasPosition.width);
+      this.mouse.y = (e.changedTouches[0].pageY - this.canvasPosition.top) * (this.canvas.height / this.canvasPosition.height);
     }, { passive: false });
     window.addEventListener('resize', (e) => {
       this.canvasPosition = this.canvas.getBoundingClientRect();
@@ -666,6 +670,7 @@ export class Game {
       if (e.key.toLowerCase() === 'r') this.start();
       if (e.key.toLowerCase() === 'd') this.debug = !this.debug;
       if (e.key.toLowerCase() === 'm') this.sound.toggleMute();
+      if (e.key.toLowerCase() === 'f') this.toggleFullScreen();
       if (e.key.toLowerCase() === 'b') window.location.href = '/' + lang + '/lunarplay/';
     });
     this.resetButton = document.getElementById('resetButton');
@@ -675,6 +680,14 @@ export class Game {
     this.resetButton.addEventListener('touchend', e => {
       e.preventDefault();
       this.start();
+    }, { passive: false });
+    this.fullScreenButton = document.getElementById('fullScreenButton');
+    this.fullScreenButton.addEventListener('click', e => {
+      this.toggleFullScreen();
+    });
+    this.fullScreenButton.addEventListener('touchend', e => {
+      e.preventDefault();
+      this.toggleFullScreen();
     }, { passive: false });
     this.backButton = document.getElementById('backButton');
     this.backButton.addEventListener('click', e => {
@@ -698,6 +711,7 @@ export class Game {
   }
 
   start(isResizing = false) {
+    this.gameGrid = [];
     this.ratio = this.originalWidth / this.originalHeight;
     this.handleResize();
     this.checkOrientation(window.innerWidth, window.innerHeight);
@@ -842,6 +856,14 @@ export class Game {
     } 
   }
 
+  toggleFullScreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+
   handleResize() {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
@@ -858,13 +880,16 @@ export class Game {
     // Limiter à la taille maximale (1350x900)
     newWidth = Math.min(newWidth, this.maxWidth);
     newHeight = Math.min(newHeight, this.maxHeight);
-    
+
+    const cols = 9; 
+    const rows = 5; 
+
     // Appliquer les nouvelles dimensions au canevas
-    this.canvas.width = newWidth;
-    this.canvas.height = newHeight;
-    
-    this.width = this.canvas.width;
-    this.height = this.canvas.height;
+    this.width = Math.floor(newWidth / cols) * cols; 
+    this.height = Math.floor(newHeight / rows) * rows;
+
+    this.canvas.width = this.width;
+    this.canvas.height = this.height;
   }
   
   checkOrientation(width, height) {
@@ -888,12 +913,12 @@ export class Game {
     const cols = 9; 
 
     this.cellSize = Math.min(this.width / cols, this.height / rows);
-    this.cellGap = this.cellSize / 100;
+    this.cellGap = Math.floor(this.cellSize / 100);
   }
 
   createGrid() {
     this.gameGrid = [];
-    for (let y = this.cellSize; y < this.height; y += this.cellSize) {
+    for (let y = 0; y < this.height; y += this.cellSize) {
       for (let x = 0; x < this.width; x += this.cellSize) {
         this.gameGrid.push(new Cell(x, y, this));
       }
