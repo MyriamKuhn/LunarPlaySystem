@@ -1233,6 +1233,8 @@ export class Game {
 
       const finalscore = this.score + this.playerResources;
 
+      this.saveScore(finalscore);
+
       this.sound.play('lose');
       this.message1 = translations[lang].gameover;
       this.message2 = '';
@@ -1248,12 +1250,34 @@ export class Game {
 
       const finalscore = this.score + this.playerResources + Math.floor(300000000 / (this.timer + 1));
 
+      this.saveScore(finalscore);
+
       this.sound.play('win');
       this.message1 = translations[lang].win;
       this.message2 = '';
       this.message3 = translations[lang].gameover2 + ' ' + finalscore;
 
       this.paused = true;
+    }
+  }
+
+  saveScore(finalscore) {
+    // Récupérer le nom du joueur depuis la session
+    const playerName = securePlayername(sessionStorage.getItem('playername')); 
+    const planet = 'lunara';
+    const score = parseInt(finalscore, 10); 
+
+    // Vérifier si le nom du joueur est disponible
+    if (playerName) {
+      // Préparer les données à envoyer
+      const data = {
+        planet: planet,
+        playername: playerName,
+        score: score
+      };
+
+      // Envoyer la requête fetch pour ajouter le score
+      sendScore(data);
     }
   }
 
