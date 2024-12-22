@@ -35,9 +35,9 @@ export const descriptions = {
       game: "Gardien d'Ignisfera",
     },
     lunara: {
-      intro: "Mystérieuse et envoûtante, Lunara est une lune au paysage contrasté, qui influence les marées et les saisons des planètes environnantes. Avec ses cratères anciens et ses vallées luxuriantes, elle fascine tous ceux qui l'observent. Des formations rocheuses uniques, des cavernes dissimulant des cristaux luminescents et des créatures nocturnes peuplent sa surface, ajoutant à son aura de mystère. Lors des éclipses lunaires, des auréoles lumineuses illuminent Lunara d'une lumière magique, offrant un spectacle à couper le souffle.",
-      desc: "Dans Mystères de Lunara, vous devez frapper des créatures nocturnes émergeant de la surface lunaire. Chacune de ces créatures peut révéler des ressources précieuses ou des indices sur les secrets enfouis de Lunara. Ce jeu amusant et interactif vous permet d'explorer la surface de la lune tout en découvrant les merveilles cachées de cet endroit mystérieux.",
-      game: "Mystères de Lunara",
+      intro: "Mystérieuse et envoûtante, Lunara est une lune où la beauté de ses vallées luxuriantes et de ses cristaux luminescents contraste avec le danger d'une invasion imminente. Ses créatures nocturnes et formations uniques deviennent des alliées inattendues dans une bataille stratégique contre les lunariens. Lors des éclipses lunaires, des auréoles lumineuses offrent un répit magique dans ce monde hostile, transformant Lunara en un champ de bataille fascinant à défendre à tout prix.",
+      desc: "Protégez la planète Lunara des lunariens envahisseurs ! Collectez des larves pour accumuler de l'énergie et plantez des végétaux surpuissants capables de repousser cette menace interstellaire. Faites preuve de stratégie et sauvez Lunara dans ce tower defense captivant.",
+      game: "Lunara Defense",
     },
     nereidia: {
       intro: "Nereidia est une planète lointaine, célèbre pour sa beauté énigmatique et ses tempêtes tumultueuses. Ses paysages sont dominés par des nuances profondes de bleu et de violet, avec des océans tumultueux qui cachent des mystères sous-marins fascinants. La surface de la planète est parsemée de formations de glace extraordinaires, et des créatures marines géantes évoluent dans ses eaux mystérieuses. Des événements spectaculaires tels que des éclipses et des aurores boréales illuminent le ciel, offrant un spectacle à couper le souffle aux explorateurs.",
@@ -109,9 +109,9 @@ export const descriptions = {
       game: "Guardian of Ignisfera",
     },
     lunara: {
-      intro: "Mysterious and enchanting, Lunara is a moon of contrasting landscapes, influencing the tides and seasons of the surrounding planets. With its ancient craters and lush valleys, it fascinates all who see it. Unique rock formations, caves concealing luminescent crystals and nocturnal creatures populate its surface, adding to its aura of mystery. During lunar eclipses, luminous haloes illuminate Lunara with a magical light, offering a breathtaking spectacle.",
-      desc: "In Mysteries of Lunara, you must strike nocturnal creatures emerging from the lunar surface. Each of these creatures can reveal valuable resources or clues to Lunara's buried secrets. This fun, interactive game lets you explore the lunar surface as you discover the hidden wonders of this mysterious place.",
-      game: "Mysteries of Lunara",
+      intro: "Mysterious and bewitching, Lunara is a moon where the beauty of its lush valleys and luminescent crystals contrasts with the danger of an imminent invasion. Its unique nocturnal creatures and formations become unexpected allies in a strategic battle against the Lunarians. During lunar eclipses, luminous halos offer a magical respite in this hostile world, transforming Lunara into a fascinating battlefield to be defended at all costs.",
+      desc: "Protect the planet Lunara from invading lunarians! Collect larvae for energy and plant super-powered plants to repel this interstellar menace. Use your strategy to save Lunara in this captivating tower defense game.",
+      game: "Lunara Defense",
     },
     nereidia: {
       intro: "Nereidia is a distant planet, famous for its enigmatic beauty and tumultuous storms. Its landscapes are dominated by deep shades of blue and violet, with tumultuous oceans that conceal fascinating underwater mysteries. The planet's surface is dotted with extraordinary ice formations, and giant sea creatures evolve in its mysterious waters. Spectacular events such as eclipses and the aurora borealis light up the sky, offering a breathtaking spectacle for explorers.",
@@ -183,9 +183,9 @@ export const descriptions = {
       game: "Ignisfera-Wächter",
     },
     lunara: {
-      intro: "Der geheimnisvolle und fesselnde Lunara ist ein Mond mit einer kontrastreichen Landschaft, die die Gezeiten und Jahreszeiten der umliegenden Planeten beeinflusst. Mit seinen uralten Kratern und üppigen Tälern fasziniert er jeden, der ihn beobachtet. Einzigartige Felsformationen, Höhlen mit leuchtenden Kristallen und nachtaktive Kreaturen bevölkern seine Oberfläche und tragen zu seiner geheimnisvollen Aura bei. Während der Mondfinsternis erstrahlen leuchtende Halos, die Lunara in ein magisches Licht tauchen und einen atemberaubenden Anblick bieten.",
-      desc: "In Geheimnisse von Lunara musst du nachtaktive Kreaturen schlagen, die aus der Mondoberfläche auftauchen. Jede dieser Kreaturen kann wertvolle Ressourcen oder Hinweise auf die vergrabenen Geheimnisse von Lunara enthüllen. In diesem unterhaltsamen und interaktiven Spiel kannst du die Mondoberfläche erkunden, während du die verborgenen Wunder dieses geheimnisvollen Ortes entdeckst.",
-      game: "Geheimnisse von Lunara",
+      intro: "Mysteriös und fesselnd: Lunara ist ein Mond, auf dem die Schönheit seiner üppigen Täler und lumineszierenden Kristalle mit der Gefahr einer bevorstehenden Invasion kontrastiert. Seine nächtlichen Kreaturen und einzigartigen Formationen werden zu unerwarteten Verbündeten in einer strategischen Schlacht gegen die Lunarier. Während der Mondfinsternis sorgen leuchtende Halos für eine magische Atempause in dieser feindlichen Welt und verwandeln Lunara in ein faszinierendes Schlachtfeld, das es um jeden Preis zu verteidigen gilt.",
+      desc: "Schütze den Planeten Lunara vor eindringenden Lunarier! Sammel Larven, um Energie zu gewinnen, und pflanze hochleistungsfähige Pflanzen, die diese interstellare Bedrohung abwehren können. Beweise deine Strategie und rette Lunara in diesem fesselnden Tower-Defense-Spiel.",
+      game: "Lunara Defense",
     },
     nereidia: {
       intro: "Nereidia ist ein weit entfernter Planet, der für seine rätselhafte Schönheit und seine tosenden Stürme berühmt ist. Seine Landschaften werden von tiefen Blau- und Violettschattierungen beherrscht, mit stürmischen Ozeanen, die faszinierende Unterwassergeheimnisse verbergen. Die Oberfläche des Planeten ist mit außergewöhnlichen Eisformationen übersät, und in seinen geheimnisvollen Gewässern tummeln sich riesige Meerestiere. Spektakuläre Ereignisse wie Sonnenfinsternisse und Nordlichter erhellen den Himmel und bieten Entdeckern ein atemberaubendes Schauspiel.",

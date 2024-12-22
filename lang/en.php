@@ -100,4 +100,7 @@ return [
   'cryos_title' => 'LunarPlay System - Cryos Gearglide',
   'cryos_description' => 'Cryos, the steampunk planet of mechanical challenges! Explore a unique industrial world and test your reflexes in Cryos Gearglide. Control a mechanical bird ship, avoid gears, use strategic boosts and dominate the leaderboards. A thrilling adventure in a world of steam and steel awaits you!',
   'cryos_keywords' => "Cryos Gearglide, reflex game, planet Cryos, steampunk universe, mechanical challenges, industrial world, mechanical bird ship, gears, strategic boosts, global ranking, mechanical challenges, industrial world",
+  'lunara_title' => 'LunarPlay System - Lunara Defense',
+  'lunara_description' => 'Protect the planet Lunara from invading lunarians! Collect larvae for energy and plant super-powered plants to repel this interstellar menace. Use your strategy to save Lunara in this captivating tower defense game.',
+  'lunara_keywords' => "Lunara Defense, strategy game, planet Lunara, lunarians, larvae, energy, super-powered plants, tower defense, interstellar threat, strategy, save Lunara, LunarPlay System",
 ];
