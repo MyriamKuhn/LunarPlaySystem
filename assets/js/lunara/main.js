@@ -68,14 +68,15 @@ window.addEventListener('load', function() {
     { id: 'projectile5', src: '/assets/img/lunara/projectile5.png', type: 'image' },
     { id: 'projectile6', src: '/assets/img/lunara/projectile6.png', type: 'image' },
     { id: 'projectile7', src: '/assets/img/lunara/projectile7.png', type: 'image' },
-    { id: 'win', src: '/assets/audio/cryos/winflappy.mp3', type: 'audio' },
-    { id: 'lose', src: '/assets/audio/cryos/loseflappy.mp3', type: 'audio' },
-    { id: 'charge', src: '/assets/audio/cryos/charge.mp3', type: 'audio' },
-    { id: 'flap1', src: '/assets/audio/cryos/flap1.mp3', type: 'audio' },
-    { id: 'flap2', src: '/assets/audio/cryos/flap2.mp3', type: 'audio' },
-    { id: 'flap3', src: '/assets/audio/cryos/flap3.mp3', type: 'audio' },
-    { id: 'flap4', src: '/assets/audio/cryos/flap4.mp3', type: 'audio' },
-    { id: 'flap5', src: '/assets/audio/cryos/flap5.mp3', type: 'audio' },
+    { id: 'change', src: '/assets/audio/lunara/change.mp3', type: 'audio' },
+    { id: 'lose', src: '/assets/audio/lunara/lose.mp3', type: 'audio' },
+    { id: 'place', src: '/assets/audio/lunara/place.wav', type: 'audio' },
+    { id: 'projectile', src: '/assets/audio/lunara/projectile.wav', type: 'audio' },
+    { id: 'wave', src: '/assets/audio/lunara/wave.mp3', type: 'audio' },
+    { id: 'win', src: '/assets/audio/lunara/win.mp3', type: 'audio' },
+    { id: 'resource', src: '/assets/audio/lunara/resource.mp3', type: 'audio' },
+    { id: 'dead', src: '/assets/audio/lunara/dead.mp3', type: 'audio' },
+    { id: 'defender', src: '/assets/audio/lunara/defender.mp3', type: 'audio' },
   ];
 
   let loaded = 0;

@@ -43,7 +43,7 @@ export class Resource {
         this.game.playerResources += this.amount;
         this.game.floatingMessages.push(new FloatingMessage('+' + this.amount, this.x, this.y, this.game.smallSize, 'green', this.game));
         this.game.floatingMessages.push(new FloatingMessage('+' + this.amount, this.game.textSpaceX + (370 * (this.game.width / 1350)), this.game.textSpaceY + this.game.largerSize - (20 * (this.game.width / 1350)), this.game.smallSize, 'white', this.game));
-        //this.game.sound.play('resource');
+        this.game.sound.play('resource');
         this.reset();
       }
     }

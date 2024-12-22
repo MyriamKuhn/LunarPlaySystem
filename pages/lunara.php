@@ -90,14 +90,15 @@ if (!isset($_SESSION['playername'])) {
 	<img src="/assets/img/lunara/projectile6.png" id="projectile6">
 	<img src="/assets/img/lunara/projectile7.png" id="projectile7">
 
-	<audio src="/assets/audio/cryos/winflappy.mp3" id="win" preload="auto"></audio>
-	<audio src="/assets/audio/cryos/loseflappy.mp3" id="lose" preload="auto"></audio>
-	<audio src="/assets/audio/cryos/charge.mp3" id="charge" preload="auto"></audio>
-	<audio src="/assets/audio/cryos/flap1.mp3" id="flap1" preload="auto"></audio>
-	<audio src="/assets/audio/cryos/flap2.mp3" id="flap2" preload="auto"></audio>
-	<audio src="/assets/audio/cryos/flap3.mp3" id="flap3" preload="auto"></audio>
-	<audio src="/assets/audio/cryos/flap4.mp3" id="flap4" preload="auto"></audio>
-	<audio src="/assets/audio/cryos/flap5.mp3" id="flap5" preload="auto"></audio>
+	<audio src="/assets/audio/lunara/change.mp3" id="change" preload="auto"></audio>
+	<audio src="/assets/audio/lunara/lose.mp3" id="lose" preload="auto"></audio>
+	<audio src="/assets/audio/lunara/place.wav" id="place" preload="auto"></audio>
+	<audio src="/assets/audio/lunara/projectile.wav" id="projectile" preload="auto"></audio>
+	<audio src="/assets/audio/lunara/wave.mp3" id="wave" preload="auto"></audio>
+	<audio src="/assets/audio/lunara/win.mp3" id="win" preload="auto"></audio>
+	<audio src="/assets/audio/lunara/resource.mp3" id="resource" preload="auto"></audio>
+	<audio src="/assets/audio/lunara/dead.mp3" id="dead" preload="auto"></audio>
+	<audio src="/assets/audio/lunara/defender.mp3" id="defender" preload="auto"></audio>
 </div>
 
 <div class="controls">

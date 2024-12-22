@@ -8,6 +8,7 @@ import { Defender } from '/assets/js/lunara/Defender.js';
 import { Enemy } from '/assets/js/lunara/Enemy.js';
 import { Resource } from '/assets/js/lunara/Resource.js';
 import { FloatingMessage } from '/assets/js/lunara/FloatingMessage.js';
+import { AudioControl } from '/assets/js/lunara/AudioControls.js';
 import { securePlayername, sendScore, shuffleArray } from '/assets/js/utils.js';
 
 
@@ -32,6 +33,9 @@ const translations = {
     'gameover': "L'un des envahisseurs a réussi à passer !",
     'win': "Vous avez repoussé l'invasion !",
     'gameover2': 'Votre score final : ',
+    'resourcesneed': 'Pas assez de larves !',
+    'level': 'Prochaine vague',
+    'levelend': 'Dernière vague'
   },
   'en': {
     'score': 'Score: ',
@@ -46,6 +50,9 @@ const translations = {
     'gameover': 'One of the invaders managed to get through!',
     'win': 'You repelled the invasion!',
     'gameover2': 'Your final score: ',
+    'resourcesneed': 'Need more larvae!',
+    'level': 'Next wave',
+    'levelend': 'Last wave'
   },
   'de': {
     'score': 'Punktzahl: ',
@@ -60,6 +67,9 @@ const translations = {
     'gameover': 'Einer der Eindringlinge hat es geschafft durchzukommen!',
     'win': 'Du hast die Invasion zurückgeschlagen!',
     'gameover2': 'Deine Endpunktzahl: ',
+    'resourcesneed': 'Nicht genug Larven!',
+    'level': 'Nächste Welle',
+    'levelend': 'Letzte Welle'
   },
 };
 
@@ -80,6 +90,7 @@ export class Game {
     this.ratio = this.originalWidth / this.originalHeight;
     this.width = this.canvas.width;
     this.height = this.canvas.height;
+    this.sound = new AudioControl(this);
 
     this.cellSize;
     this.cellGap;
@@ -95,6 +106,8 @@ export class Game {
     this.floatingMessages;
     this.debug = false;
     this.timer;
+    this.maxEnemies;
+    this.showLevel;
 
     this.level;
     this.message1 = translations[lang].begin;
@@ -115,6 +128,7 @@ export class Game {
     this.textHeight;
     this.textSpaceX;
     this.textSpaceY;
+    this.rectWidth;
 
     this.unlockedCards;
     this.card0;
@@ -672,11 +686,11 @@ export class Game {
     }, { passive: false });
     this.volumeButton = document.getElementById('volumeButton');
     this.volumeButton.addEventListener('click', e => {
-      //this.sound.toggleMute();
+      this.sound.toggleMute();
     });
     this.volumeButton.addEventListener('touchend', e => {
       e.preventDefault();
-      //this.sound.toggleMute();
+      this.sound.toggleMute();
     }, { passive: false });
 
     this.start(true);
@@ -699,6 +713,7 @@ export class Game {
     this.level = 1;
     this.floatingMessages = [];
     this.timer = 0;
+    this.showLevel = false;
 
     this.smallSize = 30 * this.width / 1350;
     this.normalSize = 30 * this.width / 1350;
@@ -714,7 +729,8 @@ export class Game {
     this.spaceText = this.cardWidth / 2 + this.spaceCard;
     this.textHeight = this.cardHeight - this.imageSpace2;
     this.textSpaceX = 900 * this.width / 1350;
-    this.textSpaceY = this.cellSize / 2;
+    this.textSpaceY = this.cellSize / 3;
+    this.rectWidth = 200 * this.width / 1350;
 
     this.message1 = translations[lang].begin;
     this.message2 = translations[lang].begin2;
@@ -822,7 +838,7 @@ export class Game {
 
     if (!isResizing) {
       this.paused = false;
-      //this.sound.play('win');
+      this.sound.play('wave');
     } 
   }
 
@@ -924,10 +940,11 @@ export class Game {
       }
       const defenderCost = this.defendersTypes[this.chosenDefender].costs;
       if (this.playerResources >= defenderCost) {
+        this.sound.play('place');
         this.defenders.push(new Defender(gridPositionX, gridPositionY, this));
         this.playerResources -= defenderCost;
       } else {
-        this.floatingMessages.push(new FloatingMessage('Need more resources', this.mouse.x, this.mouse.y, this.smallSize, 'orangered', this));
+        this.floatingMessages.push(new FloatingMessage(translations[lang].resourcesneed, this.mouse.x, this.mouse.y, this.smallSize, 'orangered', this));
       }
     }
   }
@@ -994,6 +1011,7 @@ export class Game {
 
       // Si une carte a été cliquée, la sélectionner, sinon ne rien faire
       if (clickedCardIndex !== -1) {
+        this.sound.play('change');
         this.chosenDefender = clickedCardIndex; // Sélectionner la nouvelle carte
       }
     }
@@ -1039,6 +1057,7 @@ export class Game {
         this.enemies.push(new Enemy(verticalPosition, this, enemy.type));
       }
     });
+    this.maxEnemies = this.enemies.length;
   }
 
   getEnemy() {
@@ -1076,9 +1095,59 @@ export class Game {
     this.ctx.fillText(translations[lang].score + this.score, this.textSpaceX, this.textSpaceY);
     this.ctx.fillText(translations[lang].ressources + this.playerResources, this.textSpaceX, this.textSpaceY + this.largerSize);
 
+    
+    const remainingMonsters = this.enemies.length;
+    
+    const rectWidth = this.rectWidth;  
+    const rectHeight = this.imageSpace;  
+    const rectX = this.textSpaceX;
+    const rectY = this.textSpaceY + 2 * this.smallSize;  
+
+    
+    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';  
+    this.roundRect(rectX, rectY, rectWidth, rectHeight, this.imageSpace2);  
+    
+    
+    this.ctx.fillStyle = 'white';  
+    const progressWidth = (remainingMonsters / this.maxEnemies) * rectWidth;  
+    this.roundRect(rectX, rectY, progressWidth, rectHeight, this.imageSpace2);
+
     if (!this.gameOver && this.enemies.length === 0) {
       this.levelUp();
+      this.showLevel = true;
+      setTimeout(() => {
+        this.showLevel = false;
+      }, 3000);
     }
+
+    if (this.showLevel) {
+      this.ctx.save();
+      this.ctx.fillStyle = 'white';
+      this.ctx.font = this.largeSize + 'px Rubik Moonrocks';
+      this.ctx.textAlign = 'center';
+      this.ctx.globalAlpha = 0.5;
+      if (this.level < this.enemiesForLevel.length) {
+        this.ctx.fillText(translations[lang].level, this.width / 2, this.height / 2);
+      } else {
+      this.ctx.fillText(translations[lang].levelend, this.width / 2, this.height / 2);
+      }
+      this.ctx.restore();
+    }
+  }
+
+  roundRect(x, y, width, height, radius) {
+    this.ctx.beginPath();
+    this.ctx.moveTo(x + radius, y);
+    this.ctx.lineTo(x + width - radius, y);
+    this.ctx.arcTo(x + width, y, x + width, y + height, radius);
+    this.ctx.lineTo(x + width, y + height - radius);
+    this.ctx.arcTo(x + width, y + height, x + width - radius, y + height, radius);
+    this.ctx.lineTo(x + radius, y + height);
+    this.ctx.arcTo(x, y + height, x, y + height - radius, radius);
+    this.ctx.lineTo(x, y + radius);
+    this.ctx.arcTo(x, y, x + radius, y, radius);
+    this.ctx.closePath();
+    this.ctx.fill();
   }
 
   drawPauseScreen() {
@@ -1164,7 +1233,7 @@ export class Game {
 
       const finalscore = this.score + this.playerResources;
 
-      //this.sound.play('lose');
+      this.sound.play('lose');
       this.message1 = translations[lang].gameover;
       this.message2 = '';
       this.message3 = translations[lang].gameover2 + ' ' + finalscore;
@@ -1179,7 +1248,7 @@ export class Game {
 
       const finalscore = this.score + this.playerResources + Math.floor(300000000 / (this.timer + 1));
 
-      //this.sound.play('win');
+      this.sound.play('win');
       this.message1 = translations[lang].win;
       this.message2 = '';
       this.message3 = translations[lang].gameover2 + ' ' + finalscore;
@@ -1189,6 +1258,7 @@ export class Game {
   }
 
   levelUp() {
+    this.sound.play('wave');
     this.level++;
     if (this.level % 3 === 0) {
       this.unlockNewCard();

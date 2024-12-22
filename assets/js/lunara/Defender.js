@@ -48,6 +48,7 @@ export class Defender {
     if (!this.active) return;
 
     if (this.health <= 0) {
+      this.game.sound.play('defender');
       this.removeDefender();
     }
 
@@ -121,10 +122,12 @@ export class Defender {
     this.health -= this.lifeSpan;
     const baseProjectile = new Projectile(this.x + (80 * this.game.width / 1350), this.y + (60 * this.game.width / 1350), this.game, this.chosenDefender);
     this.game.projectiles.push(baseProjectile);
+    this.game.sound.play('projectile');
     if (this.chosenDefender === 4) {
       setTimeout(() => {
         const secondaryProjectile = new Projectile(this.x + (80 * this.game.width / 1350), this.y + (30 * this.game.width / 1350), this.game, this.chosenDefender);
         this.game.projectiles.push(secondaryProjectile);
+        this.game.sound.play('projectile');
       }, 500);
     }
   }

@@ -54,6 +54,7 @@ export class Enemy {
       this.addStopper(defender);
 
       if (defender.health <= 0) {
+        this.game.sound.play('defender');
         defender.removeDefender();
       }
     }
@@ -86,6 +87,7 @@ export class Enemy {
     }
 
     if (this.health <= 0) {
+      this.game.sound.play('dead');
       const gainedResources = this.maxHealth / 10;
       this.game.floatingMessages.push(new FloatingMessage('+' + gainedResources, this.x, this.y, this.smallSize, 'green', this.game));
       this.game.floatingMessages.push(new FloatingMessage('+' + gainedResources, this.game.textSpaceX + (370 * (this.game.width / 1350)), this.game.textSpaceY + this.game.largerSize - (20 * (this.game.width / 1350)), this.game.smallSize, 'white', this.game));
