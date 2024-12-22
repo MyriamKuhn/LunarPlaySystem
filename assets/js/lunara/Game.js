@@ -665,7 +665,7 @@ export class Game {
     window.addEventListener('keydown', e => {
       if (e.key.toLowerCase() === 'r') this.start();
       if (e.key.toLowerCase() === 'd') this.debug = !this.debug;
-      //if (e.key.toLowerCase() === 'm') this.sound.toggleMute();
+      if (e.key.toLowerCase() === 'm') this.sound.toggleMute();
       if (e.key.toLowerCase() === 'b') window.location.href = '/' + lang + '/lunarplay/';
     });
     this.resetButton = document.getElementById('resetButton');
@@ -825,7 +825,7 @@ export class Game {
     this.playerResources = 300;
     this.resourcesPool = [];
     this.resourcesInterval = 10000;
-    this.amountOfResources = 20;
+    this.amountOfResources = 50;
     this.createResourcesPool();
 
     this.defenders = [];
@@ -1007,7 +1007,7 @@ export class Game {
     // Détecter si l'utilisateur a cliqué sur une carte
     if (this.mouse.clicked) {
       // Chercher l'index de la carte sur laquelle l'utilisateur a cliqué
-      const clickedCardIndex = cards.findIndex((card, index) => this.checkCollision(card, this.mouse));
+      const clickedCardIndex = availableCards.findIndex((card, index) => this.checkCollision(card, this.mouse));
 
       // Si une carte a été cliquée, la sélectionner, sinon ne rien faire
       if (clickedCardIndex !== -1) {

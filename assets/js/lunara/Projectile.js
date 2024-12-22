@@ -12,7 +12,7 @@ export class Projectile {
     this.width = this.game.cellSize / this.game.projectilesTypes[this.defender].size;
     this.height = this.game.cellSize / this.game.projectilesTypes[this.defender].size;
     this.power = this.game.projectilesTypes[this.defender].power;
-    this.speed = this.game.projectilesTypes[this.defender].speed;
+    this.speed = this.game.projectilesTypes[this.defender].speed * (this.game.width / 1350);
     this.image = this.game.projectilesTypes[this.defender].element;
   }
 

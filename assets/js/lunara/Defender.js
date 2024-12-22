@@ -45,44 +45,44 @@ export class Defender {
   }
 
   update() {
-    if (!this.active) return;
+    if (this.active) {
+      if (this.health <= 0) {
+        this.game.sound.play('defender');
+        this.removeDefender();
+      }
 
-    if (this.health <= 0) {
-      this.game.sound.play('defender');
-      this.removeDefender();
-    }
+      this.handleAnimation();
 
-    this.handleAnimation();
-
-    if (this.chosenDefender === 0) {
-      if (this.game.spriteUpdate) {
-        if (this.frameX < this.maxFrame) this.frameX++;
-        if (this.frameX === this.maxFrame) {
-          const resource = this.game.getResource(); 
-          if (resource) resource.start();
-          this.health -= 50;
-          this.frameX = this.minFrame;
+      if (this.chosenDefender === 0) {
+        if (this.game.spriteUpdate) {
+          if (this.frameX < this.maxFrame) this.frameX++;
+          if (this.frameX === this.maxFrame) {
+            const resource = this.game.getResource(); 
+            if (resource) resource.start();
+            this.health -= 50;
+            this.frameX = this.minFrame;
+          }
         }
-      }
-    } else if (this.chosenDefender === 3) {
-      return;
-    } else {
-      if (this.game.spriteUpdate) {
-        if (this.frameX < this.maxFrame) this.frameX++;
-        else this.frameX = this.minFrame;
-        
-        if (this.frameX === 11) this.shootNow = true;
-      }
-
-      if (this.game.enemies.find(enemy => enemy.y === this.y && !enemy.free)) {
-        this.shooting = true;
+      } else if (this.chosenDefender === 3) {
+        return;
       } else {
-        this.shooting = false;
-      }
+        if (this.game.spriteUpdate) {
+          if (this.frameX < this.maxFrame) this.frameX++;
+          else this.frameX = this.minFrame;
+          
+          if (this.frameX === 11) this.shootNow = true;
+        }
 
-      if (this.shooting && this.shootNow) {
-        this.shootProjectiles();
-        this.shootNow = false;
+        if (this.game.enemies.find(enemy => enemy.y === this.y && !enemy.free)) {
+          this.shooting = true;
+        } else {
+          this.shooting = false;
+        }
+
+        if (this.shooting && this.shootNow) {
+          this.shootProjectiles();
+          this.shootNow = false;
+        }
       }
     }
   }
