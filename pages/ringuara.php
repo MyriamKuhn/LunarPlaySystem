@@ -17,7 +17,9 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="author" content="LunarPlay System">
+	<!-- CSRF Token -->
+	<meta name="csrf-token" content="<?= $_SESSION['csrf_token']; ?>">
+	<meta name="language" content="<?= Security::secureInput($_SESSION['lang'] ?? 'en') ?>">
 	<!-- Meta pour les langues -->
 	<link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/fr/ringuara/' ?>" hreflang="fr" />
 	<link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/en/ringuara/' ?>" hreflang="en" />
@@ -25,6 +27,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<link rel="canonical" href="<?= $requestScheme . '://' . $serverName . '/' . Security::secureInput($lang) . '/ringuara/' ?>" />
 	<link rel="alternate" href="<?= $requestScheme . '://' . $serverName . '/en/ringuara/' ?>" hreflang="x-default" />
 	<!-- Meta pour le SEO -->
+	<meta name="author" content="LunarPlay System">
 	<meta name="description" content="<?= Security::secureInput($translations['under_construction_description']) ?>" />
 	<meta property="og:title" content="<?= Security::secureInput($translations['under_construction_title']) ?>">
 	<meta property="og:description" content="<?= Security::secureInput($translations['under_construction_description']) ?>">
@@ -38,45 +41,44 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 	<!-- Stylesheet -->
-	<link rel="stylesheet" href="/assets/css/construction.css" />
+	<link rel="stylesheet" href="/assets/css/ringuara.css" />
 </head>
 
 <body>
-	<!-- Background -->
-	<div class="background"></div>
-	<!-- START : Wrapper -->
-	<div class="wrapper">
-		<!-- START : Container -->
-		<div class="container">
-			<!-- START : Header -->
-			<header class="header">
-				<img src="/assets/logo/logo_small.svg" alt="Logo de LunarPlay System" width="100">
-				<h1 class="main-title"><?= Security::secureInput($translations['under_construction']) ?></h1>
-				<img src="/assets/logo/logo_small.svg" alt="Logo de LunarPlay System" width="100">
-			</header>
-			<!-- END : Header -->
-			<!-- START : Main -->
-			<main class="main">
-				<section class="section">
-					<p><?= Security::secureInput($translations['under_construction_description']) ?></p>
-					<div class="btn-div">
-						<a href="/<?= Security::secureInput($lang) ?>/lunarplay/" class="button" id="start-button"><?= Security::secureInput($translations['return_lunar']) ?></a>
-					</div>
-				</section>
-			</main>
-			<!-- END : Main -->
-		</div>
-		<!-- END : Container -->
-		<!-- START : Footer -->
-		<footer class="footer">
-      <p><?= html_entity_decode(Security::secureInput($translations['footer'])) ?> - <a href="/<?= Security::secureInput($lang) ?>/legal/" class="link"><?= Security::secureInput($translations['legal']) ?></a></p>
-    </footer>
-		<!-- END : Footer -->
+	
+	<!-- Écran de chargement -->
+	<div id="loading-screen" class="loading-screen">
+		<p id="loading-text"></p>
+		<progress id="loading-progress" value="0" max="100"></progress>
 	</div>
-	<!-- END : Wrapper -->
+
+	<!-- Écran de jeu -->
+	<canvas id="canvas1" class="hidden"></canvas>
+
+	<div class="assets">
+		<img src="/assets/img/ringuara/map1.svg" id="map1">
+		<img src="/assets/img/ringuara/dot.png" id="dot">
+		<img src="/assets/img/ringuara/player.png" id="player">
+
+		<audio src="/assets/audio/cryos/winflappy.mp3" id="win" preload="auto"></audio>
+		<audio src="/assets/audio/cryos/loseflappy.mp3" id="lose" preload="auto"></audio>
+		<audio src="/assets/audio/cryos/charge.mp3" id="charge" preload="auto"></audio>
+		<audio src="/assets/audio/cryos/flap1.mp3" id="flap1" preload="auto"></audio>
+		<audio src="/assets/audio/cryos/flap2.mp3" id="flap2" preload="auto"></audio>
+		<audio src="/assets/audio/cryos/flap3.mp3" id="flap3" preload="auto"></audio>
+		<audio src="/assets/audio/cryos/flap4.mp3" id="flap4" preload="auto"></audio>
+		<audio src="/assets/audio/cryos/flap5.mp3" id="flap5" preload="auto"></audio>
+	</div>
+
+	<div class="controls">
+		<button id="fullScreenButton">💻</button>
+		<button id="resetButton">⚔️</button>
+		<button id="backButton">👈</button>
+		<button id="volumeButton">🔊</button>
+	</div>
 
 	<!-- Scripts -->
-	<script type="module" src="/assets/js/construction.js"></script>
+	<script type="module" src="/assets/js/ringuara/main.js"></script>
 </body>
 
 </html>
