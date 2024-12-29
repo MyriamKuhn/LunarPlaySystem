@@ -8,8 +8,10 @@ export class Enemy {
     this.game = game;
     this.positions = this.game.findTilePositions('dot');
     this.randomIndex = Math.floor(Math.random() * this.positions.length);
-    this.x = this.positions[this.randomIndex].x;
-    this.y = this.positions[this.randomIndex].y;
+    this.originX = this.positions[this.randomIndex].x;
+    this.originY = this.positions[this.randomIndex].y;
+    this.x = this.originX;
+    this.y = this.originY;
     this.width = this.game.cellSize;
     this.height = this.game.cellSize;
     this.frameX = 0;
@@ -28,6 +30,7 @@ export class Enemy {
     this.chaseDuration = 3000;
     this.noEffect = false;
     this.noEffectDuration = 5000;
+    this.noDamages = false;
   }
 
   draw() {
@@ -35,12 +38,29 @@ export class Enemy {
       this.game.context.fillStyle = 'red';
       this.game.context.fillRect(this.x, this.y, this.width, this.height);
       if (this.noEffect) {
-        this.game.context.fillStyle = 'rgb(68, 0, 255)';
+        this.game.context.fillStyle = 'rgb(0, 255, 85)';
         this.game.context.fillRect(this.x, this.y, this.width, this.height);
       }
     } else {
       //this.game.context.drawImage(this.game.enemyImage, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
     }
+  }
+
+  reset() {
+    this.state = 'patrolling';
+    this.stateTimer = 0;
+    this.patrolPath = [];
+    for (let i = 0; i < 10; i++) {
+      const randomIndex = Math.floor(Math.random() * this.positions.length);
+      this.patrolPath.push(this.positions[randomIndex]);
+    }
+    this.currentPatrolIndex = 0;
+    this.path = [];
+    this.currentIndex = 0;
+    this.x = this.originX;
+    this.y = this.originY;
+    this.noEffect = false;
+    this.noDamages = false;
   }
 
   findPathToPatrolPoint() {
@@ -113,7 +133,17 @@ export class Enemy {
 
   hitPlayer() {
     if (this.game.checkCollision(this, this.game.player)) {
-      this.game.lives--;
+      if (!this.noEffect) {
+        this.game.lives--;
+        this.game.score -= 100;
+        this.noDamages = true;
+        setTimeout(() => {
+          this.noDamages = false;
+        }, 1000);
+      } else if (this.noEffect) {
+        this.game.score += 50;
+        this.reset();
+      }
     }
   }
 
@@ -126,8 +156,6 @@ export class Enemy {
       this.chase();
     }
 
-    if (!this.noEffect) {
-      this.hitPlayer();
-    }
+    if (!this.noDamages) this.hitPlayer();
   }
 }
