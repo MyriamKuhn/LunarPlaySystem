@@ -41,7 +41,7 @@ window.addEventListener('load', function() {
   const canvas = document.getElementById('canvas1');
   
   const assets = [
-    { id: 'map1', src: '/assets/img/ringuara/map1.svg', type: 'image' },
+    { id: 'map1', src: '/assets/img/ringuara/map1.png', type: 'image' },
     { id: 'dot', src: '/assets/img/ringuara/dot.png', type: 'image' },
     { id: 'player', src: '/assets/img/ringuara/player.png', type: 'image' },
     { id: 'win', src: '/assets/audio/cryos/winflappy.mp3', type: 'audio' },

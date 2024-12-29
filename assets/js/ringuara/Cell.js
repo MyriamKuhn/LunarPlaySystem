@@ -10,23 +10,42 @@ export class Cell {
     this.y = y;
     this.width = this.game.cellSize;
     this.height = this.game.cellSize;
-    this.dotSize = this.game.cellSize;
+    this.dotSize = this.game.cellSize / 4;
+
+    // Propriétés pour l'algorithme A*
+    this.g = 0; // Coût du départ au nœud courant
+    this.h = 0; // Estimation heuristique (distance au but)
+    this.f = 0; // Somme de g + h
+    this.parent = null; // Pour remonter le chemin
 
     switch (mapData) {
       case 0:
         this.type = 'empty';
+        this.walkable = false;
         break;
       case 1:
         this.type = 'wall';
+        this.walkable = false;
         break;
       case 2:
         this.type = 'start';
+        this.walkable = true;
         break;
       case 3:
         this.type = 'dot';
+        this.walkable = true;
+        break;
+      case 4:
+        this.type = 'teleport';
+        this.walkable = true;
+        break;
+      case 5:
+        this.type = 'bigDot';
+        this.walkable = true;
         break;
       default:
         this.type = 'empty';
+        this.walkable = false;
         break;
     }
 
@@ -35,22 +54,26 @@ export class Cell {
 
   draw() {
     if (this.game.debug) {
-      if (this.type === 'wall') {
+      if (this.type === 'wall' || this.type === 'empty') {
         this.game.context.strokeStyle = 'rgba(255, 0, 0, 0.64)';
+        this.game.context.strokeRect(this.x, this.y, this.width, this.height);
+      } 
+      if (this.type === 'teleport') {
+        this.game.context.strokeStyle = 'rgba(0, 255, 0, 0.64)';
         this.game.context.strokeRect(this.x, this.y, this.width, this.height);
       }
     }
     if (this.type === 'dot' && !this.isDotEaten) {
-      this.game.context.drawImage(this.game.dotImage, this.x, this.y, this.dotSize, this.dotSize);
+      this.game.context.fillStyle = 'rgba(255, 255, 255, 0.64)';
+      this.game.context.beginPath();
+      this.game.context.arc(this.x + this.width / 2, this.y + this.height / 2, this.dotSize / 2, 0, Math.PI * 2);
+      this.game.context.fill();
+    }
+    if (this.type === 'bigDot' && !this.isDotEaten) {
+      this.game.context.fillStyle = 'rgba(255, 174, 0, 0.64)';
+      this.game.context.beginPath();
+      this.game.context.arc(this.x + this.width / 2, this.y + this.height / 2, this.dotSize, 0, Math.PI * 2);
+      this.game.context.fill();
     }
   }
-
-  update() {
-    if (this.type === 'dot') {
-      if (this.game.checkCollision(this.game.player, this)) {
-        this.isDotEaten = true;
-      }
-    }
-  }
-
 }

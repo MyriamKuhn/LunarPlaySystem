@@ -22,7 +22,6 @@ export class Player {
     if (this.game.debug) {
       this.game.context.fillStyle = 'blue';
       this.game.context.fillRect(this.x, this.y, this.width, this.height);
-      this.game.context.drawImage(this.game.playerImage, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
     } else {
       this.game.context.drawImage(this.game.playerImage, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
     }
@@ -51,6 +50,9 @@ export class Player {
         this.moveRight();
         this.frameX = 2;
         break;
+      case null:
+        this.frameX = 0;
+        break;
       default:
         this.frameX = 0;
         break;
@@ -60,8 +62,7 @@ export class Player {
   moveLeft() {
     const startX = Math.floor(this.x / this.game.cellSize);  // Calculer la colonne actuelle du joueur
     const startY = Math.floor(this.y / this.game.cellSize);  // Calculer la ligne actuelle du joueur
-  
-    let canMove = true;
+    
     // Vérifier chaque cellule à gauche de la position actuelle du joueur
     for (let col = startX; col >= 0; col--) {
       const cell = this.game.gameGrid[startY][col];
@@ -71,23 +72,42 @@ export class Player {
         if (this.x - this.speed < wallX) {
           // Si la prochaine position est avant le mur, on place le joueur juste avant ce mur
           this.x = wallX;
+          this.direction = null;
         } else {
           // Sinon, on continue de déplacer le joueur normalement
           this.x -= this.speed;
         }
-        canMove = false;
         break;
       }
-    }
-  
-    // Si aucun mur n'est trouvé, le joueur peut continuer de se déplacer normalement
-    if (canMove) {
-      this.x -= this.speed;
-    }
 
-    // Vérification des bords (gauche)
-    if (this.x < 0) {
-      this.x = this.game.width - this.width;  // Réapparaître à droite
+      if (cell.type === 'teleport') {
+        this.x -= this.speed;
+        if (this.x < 0) {
+          this.x = this.game.width - this.width;  // Réapparaître à droite
+        }
+        break;
+      }
+
+      if (cell.type === 'dot' && !cell.isDotEaten && this.x < cell.x + this.width && this.x + this.width > cell.x) {
+        cell.isDotEaten = true;
+        cell.type = 'empty';
+        cell.walkable = true;
+        this.game.score++;
+        this.x -= this.speed;
+      }
+
+      if (cell.type === 'bigDot' && !cell.isDotEaten && this.x < cell.x + this.width && this.x + this.width > cell.x) {
+        cell.isDotEaten = true;
+        cell.type = 'empty';
+        cell.walkable = true;
+        this.game.score += 10;
+        this.game.enemyPool.forEach(enemy => {
+          enemy.noEffect = true;
+          setTimeout(() => {
+            enemy.noEffect = false;
+          }, enemy.noEffectDuration);
+        });
+      }
     }
   }
 
@@ -95,43 +115,55 @@ export class Player {
     const startX = Math.floor(this.x / this.game.cellSize);
     const startY = Math.floor(this.y / this.game.cellSize);
   
-    let canMove = true;
-  
     // Vérifier chaque cellule à droite de la position actuelle du joueur
     for (let col = startX; col < this.game.gameGrid[0].length; col++) {
       const cell = this.game.gameGrid[startY][col];
       if (cell.type === 'wall') {
-        // Si on trouve un mur, on arrête de déplacer le joueur et on calcule la position juste avant le mur
         const wallX = col * this.game.cellSize - this.game.cellSize;
         if (this.x + this.speed > wallX) {
-          // Si la prochaine position est après le mur, on place le joueur juste avant ce mur
           this.x = wallX;
+          this.direction = null;
         } else {
-          // Sinon, on continue de déplacer le joueur normalement
           this.x += this.speed;
         }
-        canMove = false;
         break;
       }
-    }
-  
-    // Si aucun mur n'est trouvé, le joueur peut continuer de se déplacer normalement
-    if (canMove) {
-      this.x += this.speed;
-    }
 
-    // Vérification des bords (droit)
-    if (this.x + this.width >= this.game.width) {
-      this.x = 0;  // Réapparaître à gauche
+      if (cell.type === 'teleport') {
+        this.x += this.speed;
+        if (this.x + this.width >= this.game.width) {
+          this.x = 0;  // Réapparaître à gauche
+        }
+        break;
+      }
+
+      if (cell.type === 'dot' && !cell.isDotEaten && this.x + this.width > cell.x && this.x < cell.x + this.width) {
+        cell.isDotEaten = true;
+        cell.type = 'empty';
+        cell.walkable = true;
+        this.game.score++;
+        this.x += this.speed;
+      }
+
+      if (cell.type === 'bigDot' && !cell.isDotEaten && this.x + this.width > cell.x && this.x < cell.x + this.width) {
+        cell.isDotEaten = true;
+        cell.type = 'empty';
+        cell.walkable = true;
+        this.game.score += 10;
+        this.game.enemyPool.forEach(enemy => {
+          enemy.noEffect = true;
+          setTimeout(() => {
+            enemy.noEffect = false;
+          }, enemy.noEffectDuration);
+        });
+      }
     }
   }
 
   moveUp() {
     const startX = Math.floor(this.x / this.game.cellSize);
     const startY = Math.floor(this.y / this.game.cellSize);
-  
-    let canMove = true;
-  
+
     // Vérifier chaque cellule vers le haut
     for (let row = startY; row >= 0; row--) {
       const cell = this.game.gameGrid[row][startX];
@@ -139,30 +171,48 @@ export class Player {
         const wallY = row * this.game.cellSize + this.game.cellSize;
         if (this.y - this.speed < wallY) {
           this.y = wallY;
+          this.direction = null;
         } else {
           this.y -= this.speed;
         }
-        canMove = false;
         break;
       }
-    }
-  
-    if (canMove) {
-      this.y -= this.speed;
-    }
 
-    // Vérification du bord supérieur
-    if (this.y < 0) {
-      this.y = this.game.height - this.height;  // Réapparaître en bas
+      if (cell.type === 'teleport') {
+        this.y -= this.speed;
+        if (this.y < 0) {
+          this.y = this.game.height - this.height;  // Réapparaître en bas
+        }
+        break;
+      }
+
+      if (cell.type === 'dot' && !cell.isDotEaten && this.y < cell.y + this.height && this.y + this.height > cell.y) {
+        cell.isDotEaten = true;
+        cell.type = 'empty';
+        cell.walkable = true;
+        this.game.score++;
+        this.y -= this.speed;
+      }
+
+      if (cell.type === 'bigDot' && !cell.isDotEaten && this.y < cell.y + this.height && this.y + this.height > cell.y) {
+        cell.isDotEaten = true;
+        cell.type = 'empty';
+        cell.walkable = true;
+        this.game.score += 10;
+        this.game.enemyPool.forEach(enemy => {
+          enemy.noEffect = true;
+          setTimeout(() => {
+            enemy.noEffect = false;
+          }, enemy.noEffectDuration);
+        });
+      }
     }
   }
 
   moveDown() {
     const startX = Math.floor(this.x / this.game.cellSize);
     const startY = Math.floor(this.y / this.game.cellSize);
-  
-    let canMove = true;
-  
+    
     // Vérifier chaque cellule vers le bas
     for (let row = startY; row < this.game.gameGrid.length; row++) {
       const cell = this.game.gameGrid[row][startX];
@@ -170,21 +220,41 @@ export class Player {
         const wallY = row * this.game.cellSize - this.game.cellSize;
         if (this.y + this.speed > wallY) {
           this.y = wallY;
+          this.direction = null;
         } else {
           this.y += this.speed;
         }
-        canMove = false;
         break;
       }
-    }
-  
-    if (canMove) {
-      this.y += this.speed;
-    }
 
-    // Vérification du bord inférieur
-    if (this.y + this.height >= this.game.height) {
-      this.y = 0;  // Réapparaître en haut
+      if (cell.type === 'teleport') {
+        this.y += this.speed;
+        if (this.y + this.height >= this.game.height) {
+          this.y = 0;  // Réapparaître en haut
+        }
+        break;
+      }
+
+      if (cell.type === 'dot' && !cell.isDotEaten && this.y + this.height > cell.y && this.y < cell.y + this.height) {
+        cell.isDotEaten = true;
+        cell.type = 'empty';
+        cell.walkable = true;
+        this.game.score++;
+        this.y += this.speed;
+      }
+
+      if (cell.type === 'bigDot' && !cell.isDotEaten && this.y + this.height > cell.y && this.y < cell.y + this.height) {
+        cell.isDotEaten = true;
+        cell.type = 'empty';
+        cell.walkable = true;
+        this.game.score += 10;
+        this.game.enemyPool.forEach(enemy => {
+          enemy.noEffect = true;
+          setTimeout(() => {
+            enemy.noEffect = false;
+          }, enemy.noEffectDuration);
+        });
+      }
     }
   }
   
@@ -202,8 +272,6 @@ export class Player {
 
   // Méthode pour mettre à jour le joueur
   update() {
-    //if (this.game.eventUpdate) {
-      this.move(); // Met à jour la position du joueur
-    //}
+    this.move(); // Met à jour la position du joueur
   }
 }

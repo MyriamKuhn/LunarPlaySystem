@@ -40,6 +40,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 	<!-- Stylesheet -->
 	<link rel="stylesheet" href="/assets/css/ringuara.css" />
 </head>
@@ -56,7 +57,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<canvas id="canvas1" class="hidden"></canvas>
 
 	<div class="assets">
-		<img src="/assets/img/ringuara/map1.svg" id="map1">
+		<img src="/assets/img/ringuara/map1.png" id="map1">
 		<img src="/assets/img/ringuara/dot.png" id="dot">
 		<img src="/assets/img/ringuara/player.png" id="player">
 

@@ -7,6 +7,7 @@ import { Background } from '/assets/js/ringuara/Background.js';
 import { Player } from '/assets/js/ringuara/Player.js';
 import { Cell } from '/assets/js/ringuara/Cell.js';
 import { mapData } from '/assets/js/ringuara/mapData.js';
+import { Enemy } from '/assets/js/ringuara/Enemy.js';
 
 
 /******************/
@@ -44,9 +45,11 @@ export class Game {
     this.eventInterval = 100;
 
     this.playerImage = document.getElementById('player');
-    this.dotImage = document.getElementById('dot');
     this.player;
     this.direction = null;
+
+    this.enemyPool = [];
+    this.numberOfEnemies;
 
     this.debug = false;
 
@@ -58,7 +61,7 @@ export class Game {
     }, { passive: false });
     this.canvas.addEventListener('touchmove', e => {
       e.preventDefault();
-    });
+    }, { passive: false });
     this.canvas.addEventListener('touchend', e => {
       if (e.changedTouches[0].pageX - this.touchStartX > this.swipeDistance) {
         this.player.setDirection('ArrowRight');
@@ -132,10 +135,15 @@ export class Game {
     this.cellSize = this.width / 32;
     this.createGrid(mapData.map1);
 
+    this.debug = true;
     this.score = 0;
     this.lives = 3;
     this.level = 1;
     this.gameOver = false;
+
+    this.enemyPool = [];
+    this.numberOfEnemies = 10;
+    this.createEnemyPool();
 
     this.player = new Player(this);
   }
@@ -194,10 +202,128 @@ export class Game {
     for (let row = 0; row < this.gameGrid.length; row++) {
       for (let col = 0; col < this.gameGrid[row].length; col++) {
         const cell = this.gameGrid[row][col];
-        cell.update();
         cell.draw();
       }
     }
+  }
+
+  aStar(startCell, endCell) {
+    const openSet = [];
+    const closedSet = [];
+    const maxIterations = 1000; // Limite pour éviter les boucles infinies
+    let iterations = 0;
+  
+    // Initialisation des valeurs pour la cellule de départ
+    startCell.g = 0;
+    startCell.f = Math.abs(startCell.x - endCell.x) + Math.abs(startCell.y - endCell.y); // Heuristique (distance de Manhattan)
+    startCell.parent = null;
+  
+    // Ajout de la cellule de départ à openSet
+    openSet.push(startCell);
+  
+    // Vérification si le départ ou l'arrivée sont des murs
+    if (startCell.type === 'wall' || endCell.type === 'wall') {
+      return [];
+    }
+  
+    // Boucle principale de l'algorithme A*
+    while (openSet.length > 0) {
+      iterations++;
+      if (iterations > maxIterations) {
+        return [];
+      }
+  
+      // Choisir la cellule avec le coût le plus faible
+      let current = openSet.reduce((a, b) => (a.f < b.f ? a : b));
+  
+      // Vérifier si la cellule actuelle est déjà dans closedSet
+      if (closedSet.some(c => c.x === current.x && c.y === current.y)) {
+        continue;
+      }
+    
+      // Vérifier si nous avons atteint la cellule de fin
+      if (current.x === endCell.x && current.y === endCell.y) {
+        const path = [];
+        let temp = current;
+  
+        // Boucle pour reconstruire le chemin
+        while (temp) {
+          path.push(temp);
+          if (!temp.parent && temp !== startCell) {
+            // Si la cellule n'a pas de parent et ce n'est pas la cellule de départ, c'est un problème
+            return [];
+          }
+          temp = temp.parent;
+        }
+  
+        return path.reverse();
+      }
+  
+      // Retirer la cellule actuelle de openSet et l'ajouter à closedSet
+      openSet.splice(openSet.indexOf(current), 1);
+      closedSet.push(current);
+  
+      // Récupérer les voisins de la cellule actuelle
+      const neighbors = this.getNeighbors(current, closedSet);
+  
+      // Parcourir les voisins
+      for (const neighbor of neighbors) {
+        const tentativeG = current.g + 1; // Calcul du coût pour atteindre ce voisin
+  
+        if (!openSet.includes(neighbor)) {
+          // Ajouter le voisin à openSet s'il n'y est pas déjà
+          neighbor.g = tentativeG;
+          neighbor.h = Math.abs(neighbor.x - endCell.x) + Math.abs(neighbor.y - endCell.y); // Heuristique (distance de Manhattan)
+          neighbor.f = neighbor.g + neighbor.h;
+          neighbor.parent = current; // Assigner la cellule actuelle comme parent du voisin
+          openSet.push(neighbor);
+        } else if (tentativeG < neighbor.g) {
+          // Si le chemin vers ce voisin est plus court, mettre à jour ses valeurs
+          neighbor.g = tentativeG;
+          neighbor.f = neighbor.g + neighbor.h;
+          neighbor.parent = current; // Mettre à jour le parent
+        }
+      }
+    } 
+    // Si aucun chemin n'a été trouvé
+    return [];
+  }
+  
+  getNeighbors(cell, closedSet) {
+    const neighbors = [];
+    const row = Math.floor(cell.y / this.cellSize);
+    const col = Math.floor(cell.x / this.cellSize);
+  
+    const directions = [
+      { x: 0, y: -1 }, // Haut
+      { x: 0, y: 1 },  // Bas
+      { x: -1, y: 0 }, // Gauche
+      { x: 1, y: 0 }   // Droite
+    ];
+  
+    for (const dir of directions) {
+      const neighborRow = row + dir.y;
+      const neighborCol = col + dir.x;
+  
+      // Vérifier si le voisin est dans les limites de la grille
+      if (
+        neighborRow >= 0 &&
+        neighborRow < this.gameGrid.length &&
+        neighborCol >= 0 &&
+        neighborCol < this.gameGrid[0].length
+      ) {
+        const neighbor = this.gameGrid[neighborRow][neighborCol];
+        // Vérifier si le voisin est "walkable" et n'est pas déjà dans closedSet
+        if (neighbor.walkable && !this.isInClosedSet(neighbor, closedSet)) {
+          neighbors.push(neighbor);
+        }
+      }
+    }
+    return neighbors;
+  }
+  
+  isInClosedSet(neighbor, closedSet) {
+    return closedSet.some(cell => cell.x === neighbor.x && cell.y === neighbor.y);
   }
 
   getCellAtPosition(x, y) {
@@ -245,6 +371,20 @@ export class Game {
     return positions;
   }
 
+  createEnemyPool() {
+    for (let i = 0; i < this.numberOfEnemies; i++) {
+      this.enemyPool.push(new Enemy(this));
+    }
+  }
+
+  handleEnemies(deltaTime) {
+    for (let i = 0; i < this.enemyPool.length; i++) {
+      const enemy = this.enemyPool[i];
+      enemy.update(deltaTime);
+      enemy.draw();
+    }
+  }
+
   handlePeriodicEvents(deltaTime) {
     if (this.eventTimer < this.eventInterval) {
       this.eventTimer += deltaTime;
@@ -255,10 +395,24 @@ export class Game {
     }
   }
 
+  drawStatusText() {
+    this.context.save();
+    this.context.font = `${this.bigFontSize}px Atma`;
+    this.context.fillStyle = 'white';
+    this.context.textAlign = 'right';
+    this.context.fillText(this.score, this.width - this.bigFontSize, this.bigFontSize - 5);
+    for (let i = 0; i < this.lives; i++) {
+      this.context.drawImage(this.playerImage, 0, 0, 32, 32, i * this.bigFontSize + this.bigFontSize, -5, this.bigFontSize, this.bigFontSize);
+    }
+    this.context.restore();
+  }
+
   render(deltaTime) {
     this.background.draw();
+    this.drawStatusText();
     this.handleGameGrid();
     this.handlePeriodicEvents(deltaTime);
+    this.handleEnemies(deltaTime);
     this.player.update();
     this.player.draw(); 
   }
