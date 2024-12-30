@@ -8,6 +8,7 @@ import { Player } from '/assets/js/ringuara/Player.js';
 import { Cell } from '/assets/js/ringuara/Cell.js';
 import { mapData } from '/assets/js/ringuara/mapData.js';
 import { Enemy } from '/assets/js/ringuara/Enemy.js';
+import { Bomb } from '/assets/js/ringuara/Bomb.js';
 
 
 /******************/
@@ -50,6 +51,9 @@ export class Game {
 
     this.enemyPool = [];
     this.numberOfEnemies;
+    this.bombPool = [];
+    this.numberOfBombs;
+    this.explosions = [];
 
     this.debug = false;
 
@@ -82,9 +86,11 @@ export class Game {
       //if (e.key.toLowerCase() === 'm') this.sound.toggleMute();
       if (e.key.toLowerCase() === 'f') this.toggleFullScreen();
       if (e.key.toLowerCase() === 'b') window.location.href = '/' + lang + '/lunarplay/';
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-        this.player.setDirection(e.key);
-      }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'ArrowUp') this.player.setDirection(e.key);
+      if (e.key === ' ') this.player.drawBomb();
+    });
+    window.addEventListener('click', e => {
+      this.player.drawBomb();
     });
     this.resetButton = document.getElementById('resetButton');
     this.resetButton.addEventListener('click', e => {
@@ -137,13 +143,17 @@ export class Game {
 
     this.debug = true;
     this.score = 0;
-    this.lives = 3;
+    this.lives = 5;
     this.level = 1;
     this.gameOver = false;
 
     this.enemyPool = [];
-    this.numberOfEnemies = 10;
+    this.numberOfEnemies = 5;
     this.createEnemyPool();
+    this.bombPool = [];
+    this.numberOfBombs = 5;
+    this.createBombPool();
+    this.explosions = [];
 
     this.player = new Player(this);
   }
@@ -385,6 +395,20 @@ export class Game {
     }
   }
 
+  createBombPool() {
+    for (let i = 0; i < this.numberOfBombs; i++) {
+      this.bombPool.push(new Bomb(this, 0, 0));
+    }
+  }
+
+  handleBomb(deltaTime) {
+    for (let i = 0; i < this.bombPool.length; i++) {
+      const bomb = this.bombPool[i];
+      bomb.update();
+      bomb.draw();
+    }
+  }
+
   handlePeriodicEvents(deltaTime) {
     if (this.eventTimer < this.eventInterval) {
       this.eventTimer += deltaTime;
@@ -413,6 +437,7 @@ export class Game {
     this.handleGameGrid();
     this.handlePeriodicEvents(deltaTime);
     this.handleEnemies(deltaTime);
+    this.handleBomb(deltaTime);
     this.player.update();
     this.player.draw(); 
   }

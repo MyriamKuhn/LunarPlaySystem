@@ -147,6 +147,38 @@ export class Enemy {
     }
   }
 
+  bombHit() {
+    if (this.game.explosions.length > 0) {
+      for (const explosion of this.game.explosions) {
+        if (explosion.isActive && this.checkCollision(this, explosion)) {
+          this.game.score += 200;
+          const index = this.game.enemyPool.indexOf(this);
+          if (index !== -1) {
+            this.game.enemyPool.splice(index, 1);
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  checkCollision(entity, explosion) {
+    // Calculer les limites de l'explosion en fonction de explosionRadius
+    const explosionLeft = explosion.x - explosion.explosionRadius * this.game.cellSize;
+    const explosionRight = explosion.x + (explosion.explosionRadius + 1) * this.game.cellSize;
+    const explosionTop = explosion.y;
+    const explosionBottom = explosion.y + this.game.cellSize;
+  
+    // Vérifier si l'entité se trouve dans cette zone
+    const isColliding =
+      entity.x + entity.width > explosionLeft && // Bord gauche de l'entité à droite du bord gauche de l'explosion
+      entity.x < explosionRight && // Bord droit de l'entité à gauche du bord droit de l'explosion
+      entity.y + entity.height > explosionTop && // Bord haut de l'entité sous le bord haut de l'explosion
+      entity.y < explosionBottom; // Bord bas de l'entité au-dessus du bord bas de l'explosion
+  
+    return isColliding;
+  }
+
   update(deltaTime) {
     this.updateState(deltaTime);
 
@@ -157,5 +189,6 @@ export class Enemy {
     }
 
     if (!this.noDamages) this.hitPlayer();
+    if (!this.noDamages && !this.noEffect) this.bombHit();
   }
 }

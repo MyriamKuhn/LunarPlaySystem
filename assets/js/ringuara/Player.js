@@ -257,6 +257,18 @@ export class Player {
       }
     }
   }
+
+  drawBomb() {
+    for (let i = 0; i < this.game.bombPool.length; i++) {
+      const bomb = this.game.bombPool[i];
+      if (bomb.free) {
+        bomb.x = Math.round(this.x / this.game.cellSize) * this.game.cellSize;
+        bomb.y = Math.round(this.y / this.game.cellSize) * this.game.cellSize;
+        bomb.start();
+        break;
+      }
+    }
+  }
   
   // Aligner le joueur immédiatement sur la grille avant d'effectuer tout déplacement
   alignToCell() {
