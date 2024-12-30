@@ -55,7 +55,7 @@ export class Bomb {
   }
 
   explode() {
-    this.explosion = new Explosion (this.game, this.x, this.y, 3);
+    this.explosion = new Explosion (this.game, this.x, this.y, 5);
     this.game.explosions.push(this.explosion);
   }
 

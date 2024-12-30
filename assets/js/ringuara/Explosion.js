@@ -28,8 +28,10 @@ export class Explosion {
     if (this.isActive) {
       this.game.context.fillStyle = 'gold';
       this.game.context.fillRect(this.x - this.offsetX, this.y + this.offsetYBig, this.explosionWidth, this.explosionHeightBig);
+      this.game.context.fillRect(this.x + this.offsetYBig, this.y - this.offsetX, this.explosionHeightBig, this.explosionWidth);
       this.game.context.fillStyle = 'white';
       this.game.context.fillRect(this.x - this.offsetX, this.y + this.offsetYSmall, this.explosionWidth, this.explosionHeightSmall);
+      this.game.context.fillRect(this.x + this.offsetYSmall, this.y - this.offsetX, this.explosionHeightSmall, this.explosionWidth);
     }
   }
   
