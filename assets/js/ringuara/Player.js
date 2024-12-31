@@ -1,4 +1,12 @@
-/**********/
+/***********/
+
+/* IMPORTS */
+
+/***********/
+import { FloatingMessage } from '/assets/js/ringuara/FloatingMessage.js';
+
+
+/***********/
 
 /* JOUEUR */
 
@@ -103,25 +111,10 @@ export class Player {
         break;
       }
 
-      if (cell.type === 'dot' && !cell.isDotEaten && this.x < cell.x + this.width && this.x + this.width > cell.x) {
-        cell.isDotEaten = true;
-        cell.type = 'empty';
-        cell.walkable = true;
-        this.game.score++;
-        this.x -= this.speed;
-      }
-
-      if (cell.type === 'bigDot' && !cell.isDotEaten && this.x < cell.x + this.width && this.x + this.width > cell.x) {
-        cell.isDotEaten = true;
-        cell.type = 'empty';
-        cell.walkable = true;
-        this.game.score += 10;
-        this.game.enemyPool.forEach(enemy => {
-          enemy.noEffect = true;
-          setTimeout(() => {
-            enemy.noEffect = false;
-          }, this.noEffectDuration);
-        });
+      if (this.x < cell.x + this.width && this.x + this.width > cell.x) {
+        if (cell.type === 'dot' && !cell.isDotEaten) this.collectDot(cell);
+        if (cell.type === 'bigDot' && !cell.isDotEaten) this.collectBigDot(cell);
+        if (cell.isBonus) this.collectBonus(cell);
       }
     }
   }
@@ -152,25 +145,10 @@ export class Player {
         break;
       }
 
-      if (cell.type === 'dot' && !cell.isDotEaten && this.x + this.width > cell.x && this.x < cell.x + this.width) {
-        cell.isDotEaten = true;
-        cell.type = 'empty';
-        cell.walkable = true;
-        this.game.score++;
-        this.x += this.speed;
-      }
-
-      if (cell.type === 'bigDot' && !cell.isDotEaten && this.x + this.width > cell.x && this.x < cell.x + this.width) {
-        cell.isDotEaten = true;
-        cell.type = 'empty';
-        cell.walkable = true;
-        this.game.score += 10;
-        this.game.enemyPool.forEach(enemy => {
-          enemy.noEffect = true;
-          setTimeout(() => {
-            enemy.noEffect = false;
-          }, this.noEffectDuration);
-        });
+      if (this.x + this.width > cell.x && this.x < cell.x + this.width) {
+        if (cell.type === 'dot' && !cell.isDotEaten) this.collectDot(cell);
+        if (cell.type === 'bigDot' && !cell.isDotEaten) this.collectBigDot(cell);
+        if (cell.isBonus) this.collectBonus(cell);
       }
     }
   }
@@ -201,25 +179,10 @@ export class Player {
         break;
       }
 
-      if (cell.type === 'dot' && !cell.isDotEaten && this.y < cell.y + this.height && this.y + this.height > cell.y) {
-        cell.isDotEaten = true;
-        cell.type = 'empty';
-        cell.walkable = true;
-        this.game.score++;
-        this.y -= this.speed;
-      }
-
-      if (cell.type === 'bigDot' && !cell.isDotEaten && this.y < cell.y + this.height && this.y + this.height > cell.y) {
-        cell.isDotEaten = true;
-        cell.type = 'empty';
-        cell.walkable = true;
-        this.game.score += 10;
-        this.game.enemyPool.forEach(enemy => {
-          enemy.noEffect = true;
-          setTimeout(() => {
-            enemy.noEffect = false;
-          }, this.noEffectDuration);
-        });
+      if (this.y < cell.y + this.height && this.y + this.height > cell.y) {
+        if (cell.type === 'dot' && !cell.isDotEaten) this.collectDot(cell);
+        if (cell.type === 'bigDot' && !cell.isDotEaten) this.collectBigDot(cell);
+        if (cell.isBonus) this.collectBonus(cell);
       }
     }
   }
@@ -250,27 +213,44 @@ export class Player {
         break;
       }
 
-      if (cell.type === 'dot' && !cell.isDotEaten && this.y + this.height > cell.y && this.y < cell.y + this.height) {
-        cell.isDotEaten = true;
-        cell.type = 'empty';
-        cell.walkable = true;
-        this.game.score++;
-        this.y += this.speed;
-      }
-
-      if (cell.type === 'bigDot' && !cell.isDotEaten && this.y + this.height > cell.y && this.y < cell.y + this.height) {
-        cell.isDotEaten = true;
-        cell.type = 'empty';
-        cell.walkable = true;
-        this.game.score += 10;
-        this.game.enemyPool.forEach(enemy => {
-          enemy.noEffect = true;
-          setTimeout(() => {
-            enemy.noEffect = false;
-          }, this.noEffectDuration);
-        });
+      if (this.y + this.height > cell.y && this.y < cell.y + this.height) {
+        if (cell.type === 'dot' && !cell.isDotEaten) this.collectDot(cell);
+        if (cell.type === 'bigDot' && !cell.isDotEaten) this.collectBigDot(cell);
+        if (cell.isBonus) this.collectBonus(cell);
       }
     }
+  }
+
+  collectDot(cell) {
+    cell.isDotEaten = true;
+    cell.type = 'empty';
+    cell.walkable = true;
+    this.game.score++;
+  }
+
+  collectBigDot(cell) {
+    cell.isDotEaten = true;
+    cell.type = 'empty';
+    cell.walkable = true;
+    this.game.score += 10;
+    this.game.enemyPool.forEach(enemy => {
+      enemy.noEffect = true;
+      setTimeout(() => {
+        enemy.noEffect = false;
+      }, this.noEffectDuration);
+    });
+  }
+
+  collectBonus(cell) {
+    if (cell.bonusType === 'score') {
+      this.game.score += cell.bonusValue;
+      this.game.floatingMessages.push(new FloatingMessage('+ ' + cell.bonusValue + ' ' + this.game.pointsTranslation, this.x, this.y, this.game.bigFontSize, 'green', this.game));
+    } else if (cell.bonusType === 'lives') {
+      this.game.lives += cell.bonusValue;
+      const message = cell.bonusValue > 1 ? '+ ' + cell.bonusValue + ' ' + this.game.livesTranslation : '+ ' + cell.bonusValue + ' ' + this.game.liveTranslation;
+      this.game.floatingMessages.push(new FloatingMessage(message, this.x, this.y, this.game.bigFontSize, 'green', this.game));
+    } 
+    cell.cancelBonus();
   }
 
   drawBomb() {

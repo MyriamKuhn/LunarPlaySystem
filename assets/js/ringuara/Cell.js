@@ -62,30 +62,64 @@ export class Cell {
     }
 
     this.isDotEaten = false;
+
+    this.isBonus = false;
+    this.bonusType = null;
+    this.bonusValue = 0;
+    this.bonusImage = null;
+    this.bonusTimeout = null;
   }
 
   draw() {
-    if (this.game.debug) {
-      if (this.type === 'wall' || this.type === 'empty') {
-        this.game.context.strokeStyle = 'rgba(255, 0, 0, 0.64)';
-        this.game.context.strokeRect(this.x, this.y, this.width, this.height);
-      } 
-      if (this.type === 'teleport') {
-        this.game.context.strokeStyle = 'rgba(0, 255, 0, 0.64)';
-        this.game.context.strokeRect(this.x, this.y, this.width, this.height);
-      }
-    }
-    if (this.type === 'dot' && !this.isDotEaten) {
+    if (this.isBonus) {
+      this.game.context.drawImage(this.bonusImage, 0, 0, 32, 32, this.x, this.y, this.width, this.height);
+    } else if (this.type === 'dot' && !this.isDotEaten) {
       this.game.context.fillStyle = 'rgba(255, 255, 255, 0.64)';
       this.game.context.beginPath();
       this.game.context.arc(this.x + this.width / 2, this.y + this.height / 2, this.dotSize / 2, 0, Math.PI * 2);
       this.game.context.fill();
-    }
-    if (this.type === 'bigDot' && !this.isDotEaten) {
+    } else if (this.type === 'bigDot' && !this.isDotEaten) {
       this.game.context.fillStyle = 'rgba(255, 174, 0, 0.64)';
       this.game.context.beginPath();
       this.game.context.arc(this.x + this.width / 2, this.y + this.height / 2, this.dotSize, 0, Math.PI * 2);
       this.game.context.fill();
     }
+  
+    if (this.game.debug) {
+      const color = this.type === 'wall' ? 'rgba(255, 0, 0, 0.64)' : this.type === 'teleport' ? 'rgba(0, 255, 0, 0.64)' : 'rgba(255, 255, 255, 0.64)';
+      this.game.context.strokeStyle = color;
+      this.game.context.strokeRect(this.x, this.y, this.width, this.height);
+    }
+  }
+
+  setBonus(type, value, duration, image) {
+    // Réinitialiser tout bonus existant avant d'appliquer un nouveau
+    if (this.bonusTimeout) {
+      clearTimeout(this.bonusTimeout);
+      this.bonusTimeout = null;
+    }
+  
+    // Définir les propriétés du bonus
+    this.bonusType = type;
+    this.bonusValue = value;
+    this.bonusImage = image;
+    this.isBonus = true;
+  
+    // Désactiver le bonus après la durée spécifiée
+    this.bonusTimeout = setTimeout(() => {
+      this.cancelBonus();
+    }, duration);
+  }
+
+  cancelBonus() {
+    if (this.bonusTimeout) {
+      clearTimeout(this.bonusTimeout);
+      this.bonusTimeout = null;
+    }
+    this.isBonus = false;
+    this.bonusType = null;
+    this.bonusValue = 0;
+    this.bonusImage = null;
+    this.game.isBonus = true;
   }
 }

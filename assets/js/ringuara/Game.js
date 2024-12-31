@@ -9,7 +9,71 @@ import { Cell } from '/assets/js/ringuara/Cell.js';
 import { mapData } from '/assets/js/ringuara/mapData.js';
 import { Enemy } from '/assets/js/ringuara/Enemy.js';
 import { Bomb } from '/assets/js/ringuara/Bomb.js';
-import { Bonus } from '/assets/js/ringuara/Bonus.js';
+
+
+/*************/
+
+/* VARIABLES */
+
+/*************/
+const lang = sessionStorage.getItem('lang') || document.querySelector('meta[name="language"]').getAttribute('content');
+
+const translations = {
+  'fr': {
+    'points': 'points',
+    'live': 'vie',
+    'lives': 'vies',
+    'begin': "Contrez l'invasion !", 
+    'begin2': "Les envahisseurs tentent d'entrer sur votre territoire !",
+    'begin3': "Faites le nécessaire afin qu'ils n'y parviennent pas !",
+    'press': '⚔️ Appuyez sur "R" pour commencer ! ⚔️',
+    'press2': '👈 Appuyez sur "B" pour revenir au menu ! 👈',
+    'press3': '🔊 Appuyez sur "M" pour activer/désactiver le son ! 🔇',
+    'press4': '📱 Sur mobile, utilisez les boutons ci-dessous 👇',
+    'gameover': "L'un des envahisseurs a réussi à passer !",
+    'win': "Vous avez repoussé l'invasion !",
+    'gameover2': 'Votre score final : ',
+    'resourcesneed': 'Pas assez de larves !',
+    'level': 'Prochaine vague',
+    'levelend': 'Dernière vague'
+  },
+  'en': {
+    'points': 'points',
+    'live': 'life',
+    'lives': 'lives',
+    'begin': 'Prevent the invasion!',
+    'begin2': 'The invaders are trying to enter your territory!',
+    'begin3': 'Do what is necessary to prevent them from doing so!',
+    'press': '⚔️ Press "R" to start! ⚔️',
+    'press2': '👈 Press "B" to go back to the menu! 👈',
+    'press3': '🔊 Press "M" to toggle sound on/off! 🔇',
+    'press4': '📱 On mobile, use the buttons below 👇',
+    'gameover': 'One of the invaders managed to get through!',
+    'win': 'You repelled the invasion!',
+    'gameover2': 'Your final score: ',
+    'resourcesneed': 'Need more larvae!',
+    'level': 'Next wave',
+    'levelend': 'Last wave'
+  },
+  'de': {
+    'points': 'Punkten',
+    'live': 'Leben',
+    'lives': 'Leben',
+    'begin': 'Verhindere die Invasion!',
+    'begin2': 'Die Eindringlinge versuchen, in dein Territorium einzudringen!',
+    'begin3': 'Tue was nötig ist, um sie daran zu hindern!',
+    'press': '⚔️ Drück "R", um zu starten! ⚔️',
+    'press2': '👈 Drück "B", um zum Menü zurückzukehren! 👈',
+    'press3': '🔊 Drück "M", um den Ton ein-/auszuschalten! 🔇',
+    'press4': '📱 Auf Mobilgeräten, benutze die Schaltflächen hier unten 👇',
+    'gameover': 'Einer der Eindringlinge hat es geschafft durchzukommen!',
+    'win': 'Du hast die Invasion zurückgeschlagen!',
+    'gameover2': 'Deine Endpunktzahl: ',
+    'resourcesneed': 'Nicht genug Larven!',
+    'level': 'Nächste Welle',
+    'levelend': 'Letzte Welle'
+  },
+};
 
 
 /******************/
@@ -29,17 +93,22 @@ export class Game {
     this.originalHeight = 1024;
     this.ratio = this.originalWidth / this.originalHeight;
 
+    this.pointsTranslation = translations[lang].points;
+    this.liveTranslation = translations[lang].live;
+    this.livesTranslation = translations[lang].lives;
+
     this.background;
-    this.gameGrid;
+    this.gameGrid = [];
     this.cellSize;
 
     this.touchStartX;
     this.touchStartY;
     this.swipeDistance = 50;
 
-    this.score;
-    this.lives;
-    this.level;
+    this.lives = 5;
+    this.maxLives = 10;
+    this.score = 0;
+    this.level = 0;
     this.gameOver;
     this.playerImage = document.getElementById('player');
 
@@ -50,11 +119,15 @@ export class Game {
     this.player;
     this.direction;
 
-    this.enemyPool;
-    this.bombPool;
+    this.enemyPool = [];
+    this.bombPool = [];
     this.numberOfBombs;
-    this.explosions;
-    this.bonusPool;
+    this.explosions = [];
+    this.bonusCooldown;
+    this.bonusCooldownTime;
+    this.isBonus;
+    this.bonusCooldownRandom;
+    this.floatingMessages = [];
 
     this.debug = false;
 
@@ -75,25 +148,24 @@ export class Game {
 
     this.enemiesTypes = [
       { image: document.getElementById('enemy0'), health: 0, chaseDuration: 0, speed: 0, scorePoints: 0 },
-      { image: document.getElementById('enemy1'), health: 1, chaseDuration: 3000, speed: 0.04, scorePoints: 100 },
-      { image: document.getElementById('enemy2'), health: 2, chaseDuration: 5000, speed: 0.03, scorePoints: 200 },
-      { image: document.getElementById('enemy3'), health: 3, chaseDuration: 7000, speed: 0.02, scorePoints: 300 },
+      { image: document.getElementById('enemy1'), health: 1, chaseDuration: 3000, speed: 0.02, scorePoints: 100 },
+      { image: document.getElementById('enemy2'), health: 2, chaseDuration: 3000, speed: 0.02, scorePoints: 150 },
+      { image: document.getElementById('enemy3'), health: 1, chaseDuration: 4000, speed: 0.03, scorePoints: 100 },
     ];
 
     this.bonusTypes = [
-      { image: document.getElementById('meteor0'), type: 'none', value: 0, duration: 0 },
       { image: document.getElementById('meteor1'), type: 'score', value: 10, duration: 16000 },
       { image: document.getElementById('meteor2'), type: 'score', value: 20, duration: 15000 },
       { image: document.getElementById('meteor3'), type: 'score', value: 30, duration: 14000 },
       { image: document.getElementById('meteor4'), type: 'score', value: 40, duration: 13000 },
       { image: document.getElementById('meteor5'), type: 'score', value: 50, duration: 12000 },
-      { image: document.getElementById('meteor6'), type: 'score', value: 60, duration: 11000 },
-      { image: document.getElementById('meteor7'), type: 'score', value: 70, duration: 10000 },
-      { image: document.getElementById('meteor8'), type: 'score', value: 80, duration: 9000 },
-      { image: document.getElementById('meteor9'), type: 'score', value: 90, duration: 8000 },
-      { image: document.getElementById('meteor10'), type: 'score', value: 100, duration: 7000 },
-      { image: document.getElementById('meteor11'), type: 'lives', value: 1, duration: 6000 },
-      { image: document.getElementById('meteor12'), type: 'lives', value: 2, duration: 5000 },
+      { image: document.getElementById('meteor6'), type: 'score', value: 60, duration: 11500 },
+      { image: document.getElementById('meteor7'), type: 'score', value: 70, duration: 11000 },
+      { image: document.getElementById('meteor8'), type: 'score', value: 80, duration: 10500 },
+      { image: document.getElementById('meteor9'), type: 'score', value: 90, duration: 10000 },
+      { image: document.getElementById('meteor10'), type: 'score', value: 100, duration: 9000 },
+      { image: document.getElementById('meteor11'), type: 'lives', value: 1, duration: 8000 },
+      { image: document.getElementById('meteor12'), type: 'lives', value: 2, duration: 7000 },
     ];
 
     this.levelDatas = [
@@ -102,9 +174,37 @@ export class Game {
         enemies: [
           { type: 1, amount: 5 },
         ], 
-        bonusCooldown: { min: 10000, max: 15000 },
+        bonusCool: { min: 1000, max: 2000 },
         bonusScore: 0,
         bonusLives: 0,
+        map: document.getElementById('map1'),
+        mapData: mapData.map1,
+        speed: 0.05,
+        noEffectDuration: 6000,
+      },
+      { level: 2, 
+        bombType: 1,
+        enemies: [
+          { type: 1, amount: 8 },
+          { type: 2, amount: 2 },
+        ], 
+        bonusCool: { min: 15000, max: 20000 },
+        bonusScore: 500,
+        bonusLives: 1,
+        map: document.getElementById('map1'),
+        mapData: mapData.map1,
+        speed: 0.05,
+        noEffectDuration: 6000,
+      },
+      { level: 3, 
+        bombType: 1,
+        enemies: [
+          { type: 1, amount: 10 },
+          { type: 2, amount: 5 },
+        ], 
+        bonusCool: { min: 15000, max: 20000 },
+        bonusScore: 500,
+        bonusLives: 1,
         map: document.getElementById('map1'),
         mapData: mapData.map1,
         speed: 0.05,
@@ -192,13 +292,14 @@ export class Game {
     this.cellSize = this.width / 32;
     this.bigFontSize = 32 * (this.width / this.originalWidth);
 
-    this.score = 0;
-    this.lives = 5;
-    this.level = 0;
     this.debug = false;
     this.gameOver = false;
+    this.isBonus = false;
 
-    this.createBonusPool();
+    this.lives = 5;
+    this.maxLives = 10;
+    this.score = 0;
+    this.level = 0;
 
     this.initLevel();
   }
@@ -207,15 +308,23 @@ export class Game {
     this.level++;
     const levelData = this.levelDatas.find(data => data.level === this.level);
     if (levelData) {
-      this.direction = null;
-      this.numberOfBombs = this.bombsTypes[levelData.bombType].numberOfBombs;
-      this.createBombPool(this.bombsTypes[levelData.bombType].image, this.bombsTypes[levelData.bombType].cooldown, this.bombsTypes[levelData.bombType].radius);
-      this.score += levelData.bonusScore;
-      this.lives += levelData.bonusLives;
-      this.explosions = [];
-
       this.background = new Background(levelData.map, this, this.width, this.height);
       this.createGrid(levelData.mapData);
+
+      this.direction = null;
+      this.score += levelData.bonusScore;
+      this.lives += levelData.bonusLives;
+      this.floatingMessages = [];
+      
+      this.numberOfBombs = this.bombsTypes[levelData.bombType].numberOfBombs;
+      this.createBombPool(this.bombsTypes[levelData.bombType].image, this.bombsTypes[levelData.bombType].cooldown, this.bombsTypes[levelData.bombType].radius);
+      this.explosions = [];
+      
+      this.isBonus = false;
+      this.bonusCooldown = 0;
+      this.bonusCooldownTime = [levelData.bonusCool.min, levelData.bonusCool.max];
+      this.bonusCooldownRandom = Math.floor(Math.random() * (this.bonusCooldownTime[1] - this.bonusCooldownTime[0] + 1)) + this.bonusCooldownTime[0];
+      
       this.dotsPositions = this.findTilePositions('dot');
 
       this.createEnemyPool(levelData.enemies);
@@ -226,6 +335,8 @@ export class Game {
         this.player = new Player(this);
         this.player.init(levelData.speed, levelData.noEffectDuration);
       }
+
+      this.isBonus = true;
     }
   }
 
@@ -407,16 +518,6 @@ export class Game {
     return closedSet.some(cell => cell.x === neighbor.x && cell.y === neighbor.y);
   }
 
-  getCellAtPosition(x, y) {
-    const col = Math.floor(x / this.cellSize);
-    const row = Math.floor(y / this.cellSize);
-  
-    if (row >= 0 && row < this.gameGrid.length && col >= 0 && col < this.gameGrid[row].length) {
-      return this.gameGrid[row][col]; // Accéder à la cellule directement
-    }
-    return null;
-  }
-
   checkCollision(a, b) {
     return a.x < b.x + b.width &&
       a.x + a.width > b.x &&
@@ -433,7 +534,7 @@ export class Game {
           const x = col * this.cellSize; // Colonne
           const y = row * this.cellSize; // Ligne
           const spawn = cell.spawn;
-          positions.push({ x, y, spawn });
+          positions.push({ x, y, spawn, cell });
         }
       }
     }
@@ -473,29 +574,6 @@ export class Game {
     }
   }
 
-  createBonusPool() {
-    this.bonusPool = [];
-    for (let i = 0; i < this.bonusTypes.length; i++) {
-      this.bonusPool.push(new Bonus(this, this.bonusTypes[i + 1]));
-    }
-  }
-
-  handleBonus(deltaTime) {
-    for (let i = 0; i < this.bonusPool.length; i++) {
-      const bonus = this.bonusPool[i];
-      bonus.update(deltaTime);
-      bonus.draw();
-    }
-  }
-
-  spawnBonus() {
-    const random = Math.floor(Math.random() * this.bonusPool.length);
-    const bonus = this.bonusPool[random];
-    bonus.position = this.dotsPositions[Math.floor(Math.random() * this.dotsPositions.length)];
-    bonus.x = bonus.position.x;
-    bonus.y = bonus.position.y;
-  }
-
   handlePeriodicEvents(deltaTime) {
     if (this.eventTimer < this.eventInterval) {
       this.eventTimer += deltaTime;
@@ -506,16 +584,50 @@ export class Game {
     }
   }
 
+  handleBonus(deltaTime) {
+    if (this.bonusCooldown < this.bonusCooldownRandom) {
+      this.bonusCooldown += deltaTime;
+    } else {
+      this.isBonus = false;
+      const bonusCell = this.dotsPositions[Math.floor(Math.random() * this.dotsPositions.length)]; 
+      const bonusTypeIndex = Math.floor(Math.random() * this.bonusTypes.length);
+      bonusCell.cell.setBonus(this.bonusTypes[bonusTypeIndex].type, this.bonusTypes[bonusTypeIndex].value, this.bonusTypes[bonusTypeIndex].duration, this.bonusTypes[bonusTypeIndex].image);
+      this.bonusCooldownRandom = Math.floor(Math.random() * (this.bonusCooldownTime[1] - this.bonusCooldownTime[0] + 1)) + this.bonusCooldownTime[0];
+      this.bonusCooldown = 0;
+    }
+  }
+
+  handleGameOver() {
+    if (!this.gameOver) {
+      this.gameOver = true;
+      this.bonusCooldown = 0;
+      this.isBonus = false;
+    }
+  }
+
   drawStatusText() {
     this.context.save();
     this.context.font = this.bigFontSize + 'px Atma';
     this.context.fillStyle = 'white';
     this.context.textAlign = 'right';
     this.context.fillText(this.score, this.width - this.bigFontSize, this.bigFontSize - 5 * (this.width / this.originalWidth));
+    if (this.lives < 0) this.lives = 0;
+    if (this.lives > this.maxLives) this.lives = this.maxLives;
     for (let i = 0; i < this.lives; i++) {
       this.context.drawImage(this.playerImage, 0, 0, 32, 32, i * this.bigFontSize + this.bigFontSize, -2 * (this.width / this.originalWidth), this.bigFontSize, this.bigFontSize);
     }
     this.context.restore();
+  }
+
+  handleFloatingMessages() {
+    for (let i = 0; i < this.floatingMessages.length; i++) {
+      this.floatingMessages[i].update();
+      this.floatingMessages[i].draw();
+      if (this.floatingMessages[i].lifeSpan >= 50) {
+        this.floatingMessages.splice(i, 1);
+        i--;
+      }
+    }
   }
 
   render(deltaTime) {
@@ -526,8 +638,10 @@ export class Game {
     this.handlePeriodicEvents(deltaTime);
     this.handleEnemies(deltaTime);
     this.handleBomb(deltaTime);
-    this.player.update();
-    this.player.draw(); 
+    if (this.player) this.player.update();
+    if (this.player) this.player.draw(); 
+    if (this.isBonus) this.handleBonus(deltaTime);
+    this.handleFloatingMessages();
   }
   
 }

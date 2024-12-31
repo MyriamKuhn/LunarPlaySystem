@@ -1,3 +1,11 @@
+/***********/
+
+/* IMPORTS */
+
+/***********/
+import { FloatingMessage } from '/assets/js/ringuara/FloatingMessage.js';
+
+
 /**********/
 
 /* ENNEMI */
@@ -72,6 +80,7 @@ export class Enemy {
     this.noEffect = false;
     this.noDamages = false;
     this.game.score += this.scorePoints * 0.25;
+    this.game.floatingMessages.push(new FloatingMessage('+ ' + this.scorePoints * 0.25 + ' ' + this.game.pointsTranslation, this.game.player.x, this.game.player.y, this.game.bigFontSize, 'green', this.game));
   }
 
   findPathTo(target) {
@@ -172,6 +181,7 @@ export class Enemy {
     if (this.game.checkCollision(this, this.game.player)) {
       if (!this.noEffect) {
         this.game.lives--;
+        this.game.floatingMessages.push(new FloatingMessage('- 1 ' + this.game.liveTranslation, this.game.player.x, this.game.player.y, this.game.bigFontSize, 'orangered', this.game));
         this.noDamages = true;
         setTimeout(() => {
           this.noDamages = false;
@@ -196,6 +206,7 @@ export class Enemy {
               this.state = "dead"; // Passer à l'état mort
               if (!this.scored) { // Vérifier si les points ont déjà été donnés
                 this.game.score += this.scorePoints; // Donner les points
+                this.game.floatingMessages.push(new FloatingMessage('+ ' + this.scorePoints + ' ' + this.game.pointsTranslation, this.game.player.x, this.game.player.y, this.game.bigFontSize, 'green', this.game));
                 this.scored = true; // Empêcher de redonner les points
               }
             }
