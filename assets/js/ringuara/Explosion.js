@@ -6,6 +6,7 @@
 export class Explosion {
   constructor(game, x, y, radius) {
     this.game = game;
+    this.image = document.getElementById('explosion');
     this.x = x;
     this.y = y;
     this.width = this.game.cellSize;
@@ -26,12 +27,16 @@ export class Explosion {
 
   draw() {
     if (this.isActive) {
-      this.game.context.fillStyle = 'gold';
-      this.game.context.fillRect(this.x - this.offsetX, this.y + this.offsetYBig, this.explosionWidth, this.explosionHeightBig);
-      this.game.context.fillRect(this.x + this.offsetYBig, this.y - this.offsetX, this.explosionHeightBig, this.explosionWidth);
-      this.game.context.fillStyle = 'white';
-      this.game.context.fillRect(this.x - this.offsetX, this.y + this.offsetYSmall, this.explosionWidth, this.explosionHeightSmall);
-      this.game.context.fillRect(this.x + this.offsetYSmall, this.y - this.offsetX, this.explosionHeightSmall, this.explosionWidth);
+      if (this.game.debug) {
+        this.game.context.fillStyle = 'gold';
+        this.game.context.fillRect(this.x - this.offsetX, this.y + this.offsetYBig, this.explosionWidth, this.explosionHeightBig);
+        this.game.context.fillRect(this.x + this.offsetYBig, this.y - this.offsetX, this.explosionHeightBig, this.explosionWidth);
+        this.game.context.fillStyle = 'white';
+        this.game.context.fillRect(this.x - this.offsetX, this.y + this.offsetYSmall, this.explosionWidth, this.explosionHeightSmall);
+        this.game.context.fillRect(this.x + this.offsetYSmall, this.y - this.offsetX, this.explosionHeightSmall, this.explosionWidth);
+      } else {
+        this.game.context.drawImage(this.image, 0, 0, 352, 352, this.x - this.offsetX, this.y - this.offsetX, this.explosionWidth, this.explosionWidth);
+      }
     } 
   }
 }

@@ -65,6 +65,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 		<img src="/assets/img/ringuara/bomb5.png" id="bomb5">
 		<img src="/assets/img/ringuara/bomb6.png" id="bomb6">
 		<img src="/assets/img/ringuara/bomb7.png" id="bomb7">
+		<img src="/assets/img/ringuara/explosion.png" id="explosion">
 		<img src="/assets/img/ringuara/meteor1.png" id="meteor1">
 		<img src="/assets/img/ringuara/meteor2.png" id="meteor2">
 		<img src="/assets/img/ringuara/meteor3.png" id="meteor3">

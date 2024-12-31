@@ -49,6 +49,7 @@ window.addEventListener('load', function() {
     { id: 'bomb5', src: '/assets/img/ringuara/bomb5.png', type: 'image' },
     { id: 'bomb6', src: '/assets/img/ringuara/bomb6.png', type: 'image' },
     { id: 'bomb7', src: '/assets/img/ringuara/bomb7.png', type: 'image' },
+    { id: 'explosion', src: '/assets/img/ringuara/explosion.png', type: 'image' },
     { id: 'meteor1', src: '/assets/img/ringuara/meteor1.png', type: 'image' },
     { id: 'meteor2', src: '/assets/img/ringuara/meteor2.png', type: 'image' },
     { id: 'meteor3', src: '/assets/img/ringuara/meteor3.png', type: 'image' },
