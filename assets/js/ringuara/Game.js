@@ -9,6 +9,7 @@ import { Cell } from '/assets/js/ringuara/Cell.js';
 import { mapData } from '/assets/js/ringuara/mapData.js';
 import { Enemy } from '/assets/js/ringuara/Enemy.js';
 import { Bomb } from '/assets/js/ringuara/Bomb.js';
+import { Bonus } from '/assets/js/ringuara/Bonus.js';
 
 
 /******************/
@@ -40,22 +41,76 @@ export class Game {
     this.lives;
     this.level;
     this.gameOver;
+    this.playerImage = document.getElementById('player');
 
     this.eventTimer = 0;
     this.eventUpdate = false;
-    this.eventInterval = 100;
+    this.eventInterval = 50;
 
-    this.playerImage = document.getElementById('player');
     this.player;
-    this.direction = null;
+    this.direction;
 
-    this.enemyPool = [];
-    this.numberOfEnemies;
-    this.bombPool = [];
+    this.enemyPool;
+    this.bombPool;
     this.numberOfBombs;
-    this.explosions = [];
+    this.explosions;
+    this.bonusPool;
 
     this.debug = false;
+
+    this.bigFontSize;
+
+    this.dotsPositions;
+
+    this.bombsTypes = [
+      { image: document.getElementById('bomb0'), cooldown: 0, radius: 0, numberOfBombs: 0 },
+      { image: document.getElementById('bomb1'), cooldown: 2000, radius: 5, numberOfBombs: 4 },
+      { image: document.getElementById('bomb2'), cooldown: 3000, radius: 5, numberOfBombs: 5 },
+      { image: document.getElementById('bomb3'), cooldown: 3000, radius: 4, numberOfBombs: 6 },
+      { image: document.getElementById('bomb4'), cooldown: 4000, radius: 4, numberOfBombs: 7 },
+      { image: document.getElementById('bomb5'), cooldown: 5000, radius: 3, numberOfBombs: 8 },
+      { image: document.getElementById('bomb6'), cooldown: 5000, radius: 3, numberOfBombs: 9 },
+      { image: document.getElementById('bomb7'), cooldown: 6000, radius: 2, numberOfBombs: 10 },
+    ];
+
+    this.enemiesTypes = [
+      { image: document.getElementById('enemy0'), health: 0, chaseDuration: 0, speed: 0, scorePoints: 0 },
+      { image: document.getElementById('enemy1'), health: 1, chaseDuration: 3000, speed: 0.04, scorePoints: 100 },
+      { image: document.getElementById('enemy2'), health: 2, chaseDuration: 5000, speed: 0.03, scorePoints: 200 },
+      { image: document.getElementById('enemy3'), health: 3, chaseDuration: 7000, speed: 0.02, scorePoints: 300 },
+    ];
+
+    this.bonusTypes = [
+      { image: document.getElementById('meteor0'), type: 'none', value: 0, duration: 0 },
+      { image: document.getElementById('meteor1'), type: 'score', value: 10, duration: 16000 },
+      { image: document.getElementById('meteor2'), type: 'score', value: 20, duration: 15000 },
+      { image: document.getElementById('meteor3'), type: 'score', value: 30, duration: 14000 },
+      { image: document.getElementById('meteor4'), type: 'score', value: 40, duration: 13000 },
+      { image: document.getElementById('meteor5'), type: 'score', value: 50, duration: 12000 },
+      { image: document.getElementById('meteor6'), type: 'score', value: 60, duration: 11000 },
+      { image: document.getElementById('meteor7'), type: 'score', value: 70, duration: 10000 },
+      { image: document.getElementById('meteor8'), type: 'score', value: 80, duration: 9000 },
+      { image: document.getElementById('meteor9'), type: 'score', value: 90, duration: 8000 },
+      { image: document.getElementById('meteor10'), type: 'score', value: 100, duration: 7000 },
+      { image: document.getElementById('meteor11'), type: 'lives', value: 1, duration: 6000 },
+      { image: document.getElementById('meteor12'), type: 'lives', value: 2, duration: 5000 },
+    ];
+
+    this.levelDatas = [
+      { level: 1, 
+        bombType: 1,
+        enemies: [
+          { type: 1, amount: 5 },
+        ], 
+        bonusCooldown: { min: 10000, max: 15000 },
+        bonusScore: 0,
+        bonusLives: 0,
+        map: document.getElementById('map1'),
+        mapData: mapData.map1,
+        speed: 0.05,
+        noEffectDuration: 6000,
+      },
+    ];
 
     window.addEventListener('resize', () => this.init());
 
@@ -76,7 +131,7 @@ export class Game {
       } else if (e.changedTouches[0].pageY - this.touchStartY < -this.swipeDistance) {
         this.player.setDirection('ArrowUp');
       } else {
-        //TODO: Placer la bombe
+        this.player.drawBomb();
       }
     }, { passive: false });
 
@@ -134,28 +189,44 @@ export class Game {
     controls.classList.add('hidden');
 
     this.handleResize();
-
+    this.cellSize = this.width / 32;
     this.bigFontSize = 32 * (this.width / this.originalWidth);
 
-    this.background = new Background(document.getElementById('map1'), this, this.width, this.height);
-    this.cellSize = this.width / 32;
-    this.createGrid(mapData.map1);
-
-    this.debug = true;
     this.score = 0;
     this.lives = 5;
-    this.level = 1;
+    this.level = 0;
+    this.debug = false;
     this.gameOver = false;
 
-    this.enemyPool = [];
-    this.numberOfEnemies = 5;
-    this.createEnemyPool();
-    this.bombPool = [];
-    this.numberOfBombs = 5;
-    this.createBombPool();
-    this.explosions = [];
+    this.createBonusPool();
 
-    this.player = new Player(this);
+    this.initLevel();
+  }
+
+  initLevel() {
+    this.level++;
+    const levelData = this.levelDatas.find(data => data.level === this.level);
+    if (levelData) {
+      this.direction = null;
+      this.numberOfBombs = this.bombsTypes[levelData.bombType].numberOfBombs;
+      this.createBombPool(this.bombsTypes[levelData.bombType].image, this.bombsTypes[levelData.bombType].cooldown, this.bombsTypes[levelData.bombType].radius);
+      this.score += levelData.bonusScore;
+      this.lives += levelData.bonusLives;
+      this.explosions = [];
+
+      this.background = new Background(levelData.map, this, this.width, this.height);
+      this.createGrid(levelData.mapData);
+      this.dotsPositions = this.findTilePositions('dot');
+
+      this.createEnemyPool(levelData.enemies);
+
+      if (this.player) {
+        this.player.init(levelData.speed, levelData.noEffectDuration);
+      } else {
+        this.player = new Player(this);
+        this.player.init(levelData.speed, levelData.noEffectDuration);
+      }
+    }
   }
 
   handleResize() {
@@ -353,19 +424,6 @@ export class Game {
       a.y + a.height > b.y;
   }
 
-  checkCircleRectCollision(circle, rect) {
-    // Trouver le point le plus proche du centre du cercle sur le rectangle
-    const closestX = Math.max(rect.x, Math.min(circle.x, rect.x + rect.width));
-    const closestY = Math.max(rect.y, Math.min(circle.y, rect.y + rect.height));
-  
-    // Calculer la distance entre le centre du cercle et ce point
-    const distanceX = circle.x - closestX;
-    const distanceY = circle.y - closestY;
-  
-    // Si la distance est inférieure ou égale au rayon, il y a collision
-    return (distanceX ** 2 + distanceY ** 2) <= (circle.radius ** 2);
-  }
-
   findTilePositions(type) {
     const positions = [];
     for (let row = 0; row < this.gameGrid.length; row++) {
@@ -374,16 +432,21 @@ export class Game {
         if (cell.type === type) {
           const x = col * this.cellSize; // Colonne
           const y = row * this.cellSize; // Ligne
-          positions.push({ x, y });
+          const spawn = cell.spawn;
+          positions.push({ x, y, spawn });
         }
       }
     }
     return positions;
   }
 
-  createEnemyPool() {
-    for (let i = 0; i < this.numberOfEnemies; i++) {
-      this.enemyPool.push(new Enemy(this));
+  createEnemyPool(datas) {
+    this.enemyPool = [];
+    const enemies = datas || this.levelDatas.find(data => data.level === this.level).enemies;
+    for (const enemyData of enemies) {
+      for (let i = 0; i < enemyData.amount; i++) {
+        this.enemyPool.push(new Enemy(this, enemyData.type));
+      }
     }
   }
 
@@ -395,9 +458,10 @@ export class Game {
     }
   }
 
-  createBombPool() {
+  createBombPool(image, cooldown, radius) {
+    this.bombPool = [];
     for (let i = 0; i < this.numberOfBombs; i++) {
-      this.bombPool.push(new Bomb(this, 0, 0));
+      this.bombPool.push(new Bomb(this, 0, 0, image, cooldown, radius));
     }
   }
 
@@ -407,6 +471,29 @@ export class Game {
       bomb.update();
       bomb.draw();
     }
+  }
+
+  createBonusPool() {
+    this.bonusPool = [];
+    for (let i = 0; i < this.bonusTypes.length; i++) {
+      this.bonusPool.push(new Bonus(this, this.bonusTypes[i + 1]));
+    }
+  }
+
+  handleBonus(deltaTime) {
+    for (let i = 0; i < this.bonusPool.length; i++) {
+      const bonus = this.bonusPool[i];
+      bonus.update(deltaTime);
+      bonus.draw();
+    }
+  }
+
+  spawnBonus() {
+    const random = Math.floor(Math.random() * this.bonusPool.length);
+    const bonus = this.bonusPool[random];
+    bonus.position = this.dotsPositions[Math.floor(Math.random() * this.dotsPositions.length)];
+    bonus.x = bonus.position.x;
+    bonus.y = bonus.position.y;
   }
 
   handlePeriodicEvents(deltaTime) {
@@ -421,17 +508,18 @@ export class Game {
 
   drawStatusText() {
     this.context.save();
-    this.context.font = `${this.bigFontSize}px Atma`;
+    this.context.font = this.bigFontSize + 'px Atma';
     this.context.fillStyle = 'white';
     this.context.textAlign = 'right';
-    this.context.fillText(this.score, this.width - this.bigFontSize, this.bigFontSize - 5);
+    this.context.fillText(this.score, this.width - this.bigFontSize, this.bigFontSize - 5 * (this.width / this.originalWidth));
     for (let i = 0; i < this.lives; i++) {
-      this.context.drawImage(this.playerImage, 0, 0, 32, 32, i * this.bigFontSize + this.bigFontSize, -5, this.bigFontSize, this.bigFontSize);
+      this.context.drawImage(this.playerImage, 0, 0, 32, 32, i * this.bigFontSize + this.bigFontSize, -2 * (this.width / this.originalWidth), this.bigFontSize, this.bigFontSize);
     }
     this.context.restore();
   }
 
   render(deltaTime) {
+    this.context.clearRect(0, 0, this.width, this.height);
     this.background.draw();
     this.drawStatusText();
     this.handleGameGrid();

@@ -12,15 +12,16 @@ import { Explosion } from "/assets/js/ringuara/Explosion.js";
 
 /**********/
 export class Bomb {
-  constructor(game, x, y) {
+  constructor(game, x, y, image, cooldown, radius) {
     this.game = game;
     this.x = x;
     this.y = y;
     this.width = this.game.cellSize;
     this.height = this.game.cellSize;
-    this.frameX = 0;
-    this.frameY = 0;
-    this.cooldown = 3000;
+    this.image = image;
+    this.originSize = 32;
+    this.cooldown = cooldown;
+    this.radius = radius;
     this.free = true;
     this.exploding = false;
     this.explosion = null;
@@ -32,7 +33,7 @@ export class Bomb {
         this.game.context.fillStyle = 'yellow';
         this.game.context.fillRect(this.x, this.y, this.width, this.height);
       } else {
-        this.game.context.drawImage(this.game.bombImage, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
+        this.game.context.drawImage(this.image, 0, 0, this.originSize, this.originSize, this.x, this.y, this.width, this.height);
       }
     }
   }
@@ -55,7 +56,7 @@ export class Bomb {
   }
 
   explode() {
-    this.explosion = new Explosion (this.game, this.x, this.y, 5);
+    this.explosion = new Explosion (this.game, this.x, this.y, this.radius);
     this.game.explosions.push(this.explosion);
   }
 

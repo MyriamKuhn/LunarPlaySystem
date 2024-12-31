@@ -22,30 +22,42 @@ export class Cell {
       case 0:
         this.type = 'empty';
         this.walkable = false;
+        this.spawn = false;
         break;
       case 1:
         this.type = 'wall';
         this.walkable = false;
+        this.spawn = false;
         break;
       case 2:
         this.type = 'start';
         this.walkable = true;
+        this.spawn = false;
         break;
       case 3:
         this.type = 'dot';
         this.walkable = true;
+        this.spawn = true;
         break;
       case 4:
         this.type = 'teleport';
         this.walkable = true;
+        this.spawn = false;
         break;
       case 5:
         this.type = 'bigDot';
         this.walkable = true;
+        this.spawn = false;
+        break;
+      case 6:
+        this.type = 'dot';
+        this.walkable = true;
+        this.spawn = false;
         break;
       default:
         this.type = 'empty';
         this.walkable = false;
+        this.spawn = false;
         break;
     }
 

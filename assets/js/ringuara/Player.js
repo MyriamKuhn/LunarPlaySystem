@@ -6,16 +6,31 @@
 export class Player {
   constructor(game) {
     this.game = game;
-    this.position = this.game.findTilePositions('start');
+    this.position;
+    this.originSize = 32;
     this.width = this.game.cellSize;
     this.height = this.game.cellSize;
+    this.x;
+    this.y;
+    this.frameX;
+    this.frameY;
+    this.speed; 
+    this.direction; 
+    this.isAligned; 
+    this.noEffectDuration;
+    this.image = this.game.playerImage;
+  }
+
+  init(speed, noEffectDuration) {
+    this.position = this.game.findTilePositions('start');
     this.x = this.position[0].x;
     this.y = this.position[0].y;
     this.frameX = 0;
     this.frameY = 0;
-    this.speed = this.game.cellSize * 0.05; 
+    this.isAligned = false;
     this.direction = null; 
-    this.isAligned = false; 
+    this.speed = this.game.cellSize * speed;
+    this.noEffectDuration = noEffectDuration;
   }
 
   draw() {
@@ -23,7 +38,7 @@ export class Player {
       this.game.context.fillStyle = 'blue';
       this.game.context.fillRect(this.x, this.y, this.width, this.height);
     } else {
-      this.game.context.drawImage(this.game.playerImage, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
+      this.game.context.drawImage(this.image, this.frameX * this.originSize, this.frameY * this.originSize, this.originSize, this.originSize, this.x, this.y, this.width, this.height);
     }
   }
 
@@ -105,7 +120,7 @@ export class Player {
           enemy.noEffect = true;
           setTimeout(() => {
             enemy.noEffect = false;
-          }, enemy.noEffectDuration);
+          }, this.noEffectDuration);
         });
       }
     }
@@ -154,7 +169,7 @@ export class Player {
           enemy.noEffect = true;
           setTimeout(() => {
             enemy.noEffect = false;
-          }, enemy.noEffectDuration);
+          }, this.noEffectDuration);
         });
       }
     }
@@ -203,7 +218,7 @@ export class Player {
           enemy.noEffect = true;
           setTimeout(() => {
             enemy.noEffect = false;
-          }, enemy.noEffectDuration);
+          }, this.noEffectDuration);
         });
       }
     }
@@ -252,7 +267,7 @@ export class Player {
           enemy.noEffect = true;
           setTimeout(() => {
             enemy.noEffect = false;
-          }, enemy.noEffectDuration);
+          }, this.noEffectDuration);
         });
       }
     }

@@ -58,8 +58,29 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
 	<div class="assets">
 		<img src="/assets/img/ringuara/map1.png" id="map1">
-		<img src="/assets/img/ringuara/dot.png" id="dot">
+		<img src="/assets/img/ringuara/bomb1.png" id="bomb1">
+		<img src="/assets/img/ringuara/bomb2.png" id="bomb2">
+		<img src="/assets/img/ringuara/bomb3.png" id="bomb3">
+		<img src="/assets/img/ringuara/bomb4.png" id="bomb4">
+		<img src="/assets/img/ringuara/bomb5.png" id="bomb5">
+		<img src="/assets/img/ringuara/bomb6.png" id="bomb6">
+		<img src="/assets/img/ringuara/bomb7.png" id="bomb7">
+		<img src="/assets/img/ringuara/meteor1.png" id="meteor1">
+		<img src="/assets/img/ringuara/meteor2.png" id="meteor2">
+		<img src="/assets/img/ringuara/meteor3.png" id="meteor3">
+		<img src="/assets/img/ringuara/meteor4.png" id="meteor4">
+		<img src="/assets/img/ringuara/meteor5.png" id="meteor5">
+		<img src="/assets/img/ringuara/meteor6.png" id="meteor6">
+		<img src="/assets/img/ringuara/meteor7.png" id="meteor7">
+		<img src="/assets/img/ringuara/meteor8.png" id="meteor8">
+		<img src="/assets/img/ringuara/meteor9.png" id="meteor9">
+		<img src="/assets/img/ringuara/meteor10.png" id="meteor10">
+		<img src="/assets/img/ringuara/meteor11.png" id="meteor11">
+		<img src="/assets/img/ringuara/meteor12.png" id="meteor12">
 		<img src="/assets/img/ringuara/player.png" id="player">
+		<img src="/assets/img/ringuara/enemy1.png" id="enemy1">
+		<img src="/assets/img/ringuara/enemy2.png" id="enemy2">
+		<img src="/assets/img/ringuara/enemy3.png" id="enemy3">
 
 		<audio src="/assets/audio/cryos/winflappy.mp3" id="win" preload="auto"></audio>
 		<audio src="/assets/audio/cryos/loseflappy.mp3" id="lose" preload="auto"></audio>
