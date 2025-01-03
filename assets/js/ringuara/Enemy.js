@@ -79,8 +79,9 @@ export class Enemy {
     this.y = this.originY;
     this.noEffect = false;
     this.noDamages = false;
-    this.game.score += this.scorePoints * 0.25;
-    this.game.floatingMessages.push(new FloatingMessage('+ ' + this.scorePoints * 0.25 + ' ' + this.game.pointsTranslation, this.game.player.x, this.game.player.y, this.game.bigFontSize, 'green', this.game));
+    const score = Math.floor(this.scorePoints * 0.25);
+    this.game.score += score;
+    this.game.floatingMessages.push(new FloatingMessage('+ ' + score + ' ' + this.game.pointsTranslation, this.game.player.x, this.game.player.y, this.game.bigFontSize, 'green', this.game));
   }
 
   findPathTo(target) {

@@ -42,6 +42,7 @@ window.addEventListener('load', function() {
   
   const assets = [
     { id: 'map1', src: '/assets/img/ringuara/map1.png', type: 'image' },
+    { id: 'map2', src: '/assets/img/ringuara/map2.png', type: 'image' },
     { id: 'bomb1', src: '/assets/img/ringuara/bomb1.png', type: 'image' },
     { id: 'bomb2', src: '/assets/img/ringuara/bomb2.png', type: 'image' },
     { id: 'bomb3', src: '/assets/img/ringuara/bomb3.png', type: 'image' },
@@ -66,6 +67,13 @@ window.addEventListener('load', function() {
     { id: 'enemy1', src: '/assets/img/ringuara/enemy1.png', type: 'image' },
     { id: 'enemy2', src: '/assets/img/ringuara/enemy2.png', type: 'image' },
     { id: 'enemy3', src: '/assets/img/ringuara/enemy3.png', type: 'image' },
+    { id: 'enemy4', src: '/assets/img/ringuara/enemy4.png', type: 'image' },
+    { id: 'enemy5', src: '/assets/img/ringuara/enemy5.png', type: 'image' },
+    { id: 'enemy6', src: '/assets/img/ringuara/enemy6.png', type: 'image' },
+    { id: 'enemy7', src: '/assets/img/ringuara/enemy7.png', type: 'image' },
+    { id: 'enemy8', src: '/assets/img/ringuara/enemy8.png', type: 'image' },
+    { id: 'enemy9', src: '/assets/img/ringuara/enemy9.png', type: 'image' },
+    { id: 'enemy10', src: '/assets/img/ringuara/enemy10.png', type: 'image' },
     { id: 'win', src: '/assets/audio/cryos/winflappy.mp3', type: 'audio' },
     { id: 'lose', src: '/assets/audio/cryos/loseflappy.mp3', type: 'audio' },
     { id: 'charge', src: '/assets/audio/cryos/charge.mp3', type: 'audio' },

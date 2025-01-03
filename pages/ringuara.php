@@ -58,6 +58,7 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 
 	<div class="assets">
 		<img src="/assets/img/ringuara/map1.png" id="map1">
+		<img src="/assets/img/ringuara/map2.png" id="map2">
 		<img src="/assets/img/ringuara/bomb1.png" id="bomb1">
 		<img src="/assets/img/ringuara/bomb2.png" id="bomb2">
 		<img src="/assets/img/ringuara/bomb3.png" id="bomb3">
@@ -82,6 +83,13 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 		<img src="/assets/img/ringuara/enemy1.png" id="enemy1">
 		<img src="/assets/img/ringuara/enemy2.png" id="enemy2">
 		<img src="/assets/img/ringuara/enemy3.png" id="enemy3">
+		<img src="/assets/img/ringuara/enemy4.png" id="enemy4">
+		<img src="/assets/img/ringuara/enemy5.png" id="enemy5">
+		<img src="/assets/img/ringuara/enemy6.png" id="enemy6">
+		<img src="/assets/img/ringuara/enemy7.png" id="enemy7">
+		<img src="/assets/img/ringuara/enemy8.png" id="enemy8">
+		<img src="/assets/img/ringuara/enemy9.png" id="enemy9">
+		<img src="/assets/img/ringuara/enemy10.png" id="enemy10">
 
 		<audio src="/assets/audio/cryos/winflappy.mp3" id="win" preload="auto"></audio>
 		<audio src="/assets/audio/cryos/loseflappy.mp3" id="lose" preload="auto"></audio>

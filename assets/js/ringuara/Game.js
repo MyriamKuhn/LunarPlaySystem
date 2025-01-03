@@ -9,6 +9,7 @@ import { Cell } from '/assets/js/ringuara/Cell.js';
 import { mapData } from '/assets/js/ringuara/mapData.js';
 import { Enemy } from '/assets/js/ringuara/Enemy.js';
 import { Bomb } from '/assets/js/ringuara/Bomb.js';
+import { securePlayername, sendScore } from '/assets/js/utils.js';
 
 
 /*************/
@@ -23,17 +24,16 @@ const translations = {
     'points': 'points',
     'live': 'vie',
     'lives': 'vies',
-    'begin': "Contrez l'invasion !", 
-    'begin2': "Les envahisseurs tentent d'entrer sur votre territoire !",
-    'begin3': "Faites le nécessaire afin qu'ils n'y parviennent pas !",
+    'begin': "Exterminez les intrus !", 
+    'begin2': "Utilisez les flèches pour vous déplacer ou swipez dans la direction souhaitée !",
+    'begin3': "Utilisez la barre d'espace, le clic ou le tap pour poser une bombe",
     'press': '⚔️ Appuyez sur "R" pour commencer ! ⚔️',
     'press2': '👈 Appuyez sur "B" pour revenir au menu ! 👈',
     'press3': '🔊 Appuyez sur "M" pour activer/désactiver le son ! 🔇',
     'press4': '📱 Sur mobile, utilisez les boutons ci-dessous 👇',
-    'gameover': "L'un des envahisseurs a réussi à passer !",
-    'win': "Vous avez repoussé l'invasion !",
+    'gameover': "Vous n'avez plus de vie !",
+    'win': "Félicitations, vous avez réussi à exterminer tous les intrus !",
     'gameover2': 'Votre score final : ',
-    'resourcesneed': 'Pas assez de larves !',
     'level': 'Prochaine vague',
     'levelend': 'Dernière vague'
   },
@@ -97,6 +97,14 @@ export class Game {
     this.liveTranslation = translations[lang].live;
     this.livesTranslation = translations[lang].lives;
 
+    this.message1 = translations[lang].begin;
+    this.message2 = translations[lang].begin2;
+    this.message3 = translations[lang].begin3;
+    this.message4 = translations[lang].press;
+    this.message5 = translations[lang].press2;
+    this.message6 = translations[lang].press3;
+    this.message7 = translations[lang].press4;
+
     this.background;
     this.gameGrid = [];
     this.cellSize;
@@ -118,6 +126,7 @@ export class Game {
 
     this.player;
     this.direction;
+    this.paused = true;
 
     this.enemyPool = [];
     this.bombPool = [];
@@ -132,6 +141,7 @@ export class Game {
     this.debug = false;
 
     this.bigFontSize;
+    this.smallFontSize;
 
     this.dotsPositions;
 
@@ -150,7 +160,25 @@ export class Game {
       { image: document.getElementById('enemy0'), health: 0, chaseDuration: 0, speed: 0, scorePoints: 0 },
       { image: document.getElementById('enemy1'), health: 1, chaseDuration: 3000, speed: 0.02, scorePoints: 100 },
       { image: document.getElementById('enemy2'), health: 2, chaseDuration: 3000, speed: 0.02, scorePoints: 150 },
-      { image: document.getElementById('enemy3'), health: 1, chaseDuration: 4000, speed: 0.03, scorePoints: 100 },
+      { image: document.getElementById('enemy3'), health: 5, chaseDuration: 3000, speed: 0.02, scorePoints: 300 },
+      { image: document.getElementById('enemy4'), health: 1, chaseDuration: 4000, speed: 0.025, scorePoints: 100 },
+      { image: document.getElementById('enemy5'), health: 2, chaseDuration: 4000, speed: 0.025, scorePoints: 150 },
+      { image: document.getElementById('enemy6'), health: 5, chaseDuration: 4000, speed: 0.025, scorePoints: 300 },
+      { image: document.getElementById('enemy7'), health: 1, chaseDuration: 5000, speed: 0.03, scorePoints: 100 },
+      { image: document.getElementById('enemy8'), health: 2, chaseDuration: 5000, speed: 0.03, scorePoints: 150 },
+      { image: document.getElementById('enemy9'), health: 5, chaseDuration: 5000, speed: 0.03, scorePoints: 300 },
+      { image: document.getElementById('enemy10'), health: 1, chaseDuration: 6000, speed: 0.035, scorePoints: 100 },
+      { image: document.getElementById('enemy11'), health: 2, chaseDuration: 6000, speed: 0.035, scorePoints: 150 },
+      { image: document.getElementById('enemy12'), health: 5, chaseDuration: 6000, speed: 0.035, scorePoints: 300 },
+      { image: document.getElementById('enemy13'), health: 1, chaseDuration: 7000, speed: 0.04, scorePoints: 100 },
+      { image: document.getElementById('enemy14'), health: 2, chaseDuration: 7000, speed: 0.04, scorePoints: 150 },
+      { image: document.getElementById('enemy15'), health: 5, chaseDuration: 7000, speed: 0.04, scorePoints: 300 },
+      { image: document.getElementById('enemy16'), health: 1, chaseDuration: 8000, speed: 0.045, scorePoints: 100 },
+      { image: document.getElementById('enemy17'), health: 2, chaseDuration: 8000, speed: 0.045, scorePoints: 150 },
+      { image: document.getElementById('enemy18'), health: 5, chaseDuration: 8000, speed: 0.045, scorePoints: 300 },
+      { image: document.getElementById('enemy19'), health: 1, chaseDuration: 9000, speed: 0.05, scorePoints: 100 },
+      { image: document.getElementById('enemy20'), health: 2, chaseDuration: 9000, speed: 0.05, scorePoints: 150 },
+      { image: document.getElementById('enemy21'), health: 5, chaseDuration: 9000, speed: 0.05, scorePoints: 300 },
     ];
 
     this.bonusTypes = [
@@ -174,7 +202,7 @@ export class Game {
         enemies: [
           { type: 1, amount: 5 },
         ], 
-        bonusCool: { min: 1000, max: 2000 },
+        bonusCool: { min: 15000, max: 20000 },
         bonusScore: 0,
         bonusLives: 0,
         map: document.getElementById('map1'),
@@ -201,18 +229,309 @@ export class Game {
         enemies: [
           { type: 1, amount: 10 },
           { type: 2, amount: 5 },
+          { type: 3, amount: 1 },
         ], 
         bonusCool: { min: 15000, max: 20000 },
-        bonusScore: 500,
-        bonusLives: 1,
+        bonusScore: 1000,
+        bonusLives: 2,
         map: document.getElementById('map1'),
         mapData: mapData.map1,
         speed: 0.05,
         noEffectDuration: 6000,
       },
+      { level: 4, 
+        bombType: 2,
+        enemies: [
+          { type: 4, amount: 5 },
+        ], 
+        bonusCool: { min: 20000, max: 25000 },
+        bonusScore: 100,
+        bonusLives: 1,
+        map: document.getElementById('map2'),
+        mapData: mapData.map2,
+        speed: 0.05,
+        noEffectDuration: 5600,
+      },
+      { level: 5, 
+        bombType: 2,
+        enemies: [
+          { type: 4, amount: 8 },
+          { type: 5, amount: 2 },
+        ], 
+        bonusCool: { min: 20000, max: 25000 },
+        bonusScore: 500,
+        bonusLives: 1,
+        map: document.getElementById('map2'),
+        mapData: mapData.map2,
+        speed: 0.05,
+        noEffectDuration: 5600,
+      },
+      { level: 6, 
+        bombType: 2,
+        enemies: [
+          { type: 4, amount: 10 },
+          { type: 5, amount: 5 },
+          { type: 6, amount: 1 },
+        ], 
+        bonusCool: { min: 20000, max: 25000 },
+        bonusScore: 1000,
+        bonusLives: 2,
+        map: document.getElementById('map2'),
+        mapData: mapData.map2,
+        speed: 0.05,
+        noEffectDuration: 5600,
+      },
+      { level: 7, 
+        bombType: 3,
+        enemies: [
+          { type: 7, amount: 5 },
+        ], 
+        bonusCool: { min: 25000, max: 30000 },
+        bonusScore: 100,
+        bonusLives: 1,
+        map: document.getElementById('map3'),
+        mapData: mapData.map3,
+        speed: 0.05,
+        noEffectDuration: 5200,
+      },
+      { level: 8, 
+        bombType: 3,
+        enemies: [
+          { type: 7, amount: 8 },
+          { type: 8, amount: 2 },
+        ], 
+        bonusCool: { min: 25000, max: 30000 },
+        bonusScore: 500,
+        bonusLives: 1,
+        map: document.getElementById('map3'),
+        mapData: mapData.map3,
+        speed: 0.05,
+        noEffectDuration: 5200,
+      },
+      { level: 9, 
+        bombType: 3,
+        enemies: [
+          { type: 7, amount: 10 },
+          { type: 8, amount: 5 },
+          { type: 9, amount: 1 },
+        ], 
+        bonusCool: { min: 25000, max: 30000 },
+        bonusScore: 1000,
+        bonusLives: 2,
+        map: document.getElementById('map3'),
+        mapData: mapData.map3,
+        speed: 0.05,
+        noEffectDuration: 5200,
+      },
+      { level: 10, 
+        bombType: 4,
+        enemies: [
+          { type: 10, amount: 5 },
+        ], 
+        bonusCool: { min: 30000, max: 35000 },
+        bonusScore: 100,
+        bonusLives: 1,
+        map: document.getElementById('map4'),
+        mapData: mapData.map4,
+        speed: 0.05,
+        noEffectDuration: 4900,
+      },
+      { level: 11, 
+        bombType: 4,
+        enemies: [
+          { type: 10, amount: 8 },
+          { type: 11, amount: 2 },
+        ], 
+        bonusCool: { min: 30000, max: 35000 },
+        bonusScore: 500,
+        bonusLives: 1,
+        map: document.getElementById('map4'),
+        mapData: mapData.map4,
+        speed: 0.05,
+        noEffectDuration: 4900,
+      },
+      { level: 12, 
+        bombType: 4,
+        enemies: [
+          { type: 10, amount: 10 },
+          { type: 11, amount: 5 },
+          { type: 12, amount: 1 },
+        ], 
+        bonusCool: { min: 30000, max: 35000 },
+        bonusScore: 1000,
+        bonusLives: 2,
+        map: document.getElementById('map3'),
+        mapData: mapData.map3,
+        speed: 0.05,
+        noEffectDuration: 4900,
+      },
+      { level: 13, 
+        bombType: 5,
+        enemies: [
+          { type: 13, amount: 5 },
+        ], 
+        bonusCool: { min: 35000, max: 40000 },
+        bonusScore: 100,
+        bonusLives: 1,
+        map: document.getElementById('map5'),
+        mapData: mapData.map5,
+        speed: 0.05,
+        noEffectDuration: 4500,
+      },
+      { level: 14, 
+        bombType: 5,
+        enemies: [
+          { type: 13, amount: 8 },
+          { type: 14, amount: 2 },
+        ], 
+        bonusCool: { min: 35000, max: 40000 },
+        bonusScore: 500,
+        bonusLives: 1,
+        map: document.getElementById('map5'),
+        mapData: mapData.map5,
+        speed: 0.05,
+        noEffectDuration: 4500,
+      },
+      { level: 15, 
+        bombType: 5,
+        enemies: [
+          { type: 13, amount: 10 },
+          { type: 14, amount: 5 },
+          { type: 15, amount: 1 },
+        ], 
+        bonusCool: { min: 35000, max: 40000 },
+        bonusScore: 1000,
+        bonusLives: 2,
+        map: document.getElementById('map5'),
+        mapData: mapData.map5,
+        speed: 0.05,
+        noEffectDuration: 4500,
+      },
+      { level: 16, 
+        bombType: 6,
+        enemies: [
+          { type: 16, amount: 5 },
+        ], 
+        bonusCool: { min: 40000, max: 45000 },
+        bonusScore: 100,
+        bonusLives: 1,
+        map: document.getElementById('map6'),
+        mapData: mapData.map6,
+        speed: 0.05,
+        noEffectDuration: 4100,
+      },
+      { level: 17, 
+        bombType: 6,
+        enemies: [
+          { type: 16, amount: 8 },
+          { type: 17, amount: 2 },
+        ], 
+        bonusCool: { min: 40000, max: 45000 },
+        bonusScore: 500,
+        bonusLives: 1,
+        map: document.getElementById('map6'),
+        mapData: mapData.map6,
+        speed: 0.05,
+        noEffectDuration: 4100,
+      },
+      { level: 18, 
+        bombType: 6,
+        enemies: [
+          { type: 16, amount: 10 },
+          { type: 17, amount: 5 },
+          { type: 18, amount: 1 },
+        ], 
+        bonusCool: { min: 40000, max: 45000 },
+        bonusScore: 1000,
+        bonusLives: 2,
+        map: document.getElementById('map6'),
+        mapData: mapData.map6,
+        speed: 0.05,
+        noEffectDuration: 4100,
+      },
+      { level: 19, 
+        bombType: 7,
+        enemies: [
+          { type: 19, amount: 5 },
+        ], 
+        bonusCool: { min: 45000, max: 50000 },
+        bonusScore: 100,
+        bonusLives: 1,
+        map: document.getElementById('map7'),
+        mapData: mapData.map7,
+        speed: 0.05,
+        noEffectDuration: 3700,
+      },
+      { level: 20, 
+        bombType: 7,
+        enemies: [
+          { type: 19, amount: 8 },
+          { type: 20, amount: 2 },
+        ], 
+        bonusCool: { min: 45000, max: 50000 },
+        bonusScore: 500,
+        bonusLives: 1,
+        map: document.getElementById('map7'),
+        mapData: mapData.map7,
+        speed: 0.05,
+        noEffectDuration: 3700,
+      },
+      { level: 21, 
+        bombType: 7,
+        enemies: [
+          { type: 19, amount: 10 },
+          { type: 20, amount: 5 },
+          { type: 21, amount: 1 },
+        ], 
+        bonusCool: { min: 45000, max: 50000 },
+        bonusScore: 1000,
+        bonusLives: 2,
+        map: document.getElementById('map7'),
+        mapData: mapData.map7,
+        speed: 0.05,
+        noEffectDuration: 3700,
+      },
+      { level: 22, 
+        bombType: 7,
+        enemies: [
+          { type: 1, amount: 1 },
+          { type: 2, amount: 1 },
+          { type: 3, amount: 1 },
+          { type: 4, amount: 1 },
+          { type: 5, amount: 1 },
+          { type: 6, amount: 1 },
+          { type: 7, amount: 1 },
+          { type: 8, amount: 1 },
+          { type: 9, amount: 1 },
+          { type: 10, amount: 1 },
+          { type: 11, amount: 1 },
+          { type: 12, amount: 1 },
+          { type: 13, amount: 1 },
+          { type: 14, amount: 1 },
+          { type: 15, amount: 1 },
+          { type: 16, amount: 1 },
+          { type: 17, amount: 1 },
+          { type: 18, amount: 1 },
+          { type: 19, amount: 1 },
+          { type: 20, amount: 1 },
+          { type: 19, amount: 1 },
+          { type: 20, amount: 1 },
+          { type: 21, amount: 1 },
+        ], 
+        bonusCool: { min: 45000, max: 50000 },
+        bonusScore: 5000,
+        bonusLives: 0,
+        map: document.getElementById('map7'),
+        mapData: mapData.map7,
+        speed: 0.05,
+        noEffectDuration: 3300,
+      },
     ];
 
-    window.addEventListener('resize', () => this.init());
+    window.addEventListener('resize', () => {
+      this.paused = true;
+      this.init(true)
+    });
 
     this.canvas.addEventListener('touchstart', e => {
       this.touchStartX = e.changedTouches[0].pageX;
@@ -231,7 +550,7 @@ export class Game {
       } else if (e.changedTouches[0].pageY - this.touchStartY < -this.swipeDistance) {
         this.player.setDirection('ArrowUp');
       } else {
-        this.player.drawBomb();
+        if (!this.paused) this.player.drawBomb();
       }
     }, { passive: false });
 
@@ -244,8 +563,8 @@ export class Game {
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'ArrowUp') this.player.setDirection(e.key);
       if (e.key === ' ') this.player.drawBomb();
     });
-    window.addEventListener('click', e => {
-      this.player.drawBomb();
+    window.addEventListener('mousedown', e => {
+      if (!this.paused) this.player.drawBomb();
     });
     this.resetButton = document.getElementById('resetButton');
     this.resetButton.addEventListener('click', e => {
@@ -280,10 +599,10 @@ export class Game {
     //  this.sound.toggleMute();
     }, { passive: false });
 
-    this.init();
+    this.init(true);
   }
 
-  init() {
+  init(isResizing = false) {
     const controls = document.querySelector('.controls');
     controls.style.pointerEvents = 'none';
     controls.classList.add('hidden');
@@ -291,6 +610,8 @@ export class Game {
     this.handleResize();
     this.cellSize = this.width / 32;
     this.bigFontSize = 32 * (this.width / this.originalWidth);
+    this.biggerFontSize = 40 * (this.width / this.originalWidth);
+    this.smallFontSize = 30 * (this.width / this.originalWidth);
 
     this.debug = false;
     this.gameOver = false;
@@ -302,10 +623,19 @@ export class Game {
     this.level = 0;
 
     this.initLevel();
+
+    if (!isResizing) {
+      this.paused = false;
+      //this.sound.play('wave');
+    } 
   }
 
   initLevel() {
     this.level++;
+    if (!this.gameOver && this.level > this.levelDatas.length) {
+      this.handleGameWin();
+      return;
+    }
     const levelData = this.levelDatas.find(data => data.level === this.level);
     if (levelData) {
       this.background = new Background(levelData.map, this, this.width, this.height);
@@ -600,8 +930,58 @@ export class Game {
   handleGameOver() {
     if (!this.gameOver) {
       this.gameOver = true;
-      this.bonusCooldown = 0;
-      this.isBonus = false;
+
+      const finalscore = this.score;
+
+      //this.saveScore(finalscore);
+
+      //this.sound.play('lose');
+      this.message1 = translations[lang].gameover;
+      this.message2 = '';
+      this.message3 = translations[lang].gameover2 + ' ' + finalscore + ' ' + translations[lang].points;
+
+      this.paused = true;
+    }
+  }
+
+  handleGameWin() {
+    if (!this.gameOver) {
+      this.gameOver = true;
+
+      const finalscore = this.score + this.lives * 1000;
+
+      //this.saveScore(finalscore);
+
+      //this.sound.play('win');
+      this.message1 = translations[lang].win;
+      this.message2 = '';
+      this.message3 = translations[lang].gameover2 + ' ' + finalscore + ' ' + translations[lang].points;
+
+      this.paused = true;
+    }
+  }
+
+  handleEndGame() {
+    if (!this.gameOver && this.enemyPool.length === 0) {
+      this.initLevel();
+      this.showLevel = true;
+      setTimeout(() => {
+        this.showLevel = false;
+      }, 3000);
+    }
+
+    if (this.showLevel) {
+      this.context.save();
+      this.context.fillStyle = 'white';
+      this.context.font = this.biggerFontSize + 'px Atma';
+      this.context.textAlign = 'center';
+      this.context.globalAlpha = 0.5;
+      if (this.level < this.levelDatas.length) {
+        this.context.fillText(translations[lang].level, this.width / 2, this.height / 2);
+      } else {
+      this.context.fillText(translations[lang].levelend, this.width / 2, this.height / 2);
+      }
+      this.context.restore();
     }
   }
 
@@ -617,6 +997,9 @@ export class Game {
       this.context.drawImage(this.playerImage, 0, 0, 32, 32, i * this.bigFontSize + this.bigFontSize, -2 * (this.width / this.originalWidth), this.bigFontSize, this.bigFontSize);
     }
     this.context.restore();
+    if (this.lives <= 0) {
+      this.player.dead = true;
+    }
   }
 
   handleFloatingMessages() {
@@ -630,7 +1013,57 @@ export class Game {
     }
   }
 
+  drawPauseScreen() {
+    this.context.save();
+
+    this.context.fillStyle = 'black';
+    this.context.fillRect(0, 0, this.width, this.height);
+
+    this.context.fillStyle = 'white';
+    this.context.textAlign = 'center';
+    this.context.font = this.biggerFontSize + 'px Atma';
+
+    this.context.fillText(this.message1, this.width * 0.5, this.height * 0.2, this.width);
+    this.context.font = this.smallFontSize + 'px Atma';
+    this.context.fillText(this.message2, this.width * 0.5, this.height * 0.2 + this.biggerFontSize, this.width);
+    this.context.fillText(this.message3, this.width * 0.5, this.height * 0.2 + this.biggerFontSize + this.smallFontSize + 5, this.width);
+    this.context.fillText(this.message4, this.width * 0.5, this.height * 0.2 + this.biggerFontSize + this.smallFontSize * 3 + 10, this.width);
+    this.context.fillText(this.message5, this.width * 0.5, this.height * 0.2 + this.biggerFontSize + this.smallFontSize * 4 + 15, this.width);
+    this.context.fillText(this.message6, this.width * 0.5, this.height * 0.2 + this.biggerFontSize + this.smallFontSize * 5 + 20, this.width);
+    this.context.fillText(this.message7, this.width * 0.5, this.height * 0.2 + this.biggerFontSize + this.smallFontSize * 6 + 25, this.width);
+
+    this.context.restore();
+    
+    const controls = document.querySelector('.controls');
+    controls.style.pointerEvents = 'auto';
+    controls.classList.remove('hidden');
+  }
+
+  saveScore(finalscore) {
+    // Récupérer le nom du joueur depuis la session
+    const playerName = securePlayername(sessionStorage.getItem('playername')); 
+    const planet = 'ringuara';
+    const score = parseInt(finalscore, 10); 
+
+    // Vérifier si le nom du joueur est disponible
+    if (playerName) {
+      // Préparer les données à envoyer
+      const data = {
+        planet: planet,
+        playername: playerName,
+        score: score
+      };
+
+      // Envoyer la requête fetch pour ajouter le score
+      sendScore(data);
+    }
+  }
+
   render(deltaTime) {
+    if (this.paused) {
+      this.drawPauseScreen();
+      return;
+    }
     this.context.clearRect(0, 0, this.width, this.height);
     this.background.draw();
     this.drawStatusText();
@@ -642,6 +1075,7 @@ export class Game {
     if (this.player) this.player.draw(); 
     if (this.isBonus) this.handleBonus(deltaTime);
     this.handleFloatingMessages();
+    this.handleEndGame();
   }
   
 }

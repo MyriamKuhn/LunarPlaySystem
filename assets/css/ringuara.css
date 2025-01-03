@@ -87,7 +87,7 @@ body{
 }
 
 .controls > button:hover, .controls > button:active, .controls > button:focus {
-  background: #ff7c02;
+  background: #fffb02;
   box-shadow: 4px 4px 4px black;
   text-shadow: 4px 4px 4px black;
 }

@@ -21,12 +21,14 @@ export class Player {
     this.x;
     this.y;
     this.frameX;
+    this.maxFrameX = 9;
     this.frameY;
     this.speed; 
     this.direction; 
     this.isAligned; 
     this.noEffectDuration;
     this.image = this.game.playerImage;
+    this.dead = false;
   }
 
   init(speed, noEffectDuration) {
@@ -39,6 +41,7 @@ export class Player {
     this.direction = null; 
     this.speed = this.game.cellSize * speed;
     this.noEffectDuration = noEffectDuration;
+    this.dead = false;
   }
 
   draw() {
@@ -51,34 +54,36 @@ export class Player {
   }
 
   move() {
-    if (!this.isAligned) {
-      this.alignToCell();
-      this.isAligned = true;
-    }
+    if (!this.dead) {
+      if (!this.isAligned) {
+        this.alignToCell();
+        this.isAligned = true;
+      }
 
-    switch (this.direction) {
-      case 'ArrowUp':
-        this.moveUp();
-        this.frameX = 3;
-        break;
-      case 'ArrowDown':
-        this.moveDown();
-        this.frameX = 4;
-        break;
-      case 'ArrowLeft':
-        this.moveLeft();
-        this.frameX = 1;
-        break;
-      case 'ArrowRight':
-        this.moveRight();
-        this.frameX = 2;
-        break;
-      case null:
-        this.frameX = 0;
-        break;
-      default:
-        this.frameX = 0;
-        break;
+      switch (this.direction) {
+        case 'ArrowUp':
+          this.moveUp();
+          this.frameX = 3;
+          break;
+        case 'ArrowDown':
+          this.moveDown();
+          this.frameX = 4;
+          break;
+        case 'ArrowLeft':
+          this.moveLeft();
+          this.frameX = 1;
+          break;
+        case 'ArrowRight':
+          this.moveRight();
+          this.frameX = 2;
+          break;
+        case null:
+          this.frameX = 0;
+          break;
+        default:
+          this.frameX = 0;
+          break;
+      }
     }
   }
 
@@ -277,8 +282,20 @@ export class Player {
       this.isAligned = false; // Réinitialiser l'alignement
   }
 
+  deadPlayer() {
+    if (this.game.eventUpdate) {
+      if (this.frameX < this.maxFrameX) {
+        this.frameX++;
+      } else {
+        this.game.handleGameOver();
+      }
+    }
+  }
+
   // Méthode pour mettre à jour le joueur
   update() {
     this.move(); // Met à jour la position du joueur
+
+    if (this.dead) this.deadPlayer();
   }
 }
