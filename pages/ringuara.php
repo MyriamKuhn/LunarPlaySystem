@@ -59,6 +59,11 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<div class="assets">
 		<img src="/assets/img/ringuara/map1.png" id="map1">
 		<img src="/assets/img/ringuara/map2.png" id="map2">
+		<img src="/assets/img/ringuara/map3.png" id="map3">
+		<img src="/assets/img/ringuara/map4.png" id="map4">
+		<img src="/assets/img/ringuara/map5.png" id="map5">
+		<img src="/assets/img/ringuara/map6.png" id="map6">
+		<img src="/assets/img/ringuara/map7.png" id="map7">
 		<img src="/assets/img/ringuara/bomb1.png" id="bomb1">
 		<img src="/assets/img/ringuara/bomb2.png" id="bomb2">
 		<img src="/assets/img/ringuara/bomb3.png" id="bomb3">
@@ -90,6 +95,17 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 		<img src="/assets/img/ringuara/enemy8.png" id="enemy8">
 		<img src="/assets/img/ringuara/enemy9.png" id="enemy9">
 		<img src="/assets/img/ringuara/enemy10.png" id="enemy10">
+		<img src="/assets/img/ringuara/enemy11.png" id="enemy11">
+		<img src="/assets/img/ringuara/enemy12.png" id="enemy12">
+		<img src="/assets/img/ringuara/enemy13.png" id="enemy13">
+		<img src="/assets/img/ringuara/enemy14.png" id="enemy14">
+		<img src="/assets/img/ringuara/enemy15.png" id="enemy15">
+		<img src="/assets/img/ringuara/enemy16.png" id="enemy16">
+		<img src="/assets/img/ringuara/enemy17.png" id="enemy17">
+		<img src="/assets/img/ringuara/enemy18.png" id="enemy18">
+		<img src="/assets/img/ringuara/enemy19.png" id="enemy19">
+		<img src="/assets/img/ringuara/enemy20.png" id="enemy20">
+		<img src="/assets/img/ringuara/enemy21.png" id="enemy21">
 
 		<audio src="/assets/audio/cryos/winflappy.mp3" id="win" preload="auto"></audio>
 		<audio src="/assets/audio/cryos/loseflappy.mp3" id="lose" preload="auto"></audio>
