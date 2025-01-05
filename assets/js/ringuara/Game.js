@@ -935,7 +935,7 @@ export class Game {
 
       const finalscore = this.score;
 
-      //this.saveScore(finalscore);
+      this.saveScore(finalscore);
 
       this.sound.play('pacdead');
       this.message1 = translations[lang].gameover;
@@ -952,7 +952,7 @@ export class Game {
 
       const finalscore = this.score + this.lives * 1000;
 
-      //this.saveScore(finalscore);
+      this.saveScore(finalscore);
 
       this.sound.play('pacwin');
       this.message1 = translations[lang].win;
