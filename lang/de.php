@@ -104,4 +104,7 @@ return [
   'lunara_title' => 'LunarPlay System - Lunara Defense',
   'lunara_description' => "Schütze den Planeten Lunara vor eindringenden Lunarier! Sammel Larven, um Energie zu gewinnen, und pflanze hochleistungsfähige Pflanzen, die diese interstellare Bedrohung abwehren können. Beweise deine Strategie und rette Lunara in diesem fesselnden Tower-Defense-Spiel.",
   'lunara_keywords' => "Lunara Defense, Strategiespiel, Planet Lunara, Lunarier, Larven, Energie, übermächtige Pflanzen, Tower Defense, interstellare Bedrohung, Strategie, Rette Lunara, LunarPlay System",
+  'ringuara_title' => 'LunarPlay System - Ringuara Maze Masters',
+  'ringuara_description' => "Tauche ein in die fesselnde Welt von Ringuara Maze Masters, einem Strategie- und Actionspiel, in dem du deine Feinde täuschen, taktische Bomben legen und komplexe Labyrinthe erkunden musst, die von den mystischen Energieringen Ringuaras begrenzt werden. Sammel Meteoriten und eliminiere alle Wellen von Gegnern, um deine Fähigkeiten als Labyrinthmeister unter Beweis zu stellen!",
+  'ringuara_keywords' => "inguara Maze Masters, Strategiespiel, Action, Labyrinthe, Pac-Man, Bomberman, Arcade-Spiel, Taktik, Bomben, Erforschung, Mystik, Energieringe, Meteoriten, Wellen von Gegnern, komplexe Labyrinthe, interstellares Videospiel, Denkspiel",
 ];
