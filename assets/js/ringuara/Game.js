@@ -542,7 +542,12 @@ export class Game {
     this.canvas.addEventListener('touchmove', e => {
       e.preventDefault();
     }, { passive: false });
+
+    let touchHandled = false;
+
     this.canvas.addEventListener('touchend', e => {
+      e.preventDefault();
+      touchHandled = true;
       if (e.changedTouches[0].pageX - this.touchStartX > this.swipeDistance) {
         this.player.setDirection('ArrowRight');
       } else if (e.changedTouches[0].pageX - this.touchStartX < -this.swipeDistance) {
@@ -566,7 +571,10 @@ export class Game {
       if (e.key === ' ') this.player.drawBomb();
     });
     window.addEventListener('mousedown', e => {
-      if (!this.paused) this.player.drawBomb();
+      if (!touchHandled) {
+        if (!this.paused) this.player.drawBomb();
+      }
+      touchHandled = false;
     });
     this.resetButton = document.getElementById('resetButton');
     this.resetButton.addEventListener('click', e => {
