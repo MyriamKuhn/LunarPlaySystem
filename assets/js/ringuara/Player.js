@@ -230,6 +230,7 @@ export class Player {
     cell.isDotEaten = true;
     cell.type = 'empty';
     cell.walkable = true;
+    this.game.sound.play('dots' + (Math.floor(Math.random() * 9) + 1));
     this.game.score++;
   }
 
@@ -237,6 +238,7 @@ export class Player {
     cell.isDotEaten = true;
     cell.type = 'empty';
     cell.walkable = true;
+    this.game.sound.play('power1');
     this.game.score += 10;
     this.game.enemyPool.forEach(enemy => {
       enemy.noEffect = true;
@@ -248,9 +250,11 @@ export class Player {
 
   collectBonus(cell) {
     if (cell.bonusType === 'score') {
+      this.game.sound.play('power2');
       this.game.score += cell.bonusValue;
       this.game.floatingMessages.push(new FloatingMessage('+ ' + cell.bonusValue + ' ' + this.game.pointsTranslation, this.x, this.y, this.game.bigFontSize, 'green', this.game));
     } else if (cell.bonusType === 'lives') {
+      this.game.sound.play('power2');
       this.game.lives += cell.bonusValue;
       const message = cell.bonusValue > 1 ? '+ ' + cell.bonusValue + ' ' + this.game.livesTranslation : '+ ' + cell.bonusValue + ' ' + this.game.liveTranslation;
       this.game.floatingMessages.push(new FloatingMessage(message, this.x, this.y, this.game.bigFontSize, 'green', this.game));
@@ -264,6 +268,7 @@ export class Player {
       if (bomb.free) {
         bomb.x = Math.round(this.x / this.game.cellSize) * this.game.cellSize;
         bomb.y = Math.round(this.y / this.game.cellSize) * this.game.cellSize;
+        this.game.sound.play('dragbomb' + (Math.floor(Math.random() * 2) + 1));
         bomb.start();
         break;
       }

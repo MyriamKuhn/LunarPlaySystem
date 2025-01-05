@@ -10,6 +10,7 @@ import { mapData } from '/assets/js/ringuara/mapData.js';
 import { Enemy } from '/assets/js/ringuara/Enemy.js';
 import { Bomb } from '/assets/js/ringuara/Bomb.js';
 import { securePlayername, sendScore } from '/assets/js/utils.js';
+import { AudioControl } from '/assets/js/ringuara/AudioControl.js';
 
 
 /*************/
@@ -92,6 +93,7 @@ export class Game {
     this.originalWidth = 1024;
     this.originalHeight = 1024;
     this.ratio = this.originalWidth / this.originalHeight;
+    this.sound = new AudioControl(this);
 
     this.pointsTranslation = translations[lang].points;
     this.liveTranslation = translations[lang].live;
@@ -557,7 +559,7 @@ export class Game {
     window.addEventListener('keydown', (e) => {
       if (e.key.toLowerCase() === 'r') this.init();
       if (e.key.toLowerCase() === 'd') this.debug = !this.debug;
-      //if (e.key.toLowerCase() === 'm') this.sound.toggleMute();
+      if (e.key.toLowerCase() === 'm') this.sound.toggleMute();
       if (e.key.toLowerCase() === 'f') this.toggleFullScreen();
       if (e.key.toLowerCase() === 'b') window.location.href = '/' + lang + '/lunarplay/';
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'ArrowUp') this.player.setDirection(e.key);
@@ -592,11 +594,11 @@ export class Game {
     }, { passive: false });
     this.volumeButton = document.getElementById('volumeButton');
     this.volumeButton.addEventListener('click', e => {
-    //  this.sound.toggleMute();
+      this.sound.toggleMute();
     });
     this.volumeButton.addEventListener('touchend', e => {
       e.preventDefault();
-    //  this.sound.toggleMute();
+      this.sound.toggleMute();
     }, { passive: false });
 
     this.init(true);
@@ -626,7 +628,7 @@ export class Game {
 
     if (!isResizing) {
       this.paused = false;
-      //this.sound.play('wave');
+      this.sound.play('levelup');
     } 
   }
 
@@ -935,7 +937,7 @@ export class Game {
 
       //this.saveScore(finalscore);
 
-      //this.sound.play('lose');
+      this.sound.play('pacdead');
       this.message1 = translations[lang].gameover;
       this.message2 = '';
       this.message3 = translations[lang].gameover2 + ' ' + finalscore + ' ' + translations[lang].points;
@@ -952,7 +954,7 @@ export class Game {
 
       //this.saveScore(finalscore);
 
-      //this.sound.play('win');
+      this.sound.play('pacwin');
       this.message1 = translations[lang].win;
       this.message2 = '';
       this.message3 = translations[lang].gameover2 + ' ' + finalscore + ' ' + translations[lang].points;
@@ -963,6 +965,7 @@ export class Game {
 
   handleEndGame() {
     if (!this.gameOver && this.enemyPool.length === 0) {
+      this.sound.play('levelup');
       this.initLevel();
       this.showLevel = true;
       setTimeout(() => {

@@ -79,6 +79,7 @@ export class Enemy {
     this.y = this.originY;
     this.noEffect = false;
     this.noDamages = false;
+    this.game.sound.play('deadenemy2');
     const score = Math.floor(this.scorePoints * 0.25);
     this.game.score += score;
     this.game.floatingMessages.push(new FloatingMessage('+ ' + score + ' ' + this.game.pointsTranslation, this.game.player.x, this.game.player.y, this.game.bigFontSize, 'green', this.game));
@@ -181,6 +182,7 @@ export class Enemy {
   hitPlayer() {
     if (this.game.checkCollision(this, this.game.player)) {
       if (!this.noEffect) {
+        this.game.sound.play('lose');
         this.game.lives--;
         this.game.floatingMessages.push(new FloatingMessage('- 1 ' + this.game.liveTranslation, this.game.player.x, this.game.player.y, this.game.bigFontSize, 'orangered', this.game));
         this.noDamages = true;
@@ -206,6 +208,7 @@ export class Enemy {
             if (this.health <= 0) {
               this.state = "dead"; // Passer à l'état mort
               if (!this.scored) { // Vérifier si les points ont déjà été donnés
+                this.game.sound.play('deadenemy1');
                 this.game.score += this.scorePoints; // Donner les points
                 this.game.floatingMessages.push(new FloatingMessage('+ ' + this.scorePoints + ' ' + this.game.pointsTranslation, this.game.player.x, this.game.player.y, this.game.bigFontSize, 'green', this.game));
                 this.scored = true; // Empêcher de redonner les points

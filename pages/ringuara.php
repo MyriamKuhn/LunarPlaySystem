@@ -107,14 +107,27 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 		<img src="/assets/img/ringuara/enemy20.png" id="enemy20">
 		<img src="/assets/img/ringuara/enemy21.png" id="enemy21">
 
-		<audio src="/assets/audio/cryos/winflappy.mp3" id="win" preload="auto"></audio>
-		<audio src="/assets/audio/cryos/loseflappy.mp3" id="lose" preload="auto"></audio>
-		<audio src="/assets/audio/cryos/charge.mp3" id="charge" preload="auto"></audio>
-		<audio src="/assets/audio/cryos/flap1.mp3" id="flap1" preload="auto"></audio>
-		<audio src="/assets/audio/cryos/flap2.mp3" id="flap2" preload="auto"></audio>
-		<audio src="/assets/audio/cryos/flap3.mp3" id="flap3" preload="auto"></audio>
-		<audio src="/assets/audio/cryos/flap4.mp3" id="flap4" preload="auto"></audio>
-		<audio src="/assets/audio/cryos/flap5.mp3" id="flap5" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/bomb.wav" id="bomb" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/deadenemy1.wav" id="deadenemy1" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/deadenemy2.mp3" id="deadenemy2" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/dots1.wav" id="dots1" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/dots2.wav" id="dots2" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/dots3.wav" id="dots3" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/dots4.wav" id="dots4" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/dots5.wav" id="dots5" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/dots6.wav" id="dots6" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/dots7.wav" id="dots7" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/dots8.wav" id="dots8" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/dots9.wav" id="dots9" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/dragbomb1.mp3" id="dragbomb1" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/dragbomb2.mp3" id="dragbomb2" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/levelup.wav" id="levelup" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/lose.wav" id="lose" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/pacdead.wav" id="pacdead" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/pacwin.mp3" id="pacwin" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/power1.wav" id="power1" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/power2.wav" id="power2" preload="auto"></audio>
+		<audio src="/assets/audio/ringuara/bonus.wav" id="bonus" preload="auto"></audio>
 	</div>
 
 	<div class="controls">

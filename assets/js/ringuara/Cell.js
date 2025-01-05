@@ -99,6 +99,7 @@ export class Cell {
       this.bonusTimeout = null;
     }
   
+    this.game.sound.play('bonus');
     // Définir les propriétés du bonus
     this.bonusType = type;
     this.bonusValue = value;

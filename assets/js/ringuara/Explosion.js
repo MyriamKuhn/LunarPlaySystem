@@ -19,6 +19,8 @@ export class Explosion {
     this.offsetYBig = (this.height - this.explosionHeightBig) / 2;
     this.offsetYSmall = (this.height - this.explosionHeightSmall) / 2;
 
+    this.game.sound.play('bomb');
+
     this.isActive = true;
     setTimeout(() => {
       this.isActive = false;
