@@ -56,11 +56,10 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<canvas id="canvas1" class="hidden"></canvas>
 
 	<div class="assets">
-		<img src="/assets/img/rhodaria/forest_margin_repeat.png" id="background">
-		<img src="/assets/img/ringuara/map2.png" id="map2">
-		<img src="/assets/img/ringuara/map3.png" id="map3">
-		<img src="/assets/img/ringuara/map4.png" id="map4">
-		<img src="/assets/img/ringuara/map5.png" id="map5">
+		<img src="/assets/img/rhodaria/forest_margin_repeat_1600x600.png" id="background">
+		<img src="/assets/img/rhodaria/magic_berry1.png" id="berry1">
+		<img src="/assets/img/rhodaria/snake_corgi.png" id="snake_corgi">
+		<img src="/assets/img/rhodaria/mushroom_sprite.png" id="mushroom">
 		<img src="/assets/img/ringuara/map6.png" id="map6">
 		<img src="/assets/img/ringuara/map7.png" id="map7">
 		<img src="/assets/img/ringuara/bomb1.png" id="bomb1">

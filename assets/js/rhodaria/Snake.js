@@ -16,10 +16,18 @@ export class Snake {
     this.height = this.game.cellSize;
     this.moving = true;
     this.score = 0;
-    this.lenght = 2;
+    this.lenght = 3;
     this.segments = [];
+    for (let i = 0; i < this.lenght; i++) {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      this.segments.unshift({x: this.x, y: this.y, frameX: 5, frameY: 0});
+    }
     this.readyToTurn = true;
     this.name = name;
+    this.image = document.getElementById('snake_corgi');
+    this.spriteWidth = 200;
+    this.spriteHeight = 200;
   }
 
   update() {
@@ -42,7 +50,7 @@ export class Snake {
     if (this.moving) {
       this.x += this.speedX;
       this.y += this.speedY;
-      this.segments.unshift({x: this.x, y: this.y});
+      this.segments.unshift({x: this.x, y: this.y, frameX: 0, frameY: 0});
       if (this.segments.length > this.lenght) {
         this.segments.pop();
       }
@@ -56,9 +64,13 @@ export class Snake {
 
   draw() {
     this.segments.forEach( (segment, index) => {
-      if (index === 0) this.game.ctx.fillStyle = 'gold';
-      else this.game.ctx.fillStyle = this.color;
-      this.game.ctx.fillRect(segment.x * this.game.cellSize, segment.y * this.game.cellSize, this.width, this.height);
+      if (this.game.debug) {
+        if (index === 0) this.game.ctx.fillStyle = 'gold';
+        else this.game.ctx.fillStyle = this.color;
+        this.game.ctx.fillRect(segment.x * this.game.cellSize, segment.y * this.game.cellSize, this.width, this.height);
+      }
+      this.setSpriteFrame(index);
+      this.game.ctx.drawImage(this.image, segment.frameX * this.spriteWidth, segment.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, segment.x * this.game.cellSize, segment.y * this.game.cellSize, this.width, this.height);
     });
   }
 
@@ -95,6 +107,88 @@ export class Snake {
       this.speedY = 0;
       this.moving = true;
       this.readyToTurn = false;
+    }
+  }
+
+  setSpriteFrame(index) {
+    const segment = this.segments[index];
+    const prevSegment = this.segments[index - 1] || 0;
+    const nextSegment = this.segments[index + 1] || 0;
+
+    //head
+    if (index === 0) {
+      if (segment.y < nextSegment.y) { //up
+        segment.frameX = 1;
+        segment.frameY = 2;
+      } else if (segment.y > nextSegment.y) { //down
+        segment.frameX = 0;
+        segment.frameY = 4;
+      } else if (segment.x < nextSegment.x) { //left
+        segment.frameX = 4;
+        segment.frameY = 2;
+      } else if (segment.x > nextSegment.x) { //right
+        segment.frameX = 6;
+        segment.frameY = 3;
+      }
+    //tail
+    } else if (index === this.segments.length - 1) {
+      if (prevSegment.y < segment.y) { //up
+        segment.frameX = 1;
+        segment.frameY = 4;
+      } else if (prevSegment.y > segment.y) { //down
+        segment.frameX = 0;
+        segment.frameY = 2;
+      } else if (prevSegment.x < segment.x) { //left
+        segment.frameX = 2;
+        segment.frameY = 0;
+      } else if (prevSegment.x > segment.x) { //right
+        segment.frameX = 0;
+        segment.frameY = 1;
+      }
+    //body
+    } else {
+      if (nextSegment.x < segment.x && prevSegment.x > segment.x) { //horizontal to right
+        segment.frameX = 5;
+        segment.frameY = 3;
+      } else if (nextSegment.x > segment.x && prevSegment.x < segment.x) { //horizontal to left
+        segment.frameX = 5;
+        segment.frameY = 2;
+      } else if (nextSegment.y > segment.y && prevSegment.y < segment.y) { //vertical to up
+        segment.frameX = 1;
+        segment.frameY = 3;
+      } else if (nextSegment.y < segment.y && prevSegment.y > segment.y) { //vertical to down
+        segment.frameX = 0;
+        segment.frameY = 3;
+      //corners counter clockwise
+      } else if (nextSegment.y > segment.y && prevSegment.x < segment.x) { //up to left
+        segment.frameX = 4;
+        segment.frameY = 0;
+      } else if (nextSegment.x > segment.x && prevSegment.y > segment.y) { //left to down
+        segment.frameX = 3;
+        segment.frameY = 0;
+      } else if (nextSegment.y < segment.y && prevSegment.x > segment.x) { //down to right
+        segment.frameX = 3;
+        segment.frameY = 1;
+      } else if (nextSegment.x < segment.x && prevSegment.y < segment.y) { //right to up
+        segment.frameX = 4;
+        segment.frameY = 1;
+      //corners clockwise
+      } else if (nextSegment.x < segment.x && prevSegment.y > segment.y) { //right to down
+        segment.frameX = 3;
+        segment.frameY = 2;
+      } else if (nextSegment.y < segment.y && prevSegment.x < segment.x) { //down to left
+        segment.frameX = 3;
+        segment.frameY = 3;
+      } else if (nextSegment.x > segment.x && prevSegment.y < segment.y) { //left to up
+        segment.frameX = 2;
+        segment.frameY = 3;
+      } else if (nextSegment.y > segment.y && prevSegment.x > segment.x) { //up to right
+        segment.frameX = 2;
+        segment.frameY = 2;
+      } else {
+        segment.frameX = 6;
+        segment.frameY = 0;
+      }
     }
   }
 }

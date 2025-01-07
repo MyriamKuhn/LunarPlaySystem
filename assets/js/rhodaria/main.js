@@ -41,11 +41,10 @@ window.addEventListener('load', function() {
   const canvas = document.getElementById('canvas1');
   
   const assets = [
-    { id: 'background', src: '/assets/img/rhodaria/forest_margin_repeat.png', type: 'image' },
-    { id: 'map2', src: '/assets/img/ringuara/map2.png', type: 'image' },
-    { id: 'map3', src: '/assets/img/ringuara/map3.png', type: 'image' },
-    { id: 'map4', src: '/assets/img/ringuara/map4.png', type: 'image' },
-    { id: 'map5', src: '/assets/img/ringuara/map5.png', type: 'image' },
+    { id: 'background', src: '/assets/img/rhodaria/forest_margin_repeat_1600x600.png', type: 'image' },
+    { id: 'berry1', src: '/assets/img/rhodaria/magic_berry1.png', type: 'image' },
+    { id: 'snake_corgi', src: '/assets/img/rhodaria/snake_corgi.png', type: 'image' },
+    { id: 'mushroom', src: '/assets/img/rhodaria/mushroom_sprite.png', type: 'image' },
     { id: 'map6', src: '/assets/img/ringuara/map6.png', type: 'image' },
     { id: 'map7', src: '/assets/img/ringuara/map7.png', type: 'image' },
     { id: 'bomb1', src: '/assets/img/ringuara/bomb1.png', type: 'image' },

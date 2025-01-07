@@ -88,7 +88,7 @@ export class Game {
     this.width;
     this.height;
 
-    this.cellSize = 50;
+    this.cellSize = 80;
     this.columns;
     this.rows;
     this.topMargin = 2;
@@ -98,7 +98,7 @@ export class Game {
     this.eventUpdate = false;
 
     this.gameOver = true;
-    this.winningScore = 2;
+    this.winningScore = 20;
     
     this.player1;
     this.player2;
@@ -107,14 +107,24 @@ export class Game {
     this.food;
     this.background;
     this.gameObjects;
+    this.debug = false;
 
     this.gameUi = new Ui(this);
 
     window.addEventListener('resize', e => {
       this.resize(e.currentTarget.innerWidth, e.currentTarget.innerHeight);
     });
+    window.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 'r') this.start();
+      if (e.key.toLowerCase() === 'd') this.debug = !this.debug;
+      //if (e.key.toLowerCase() === 'm') this.sound.toggleMute();
+      if (e.key.toLowerCase() === 'f') this.toggleFullScreen();
+      if (e.key.toLowerCase() === 'b') window.location.href = '/' + lang + '/lunarplay/';
+    });
+
 
     this.resize(window.innerWidth, window.innerHeight);
+    this.start();
   }
 
   resize(width, height) {
@@ -170,6 +180,18 @@ export class Game {
     return a.x === b.x && a.y === b.y;
   }
 
+  toggleFullScreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  goBack() {
+    window.location.href = '/' + lang + '/lunarplay/';
+  }
+
   handlePeriodicEvents(deltaTime) {
     if (this.eventTimer < this.eventInterval) {
       this.eventTimer += deltaTime;
@@ -186,7 +208,8 @@ export class Game {
     if (this.eventUpdate && !this.gameOver) {
       this.ctx.clearRect(0, 0, this.width, this.height);
       this.background.draw();
-      this.drawGrid();
+
+      if (this.debug) this.drawGrid();
 
       this.gameObjects.forEach(object => {
         object.draw();
