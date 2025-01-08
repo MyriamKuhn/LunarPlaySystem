@@ -8,9 +8,15 @@ export class Ui {
     this.game = game;
     //display the score
     this.score1 = document.getElementById('score1');
-    this.score2 = document.getElementById('score2');
-    this.score3 = document.getElementById('score3');
-    this.score4 = document.getElementById('score4');
+    this.time = document.getElementById('time');
+    //messages
+    this.message1 = document.getElementById('message1');
+    this.message2 = document.getElementById('message2');
+    this.message3 = document.getElementById('message3');
+    this.message4 = document.getElementById('message4');
+    this.message5 = document.getElementById('message5');
+    this.message6 = document.getElementById('message6');
+    this.message7 = document.getElementById('message7');
     //buttons
     this.startButton = document.getElementById('resetButton');
     this.startButton.addEventListener('click', () => this.game.start());
@@ -37,15 +43,36 @@ export class Ui {
   }
 
   update() {
-    this.score1.textContent = this.game.player1.name + ' ' + this.game.player1.score;
-    this.score2.textContent = this.game.player2.name + ' ' + this.game.player2.score;
-    this.score3.textContent = this.game.player3.name + ' ' + this.game.player3.score;
-    this.score4.textContent = this.game.player4.name + ' ' + this.game.player4.score;
+    this.score1.textContent = this.game.player1.score + ' ' + this.game.translations.points;
+    this.time.textContent = this.game.formatTimer() + ' s';
   }
 
-  triggerGameOver() {
+  triggerGameOver(isStarting = false) {
     this.game.gameOver = true;
-    this.gameplayUi();
+    this.gameOverUi();
+    if (isStarting) {
+      this.message1.textContent = this.game.translations.begin;
+      this.message2.textContent = this.game.translations.begin2;
+      this.message3.textContent = this.game.translations.begin3;
+      this.message4.textContent = this.game.translations.press;
+      this.message5.textContent = this.game.translations.press2;
+      this.message6.textContent = this.game.translations.press3;
+      this.message7.textContent = this.game.translations.press4;
+    } else {
+      this.message1.textContent = this.game.translations.gameover;
+      this.message2.textContent = ' ';
+      this.message3.textContent = this.game.translations.gameover2 + ' ' + this.game.player1.score;
+      this.message4.textContent = this.game.translations.press;
+      this.message5.textContent = this.game.translations.press2;
+      this.message6.textContent = this.game.translations.press3;
+      this.message7.textContent = this.game.translations.press4;
+      for (let i = 0; i < this.game.numberOfParticles; i++) {
+        const particle = this.game.getParticle();
+        if (particle) {
+          particle.start(Math.random() * this.game.width, this.game.height * 0.9, 'gold');
+        }
+      }
+    }
   }
 
   gameplayUi() {

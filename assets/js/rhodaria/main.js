@@ -39,15 +39,16 @@ window.addEventListener('load', function() {
   const loadingText = document.getElementById('loading-text');
   const loadingProgress = document.getElementById('loading-progress');
   const canvas = document.getElementById('canvas1');
+  const canvas2 = document.getElementById('canvas2');
   
   const assets = [
     { id: 'background', src: '/assets/img/rhodaria/forest_margin_repeat_1600x600.png', type: 'image' },
     { id: 'berry1', src: '/assets/img/rhodaria/magic_berry1.png', type: 'image' },
     { id: 'snake_corgi', src: '/assets/img/rhodaria/snake_corgi.png', type: 'image' },
-    { id: 'mushroom', src: '/assets/img/rhodaria/mushroom_sprite.png', type: 'image' },
-    { id: 'map6', src: '/assets/img/ringuara/map6.png', type: 'image' },
-    { id: 'map7', src: '/assets/img/ringuara/map7.png', type: 'image' },
-    { id: 'bomb1', src: '/assets/img/ringuara/bomb1.png', type: 'image' },
+    { id: 'food', src: '/assets/img/rhodaria/food.png', type: 'image' },
+    { id: 'wolf', src: '/assets/img/rhodaria/void_wolf.png', type: 'image' },
+    { id: 'hound', src: '/assets/img/rhodaria/sticky_saberhound.png', type: 'image' },
+    { id: 'schnoodle', src: '/assets/img/rhodaria/spectral_schnoodle.png', type: 'image' },
     { id: 'bomb2', src: '/assets/img/ringuara/bomb2.png', type: 'image' },
     { id: 'bomb3', src: '/assets/img/ringuara/bomb3.png', type: 'image' },
     { id: 'bomb4', src: '/assets/img/ringuara/bomb4.png', type: 'image' },
@@ -165,17 +166,21 @@ window.addEventListener('load', function() {
   function hideLoadingScreen() {
     loadingScreen.classList.add('hidden');  
     canvas.classList.remove('hidden');
+    canvas2.classList.remove('hidden');
     initializeGame();
   }
 
   // Initialiser et démarrer le jeu
   function initializeGame() {
     const ctx = canvas.getContext('2d');
-
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
-    const game = new Game(canvas, ctx);
+    
+    const ctx2 = canvas2.getContext('2d');
+    canvas2.width = window.innerWidth;
+    canvas2.height = window.innerHeight;
+    
+    const game = new Game(canvas, ctx, canvas2, ctx2);
 
     let lastTime = 0;
 

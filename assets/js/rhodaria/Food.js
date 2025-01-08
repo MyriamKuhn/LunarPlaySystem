@@ -8,10 +8,11 @@ export class Food {
     this.game = game;
     this.x;
     this.y;
-    this.image = document.getElementById('mushroom');
+    this.image = document.getElementById('food');
     this.spriteWidth = 200;
     this.spriteHeight = 400;
-    this.frameX = 0;
+    this.frameX;
+    this.frameY;
     this.maxFrame = 8;
     this.reset();
   }
@@ -20,6 +21,7 @@ export class Food {
     this.x = Math.floor(Math.random() * this.game.columns);
     this.y = Math.floor(Math.random() * (this.game.rows - this.game.topMargin) + this.game.topMargin);
     this.frameX = 0;
+    this.frameY = Math.floor(Math.random() * 3);
   }
 
   draw() {
@@ -27,7 +29,7 @@ export class Food {
       this.game.ctx.fillStyle = 'white';
       this.game.ctx.fillRect(this.x * this.game.cellSize, this.y * this.game.cellSize, this.game.cellSize, this.game.cellSize);
     }
-    this.game.ctx.drawImage(this.image, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x * this.game.cellSize, (this.y - 1) * this.game.cellSize, this.game.cellSize, this.game.cellSize * 2);
+    this.game.ctx.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x * this.game.cellSize, (this.y - 1) * this.game.cellSize, this.game.cellSize, this.game.cellSize * 2);
   }
 
   update() {

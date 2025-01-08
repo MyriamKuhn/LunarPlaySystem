@@ -16,11 +16,25 @@ body{
   left: 50%;
   translate: -50% -50%;
   background: url('/assets/img/rhodaria/grass_night.png');
+  width: 100%;
+  height: 100%;
   max-width: 100%;
   max-height: 100%;
 }
 
-#canvas1.hidden {
+#canvas2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  pointer-events: none;
+}
+
+#canvas1.hidden, #canvas2.hidden {
   display: none;
 }
 
@@ -100,11 +114,11 @@ body{
   translate: -50% -50%;
   padding: 5px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   column-gap: 25px;
-}
-
-.score > div {
   font-size: 2rem;
   color: white;
   text-shadow: 1px 1px 1px black;
@@ -117,8 +131,71 @@ body{
   height: 100%;
   background-repeat: no-repeat;
   background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
 }
 
 .gameover.hidden {
   display: none;
+}
+
+.large {
+  font-size: 4rem;
+  color: white;
+  text-shadow: 2px 2px 2px black;
+}
+
+.normal {
+  font-size: 3rem;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  padding: 0 0.5rem;
+}
+
+/* Pour les appareils dont la largeur est inférieure ou égale à 768px (tablettes et mobiles) */
+@media (max-width: 1024px) {
+  .large {
+    font-size: 3rem;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+  }
+  
+  .normal {
+    font-size: 2rem;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+  }
+}
+
+/* Pour les appareils dont la largeur est inférieure ou égale à 768px (tablettes et mobiles) */
+@media (max-width: 768px) {
+  .large {
+    font-size: 2rem;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+  }
+  
+  .normal {
+    font-size: 1rem;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+  }
+}
+
+/* Pour les appareils dont la largeur est inférieure ou égale à 425px (tablettes et mobiles) */
+@media (max-width: 425px) {
+  .large {
+    font-size: 2rem;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+  }
+  
+  .normal {
+    font-size: 1rem;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+  }
 }

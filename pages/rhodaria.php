@@ -59,10 +59,10 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 		<img src="/assets/img/rhodaria/forest_margin_repeat_1600x600.png" id="background">
 		<img src="/assets/img/rhodaria/magic_berry1.png" id="berry1">
 		<img src="/assets/img/rhodaria/snake_corgi.png" id="snake_corgi">
-		<img src="/assets/img/rhodaria/mushroom_sprite.png" id="mushroom">
-		<img src="/assets/img/ringuara/map6.png" id="map6">
-		<img src="/assets/img/ringuara/map7.png" id="map7">
-		<img src="/assets/img/ringuara/bomb1.png" id="bomb1">
+		<img src="/assets/img/rhodaria/food.png" id="food">
+		<img src="/assets/img/rhodaria/void_wolf.png" id="wolf">
+		<img src="/assets/img/rhodaria/sticky_saberhound.png" id="hound">
+		<img src="/assets/img/rhodaria/spectral_schnoodle.png" id="schnoodle">
 		<img src="/assets/img/ringuara/bomb2.png" id="bomb2">
 		<img src="/assets/img/ringuara/bomb3.png" id="bomb3">
 		<img src="/assets/img/ringuara/bomb4.png" id="bomb4">
@@ -129,17 +129,18 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	</div>
 
 	<div class="score">
-		<div class="left">
-			<p id="score1">Player 1</p>
-			<p id="score2">Player 2</p>
-		</div>
-		<div class="right">
-			<p id="score3">Player3</p>
-			<p id="score4">Player4</p>
-		</div>
+		<p id="score1"></p>
+		<p id="time"></p>
 	</div>
 
 	<div id="gameover" class="gameover">
+		<p id="message1" class="large"></p>
+		<p id="message2" class="normal"></p>
+		<p id="message3" class="normal"></p>
+		<p id="message4" class="normal"></p>
+		<p id="message5" class="normal"></p>
+		<p id="message6" class="normal"></p>
+		<p id="message7" class="normal"></p>
 	</div>
 
 	<div class="controls">
@@ -148,6 +149,8 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 		<button id="backButton">👈</button>
 		<button id="volumeButton">🔊</button>
 	</div>
+
+	<canvas id="canvas2" class="hidden"></canvas>
 	
 	<!-- Scripts -->
 	<script type="module" src="/assets/js/rhodaria/main.js"></script>

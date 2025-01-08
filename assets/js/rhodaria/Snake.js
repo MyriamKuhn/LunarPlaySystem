@@ -5,7 +5,7 @@ import { sendScore } from '/assets/js/utils.js';
 
 /**********/
 export class Snake {
-  constructor(game, x, y, speedX, speedY, color, name) {
+  constructor(game, x, y, speedX, speedY, color, name, image) {
     this.game = game;
     this.x = x;
     this.y = y;
@@ -19,13 +19,15 @@ export class Snake {
     this.lenght = 3;
     this.segments = [];
     for (let i = 0; i < this.lenght; i++) {
-      this.x += this.speedX;
-      this.y += this.speedY;
+      if (i > 0) {
+        this.x += this.speedX;
+        this.y += this.speedY;
+      }
       this.segments.unshift({x: this.x, y: this.y, frameX: 5, frameY: 0});
     }
     this.readyToTurn = true;
     this.name = name;
-    this.image = document.getElementById('snake_corgi');
+    this.image = image;
     this.spriteWidth = 200;
     this.spriteHeight = 200;
   }
@@ -34,9 +36,28 @@ export class Snake {
     this.readyToTurn = true;
     //Collision check
     if (this.game.checkCollision(this, this.game.food)) {
+      let color;
+      if (this.game.food.frameY === 1) { //not edible
+        this.score--;
+        color = 'black';
+        if (this.lenght > 2) {
+          this.lenght--;
+          if (this.segments.length > this.lenght) {
+            this.segments.pop();
+          }
+        }
+      } else { //regular food
+        this.score++;
+        this.lenght++;
+        color = 'gold';
+      }
+      for (let i = 0; i < 5; i++) {
+        const particle = this.game.getParticle();
+        if (particle) {
+          particle.start(this.game.food.x * this.game.cellSize + this.game.cellSize * 0.5, this.game.food.y * this.game.cellSize + this.game.cellSize * 0.5, color);
+        }
+      }
       this.game.food.reset();
-      this.score++;
-      this.lenght++;
     }
 
     //Boundary check
@@ -118,17 +139,37 @@ export class Snake {
     //head
     if (index === 0) {
       if (segment.y < nextSegment.y) { //up
-        segment.frameX = 1;
-        segment.frameY = 2;
+        if (this.game.food.y === segment.y - 1 && this.game.food.x === segment.x) {
+          segment.frameX = 7;
+          segment.frameY = 1;
+        } else {
+          segment.frameX = 1;
+          segment.frameY = 2;
+        }
       } else if (segment.y > nextSegment.y) { //down
-        segment.frameX = 0;
-        segment.frameY = 4;
+        if (this.game.food.y === segment.y + 1 && this.game.food.x === segment.x) {
+          segment.frameX = 7;
+          segment.frameY = 3;
+        } else {
+          segment.frameX = 0;
+          segment.frameY = 4;
+        }
       } else if (segment.x < nextSegment.x) { //left
-        segment.frameX = 4;
-        segment.frameY = 2;
+        if (this.game.food.x === segment.x - 1 && this.game.food.y === segment.y) {
+          segment.frameX = 2;
+          segment.frameY = 4;
+        } else {
+          segment.frameX = 4;
+          segment.frameY = 2;
+        }
       } else if (segment.x > nextSegment.x) { //right
-        segment.frameX = 6;
-        segment.frameY = 3;
+        if (this.game.food.x === segment.x + 1 && this.game.food.y === segment.y) {
+          segment.frameX = 4;
+          segment.frameY = 4;
+        } else {
+          segment.frameX = 6;
+          segment.frameY = 3;
+        }
       }
     //tail
     } else if (index === this.segments.length - 1) {

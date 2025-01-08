@@ -9,6 +9,7 @@ import { ComputerAi } from '/assets/js/rhodaria/Controls.js';
 import { Food } from '/assets/js/rhodaria/Food.js';
 import { Ui } from '/assets/js/rhodaria/Ui.js';
 import { Background } from '/assets/js/rhodaria/Background.js';
+import { Particles } from '/assets/js/rhodaria/Particles.js';
 import { securePlayername, sendScore } from '/assets/js/utils.js';
 
 
@@ -82,9 +83,11 @@ const translations = {
 
 /******************/
 export class Game {
-  constructor(canvas, context) {
+  constructor(canvas, context, canvas2, context2) {
     this.canvas = canvas;
     this.ctx = context;
+    this.canvas2 = canvas2;
+    this.ctx2 = context2;
     this.width;
     this.height;
 
@@ -98,7 +101,7 @@ export class Game {
     this.eventUpdate = false;
 
     this.gameOver = true;
-    this.winningScore = 20;
+    this.winningScore = 2;
     
     this.player1;
     this.player2;
@@ -110,6 +113,13 @@ export class Game {
     this.debug = false;
 
     this.gameUi = new Ui(this);
+    this.translations = translations[lang];
+    this.gameUi.triggerGameOver(true);
+    this.timer;
+
+    this.particles = [];
+    this.numberOfParticles = 50;
+    this.createParticlesPool();
 
     window.addEventListener('resize', e => {
       this.resize(e.currentTarget.innerWidth, e.currentTarget.innerHeight);
@@ -124,7 +134,7 @@ export class Game {
 
 
     this.resize(window.innerWidth, window.innerHeight);
-    this.start();
+    //this.start();
   }
 
   resize(width, height) {
@@ -143,6 +153,11 @@ export class Game {
     this.ctx.textAlign = 'left';
     this.ctx.textBaseline = 'top';
 
+    this.canvas2.width = this.canvas.width;
+    this.canvas2.height = this.canvas.height;
+    this.ctx2.fillStyle = 'gold';
+    this.ctx2.lineWidth = 2;
+
     this.player1 = new Keyboard1(this, 0, this.topMargin, 1, 0, 'orangered', securePlayername(sessionStorage.getItem('playername')));
     this.player2 = new ComputerAi(this, this.columns - 1, this.topMargin, 0, 1, 'magenta', 'ComputerAi');
     this.player3 = new ComputerAi(this, this.columns - 1, this.rows - 1, -1, 0, 'yellow', 'ComputerAi');
@@ -153,14 +168,15 @@ export class Game {
 
   start() {
     if (!this.gameOver) {
-      this.gameUi.triggerGameOver();
+      this.gameUi.triggerGameOver(true);
     } else {
       this.gameOver = false;
+      this.timer = 0;
       this.gameUi.gameplayUi();
-      this.player1 = new Keyboard1(this, 0, this.topMargin, 1, 0, 'orangered', securePlayername(sessionStorage.getItem('playername')));
-      this.player2 = new ComputerAi(this, this.columns - 1, this.topMargin, 0, 1, 'magenta', 'ComputerAi');
-      this.player3 = new ComputerAi(this, this.columns - 1, this.rows - 1, -1, 0, 'yellow', 'ComputerAi');
-      this.player4 = new ComputerAi(this, 0, this.rows - 1, 0, -1, 'darkblue', 'ComputerAi');
+      this.player1 = new Keyboard1(this, 0, this.topMargin, 1, 0, 'orangered', securePlayername(sessionStorage.getItem('playername')), document.getElementById('snake_corgi'));
+      this.player2 = new ComputerAi(this, this.columns - 1, this.topMargin, 0, 1, 'magenta', 'ComputerAi', document.getElementById('schnoodle'));
+      this.player3 = new ComputerAi(this, this.columns - 1, this.rows - 1, -1, 0, 'yellow', 'ComputerAi', document.getElementById('hound'));
+      this.player4 = new ComputerAi(this, 0, this.rows - 1, 0, -1, 'darkblue', 'ComputerAi', document.getElementById('wolf'));
       this.food = new Food(this);
       this.gameObjects = [this.player1, this.player2, this.player3, this.player4, this.food];
       this.ctx.clearRect(0, 0, this.width, this.height);
@@ -178,6 +194,10 @@ export class Game {
 
   checkCollision(a, b) {
     return a.x === b.x && a.y === b.y;
+  }
+
+  formatTimer() {
+    return (this.timer * 0.001).toFixed(2);
   }
 
   toggleFullScreen() {
@@ -202,8 +222,30 @@ export class Game {
     }
   }
 
+  createParticlesPool() {
+    for (let i = 0; i < this.numberOfParticles; i++) {
+      this.particles.push(new Particles(this));
+    }
+  }
+
+  getParticle() {
+    for (let i = 0; i < this.particles.length; i++) {
+      if (this.particles[i].free) return this.particles[i];
+    }
+  }
+
+  handleParticles() {
+    this.ctx2.clearRect(0, 0, this.width, this.height);
+    for (let i = 0; i < this.particles.length; i++) {
+      this.particles[i].update();
+      this.particles[i].draw();
+    }
+  }
+
   render(deltaTime) {
     this.handlePeriodicEvents(deltaTime);
+
+    if (!this.gameOver) this.timer += deltaTime;
     
     if (this.eventUpdate && !this.gameOver) {
       this.ctx.clearRect(0, 0, this.width, this.height);
@@ -217,5 +259,6 @@ export class Game {
       });
       this.gameUi.update();
     }
+    this.handleParticles();
   }
 }
