@@ -58,74 +58,26 @@ $serverName = Security::secureInput($_SERVER['SERVER_NAME']);
 	<div class="assets">
 		<img src="/assets/img/rhodaria/forest_margin_repeat_1600x600.png" id="background">
 		<img src="/assets/img/rhodaria/magic_berry1.png" id="berry1">
-		<img src="/assets/img/rhodaria/snake_corgi.png" id="snake_corgi">
+		<img src="/assets/img/rhodaria/snake_corgi.png" id="corgi">
 		<img src="/assets/img/rhodaria/food.png" id="food">
 		<img src="/assets/img/rhodaria/void_wolf.png" id="wolf">
 		<img src="/assets/img/rhodaria/sticky_saberhound.png" id="hound">
 		<img src="/assets/img/rhodaria/spectral_schnoodle.png" id="schnoodle">
-		<img src="/assets/img/ringuara/bomb2.png" id="bomb2">
-		<img src="/assets/img/ringuara/bomb3.png" id="bomb3">
-		<img src="/assets/img/ringuara/bomb4.png" id="bomb4">
-		<img src="/assets/img/ringuara/bomb5.png" id="bomb5">
-		<img src="/assets/img/ringuara/bomb6.png" id="bomb6">
-		<img src="/assets/img/ringuara/bomb7.png" id="bomb7">
-		<img src="/assets/img/ringuara/explosion.png" id="explosion">
-		<img src="/assets/img/ringuara/meteor1.png" id="meteor1">
-		<img src="/assets/img/ringuara/meteor2.png" id="meteor2">
-		<img src="/assets/img/ringuara/meteor3.png" id="meteor3">
-		<img src="/assets/img/ringuara/meteor4.png" id="meteor4">
-		<img src="/assets/img/ringuara/meteor5.png" id="meteor5">
-		<img src="/assets/img/ringuara/meteor6.png" id="meteor6">
-		<img src="/assets/img/ringuara/meteor7.png" id="meteor7">
-		<img src="/assets/img/ringuara/meteor8.png" id="meteor8">
-		<img src="/assets/img/ringuara/meteor9.png" id="meteor9">
-		<img src="/assets/img/ringuara/meteor10.png" id="meteor10">
-		<img src="/assets/img/ringuara/meteor11.png" id="meteor11">
-		<img src="/assets/img/ringuara/meteor12.png" id="meteor12">
-		<img src="/assets/img/ringuara/player.png" id="player">
-		<img src="/assets/img/ringuara/enemy1.png" id="enemy1">
-		<img src="/assets/img/ringuara/enemy2.png" id="enemy2">
-		<img src="/assets/img/ringuara/enemy3.png" id="enemy3">
-		<img src="/assets/img/ringuara/enemy4.png" id="enemy4">
-		<img src="/assets/img/ringuara/enemy5.png" id="enemy5">
-		<img src="/assets/img/ringuara/enemy6.png" id="enemy6">
-		<img src="/assets/img/ringuara/enemy7.png" id="enemy7">
-		<img src="/assets/img/ringuara/enemy8.png" id="enemy8">
-		<img src="/assets/img/ringuara/enemy9.png" id="enemy9">
-		<img src="/assets/img/ringuara/enemy10.png" id="enemy10">
-		<img src="/assets/img/ringuara/enemy11.png" id="enemy11">
-		<img src="/assets/img/ringuara/enemy12.png" id="enemy12">
-		<img src="/assets/img/ringuara/enemy13.png" id="enemy13">
-		<img src="/assets/img/ringuara/enemy14.png" id="enemy14">
-		<img src="/assets/img/ringuara/enemy15.png" id="enemy15">
-		<img src="/assets/img/ringuara/enemy16.png" id="enemy16">
-		<img src="/assets/img/ringuara/enemy17.png" id="enemy17">
-		<img src="/assets/img/ringuara/enemy18.png" id="enemy18">
-		<img src="/assets/img/ringuara/enemy19.png" id="enemy19">
-		<img src="/assets/img/ringuara/enemy20.png" id="enemy20">
-		<img src="/assets/img/ringuara/enemy21.png" id="enemy21">
+		<img src="/assets/img/rhodaria/basilisk.png" id="basilisk">
+		<img src="/assets/img/rhodaria/carni_creeper.png" id="carni">
+		<img src="/assets/img/rhodaria/snake_zilla.png" id="zilla">
+		<img src="/assets/img/rhodaria/spore_shark.png" id="shark">
 
-		<audio src="/assets/audio/ringuara/bomb.wav" id="bomb" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/deadenemy1.wav" id="deadenemy1" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/deadenemy2.mp3" id="deadenemy2" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/dots1.wav" id="dots1" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/dots2.wav" id="dots2" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/dots3.wav" id="dots3" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/dots4.wav" id="dots4" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/dots5.wav" id="dots5" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/dots6.wav" id="dots6" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/dots7.wav" id="dots7" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/dots8.wav" id="dots8" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/dots9.wav" id="dots9" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/dragbomb1.mp3" id="dragbomb1" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/dragbomb2.mp3" id="dragbomb2" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/levelup.wav" id="levelup" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/lose.wav" id="lose" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/pacdead.wav" id="pacdead" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/pacwin.mp3" id="pacwin" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/power1.wav" id="power1" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/power2.wav" id="power2" preload="auto"></audio>
-		<audio src="/assets/audio/ringuara/bonus.wav" id="bonus" preload="auto"></audio>
+		<audio src="/assets/audio/rhodaria/bad_food.mp3" id="bad_food" preload="auto"></audio>
+		<audio src="/assets/audio/rhodaria/bite1.mp3" id="bite1" preload="auto"></audio>
+		<audio src="/assets/audio/rhodaria/bite2.mp3" id="bite2" preload="auto"></audio>
+		<audio src="/assets/audio/rhodaria/bite3.mp3" id="bite3" preload="auto"></audio>
+		<audio src="/assets/audio/rhodaria/bite4.mp3" id="bite4" preload="auto"></audio>
+		<audio src="/assets/audio/rhodaria/bite5.mp3" id="bite5" preload="auto"></audio>
+		<audio src="/assets/audio/rhodaria/button.mp3" id="button" preload="auto"></audio>
+		<audio src="/assets/audio/rhodaria/restart.mp3" id="restart" preload="auto"></audio>
+		<audio src="/assets/audio/rhodaria/start.mp3" id="start" preload="auto"></audio>
+		<audio src="/assets/audio/rhodaria/win.mp3" id="win" preload="auto"></audio>
 	</div>
 
 	<div class="score">

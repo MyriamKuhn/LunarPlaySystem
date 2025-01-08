@@ -40,6 +40,7 @@ export class Snake {
       if (this.game.food.frameY === 1) { //not edible
         this.score--;
         color = 'black';
+        this.game.sound.play('bad_food');
         if (this.lenght > 2) {
           this.lenght--;
           if (this.segments.length > this.lenght) {
@@ -50,6 +51,7 @@ export class Snake {
         this.score++;
         this.lenght++;
         color = 'gold';
+        this.game.sound.play('bite' + Math.floor(Math.random() * 5 + 1));
       }
       for (let i = 0; i < 5; i++) {
         const particle = this.game.getParticle();
@@ -79,6 +81,7 @@ export class Snake {
 
     //Win condition
     if (this.score >= this.game.winningScore) {
+      this.game.sound.play('win');
       this.game.gameUi.triggerGameOver();
     }
   }

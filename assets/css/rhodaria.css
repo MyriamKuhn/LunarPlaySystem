@@ -102,7 +102,7 @@ body{
 }
 
 .controls > button:hover, .controls > button:active, .controls > button:focus {
-  background: #fffb02;
+  background: #02ff02;
   box-shadow: 4px 4px 4px black;
   text-shadow: 4px 4px 4px black;
 }

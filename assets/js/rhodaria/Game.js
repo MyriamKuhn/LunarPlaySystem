@@ -11,6 +11,7 @@ import { Ui } from '/assets/js/rhodaria/Ui.js';
 import { Background } from '/assets/js/rhodaria/Background.js';
 import { Particles } from '/assets/js/rhodaria/Particles.js';
 import { securePlayername, sendScore } from '/assets/js/utils.js';
+import { AudioControl } from '/assets/js/rhodaria/AudioControl.js';
 
 
 /*************/
@@ -121,13 +122,15 @@ export class Game {
     this.numberOfParticles = 50;
     this.createParticlesPool();
 
+    this.sound = new AudioControl();
+
     window.addEventListener('resize', e => {
       this.resize(e.currentTarget.innerWidth, e.currentTarget.innerHeight);
     });
     window.addEventListener('keydown', (e) => {
       if (e.key.toLowerCase() === 'r') this.start();
       if (e.key.toLowerCase() === 'd') this.debug = !this.debug;
-      //if (e.key.toLowerCase() === 'm') this.sound.toggleMute();
+      if (e.key.toLowerCase() === 'm') this.sound.toggleMute();
       if (e.key.toLowerCase() === 'f') this.toggleFullScreen();
       if (e.key.toLowerCase() === 'b') window.location.href = '/' + lang + '/lunarplay/';
     });
@@ -169,11 +172,13 @@ export class Game {
   start() {
     if (!this.gameOver) {
       this.gameUi.triggerGameOver(true);
+      this.sound.play('restart');
     } else {
+      this.sound.play('start');
       this.gameOver = false;
       this.timer = 0;
       this.gameUi.gameplayUi();
-      this.player1 = new Keyboard1(this, 0, this.topMargin, 1, 0, 'orangered', securePlayername(sessionStorage.getItem('playername')), document.getElementById('snake_corgi'));
+      this.player1 = new Keyboard1(this, 0, this.topMargin, 1, 0, 'orangered', securePlayername(sessionStorage.getItem('playername')), document.getElementById('corgi'));
       this.player2 = new ComputerAi(this, this.columns - 1, this.topMargin, 0, 1, 'magenta', 'ComputerAi', document.getElementById('schnoodle'));
       this.player3 = new ComputerAi(this, this.columns - 1, this.rows - 1, -1, 0, 'yellow', 'ComputerAi', document.getElementById('hound'));
       this.player4 = new ComputerAi(this, 0, this.rows - 1, 0, -1, 'darkblue', 'ComputerAi', document.getElementById('wolf'));

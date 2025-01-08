@@ -19,24 +19,47 @@ export class Ui {
     this.message7 = document.getElementById('message7');
     //buttons
     this.startButton = document.getElementById('resetButton');
-    this.startButton.addEventListener('click', () => this.game.start());
+    this.startButton.addEventListener('click', () => {
+      this.game.sound.play('button');
+      this.game.start();
+    });
     this.startButton.addEventListener('touchend', e => {
       e.preventDefault();
+      this.game.sound.play('button');
       this.game.start();
     }, { passive: false });
 
     this.fullscreenButton = document.getElementById('fullScreenButton');
-    this.fullscreenButton.addEventListener('click', () => this.game.toggleFullScreen());
+    this.fullscreenButton.addEventListener('click', () => {
+      this.game.sound.play('button');
+      this.game.toggleFullScreen();
+    });
     this.fullscreenButton.addEventListener('touchend', e => {
       e.preventDefault();
+      this.game.sound.play('button');
       this.game.toggleFullScreen();
     }, { passive: false });
 
     this.backButton = document.getElementById('backButton');
-    this.backButton.addEventListener('click', () => this.game.goBack());
+    this.backButton.addEventListener('click', () => {
+      this.game.sound.play('button');
+      this.game.goBack();
+    });
     this.backButton.addEventListener('touchend', e => {
       e.preventDefault();
+      this.game.sound.play('button');
       this.game.goBack();
+    }, { passive: false });
+
+    this.muteButton = document.getElementById('volumeButton');
+    this.muteButton.addEventListener('click', () => {
+      this.game.sound.play('button');
+      this.game.sound.toggleMute();
+    });
+    this.muteButton.addEventListener('touchend', e => {
+      e.preventDefault();
+      this.game.sound.play('button');
+      this.game.sound.toggleMute();
     }, { passive: false });
 
     this.gameOverScreen = document.getElementById('gameover');
